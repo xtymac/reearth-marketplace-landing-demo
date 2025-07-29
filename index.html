@@ -83,6 +83,28 @@
                 </button>
               </div>
             </div>
+
+            <!-- Platform Filter Section -->
+            <div class="hero-filter-section">
+              <div class="filter-options">
+                <label class="filter-checkbox">
+                  <input type="checkbox" value="cms" data-color="#4ecdc4" />
+                  <span class="checkmark cms">CMS</span>
+                </label>
+                <label class="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    value="visualizer"
+                    data-color="#ff6b6b"
+                  />
+                  <span class="checkmark visualizer">Visualizer</span>
+                </label>
+                <label class="filter-checkbox">
+                  <input type="checkbox" value="flow" data-color="#a29bfe" />
+                  <span class="checkmark flow">Flow</span>
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -91,7 +113,7 @@
         <div class="container">
           <h2 class="featured-title">Featured</h2>
           <div class="featured-grid">
-            <div class="featured-card">
+            <div class="featured-card" data-platforms="visualizer">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/6e82e5cb4f3ab9225ed72467ef0e69d44c5d7ae5df84bd6fb057bd551da4bbb1.png"
@@ -120,7 +142,7 @@
               </div>
             </div>
 
-            <div class="featured-card">
+            <div class="featured-card" data-platforms="cms">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/b08e7da9cbd560cbd5c79f6c52b8ae620e48e28fc285b3bc083f89607b744496.png"
@@ -146,7 +168,7 @@
               </div>
             </div>
 
-            <div class="featured-card">
+            <div class="featured-card" data-platforms="reearth cms">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/f3136d28067b0ea93cda918d99f0b58e26069750bd1fffb256d5e370b1b5fe5c.png"
@@ -159,6 +181,9 @@
                 <p class="card-description">
                   スマートシティ向け統合データ管理システム
                 </p>
+                <div class="card-function-tags">
+                  <span class="function-tag">CMS</span>
+                </div>
                 <p class="card-author">日本電気株式会社 他</p>
                 <div class="card-stats">
                   <div class="card-rating">
@@ -174,7 +199,7 @@
               </div>
             </div>
 
-            <div class="featured-card">
+            <div class="featured-card" data-platforms="traffic flow">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E4%BA%A4%E9%80%9A%E7%AE%A1%E7%90%86%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0.png"
@@ -187,6 +212,9 @@
                 <p class="card-description">
                   AIを活用したリアルタイム交通最適化ソリューション
                 </p>
+                <div class="card-function-tags">
+                  <span class="function-tag">Flow</span>
+                </div>
                 <p class="card-author">交通システム株式会社</p>
                 <div class="card-stats">
                   <div class="card-rating">
@@ -245,7 +273,7 @@
             </a>
           </div>
           <div class="plugin-grid">
-            <div class="plugin-card">
+            <div class="plugin-card" data-platforms="visualizer">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/79d833fa1e4df7a002d7663223ff3b9c38eaeba0ceaf0d0d8edc0be4b6ede5e6.png"
@@ -269,7 +297,7 @@
               </div>
             </div>
 
-            <div class="plugin-card">
+            <div class="plugin-card" data-platforms="visualizer flow">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Weather%20API%20Integration.png"
@@ -279,6 +307,9 @@
               </div>
               <div class="card-content">
                 <h3 class="card-title">Weather API Integration</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">Flow</span>
+                </div>
                 <p class="card-author">by 気象データ株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -293,7 +324,7 @@
               </div>
             </div>
 
-            <div class="plugin-card">
+            <div class="plugin-card" data-platforms="visualizer cms">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/IoT%20Sensor%20Network.png"
@@ -303,6 +334,9 @@
               </div>
               <div class="card-content">
                 <h3 class="card-title">IoT Sensor Network</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">CMS</span>
+                </div>
                 <p class="card-author">by センサーテック株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -317,7 +351,7 @@
               </div>
             </div>
 
-            <div class="plugin-card">
+            <div class="plugin-card" data-platforms="visualizer">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Advanced%20GIS%20Mapping.png"
@@ -341,7 +375,7 @@
               </div>
             </div>
 
-            <div class="plugin-card">
+            <div class="plugin-card" data-platforms="visualizer flow">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Smart%20Mobility%20Hub.png"
@@ -351,6 +385,9 @@
               </div>
               <div class="card-content">
                 <h3 class="card-title">Smart Mobility Hub</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">Flow</span>
+                </div>
                 <p class="card-author">by モビリティソリューション株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -365,7 +402,7 @@
               </div>
             </div>
 
-            <div class="plugin-card">
+            <div class="plugin-card" data-platforms="visualizer cms">
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Green%20Energy%20Monitor.png"
@@ -375,6 +412,9 @@
               </div>
               <div class="card-content">
                 <h3 class="card-title">Green Energy Monitor</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">CMS</span>
+                </div>
                 <p class="card-author">by 環境テクノロジー株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -410,16 +450,19 @@
             displaying data and stories.
           </p>
           <div class="integration-grid">
-            <div class="integration-card">
+            <div class="integration-card" data-platforms="cms visualizer">
               <div class="card-image">
                 <img
                   src="Image/CMS Data Integration.png"
                   alt="CMS Integration Plugin"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category cms">CMS</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">CMS Data Integration</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">Visualizer</span>
+                </div>
                 <p class="card-author">by コンテンツ管理株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -434,13 +477,13 @@
               </div>
             </div>
 
-            <div class="integration-card">
+            <div class="integration-card" data-platforms="cms">
               <div class="card-image">
                 <img
                   src="Image/Story Builder Integration.png"
                   alt="Story Builder Integration"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category cms">CMS</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Story Builder Integration</h3>
@@ -458,16 +501,19 @@
               </div>
             </div>
 
-            <div class="integration-card">
+            <div class="integration-card" data-platforms="cms visualizer">
               <div class="card-image">
                 <img
                   src="Image/Custom Data Panel.png"
                   alt="Data Panel Integration"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category cms">CMS</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Custom Data Panel</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">Visualizer</span>
+                </div>
                 <p class="card-author">by データパネル株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -482,13 +528,13 @@
               </div>
             </div>
 
-            <div class="integration-card">
+            <div class="integration-card" data-platforms="cms">
               <div class="card-image">
                 <img
                   src="Image/Info Block Builder.png"
                   alt="Info Block Integration"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category cms">CMS</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Info Block Builder</h3>
@@ -506,16 +552,19 @@
               </div>
             </div>
 
-            <div class="integration-card">
+            <div class="integration-card" data-platforms="cms flow">
               <div class="card-image">
                 <img
                   src="Image/Content Hub Integration.png"
                   alt="Content Hub Integration"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category cms">CMS</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Content Hub Integration</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">Flow</span>
+                </div>
                 <p class="card-author">by コンテンツハブ株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -530,13 +579,13 @@
               </div>
             </div>
 
-            <div class="integration-card">
+            <div class="integration-card" data-platforms="cms">
               <div class="card-image">
                 <img
                   src="Image/Media Manager Pro.png"
                   alt="Media Manager Integration"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category cms">CMS</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Media Manager Pro</h3>
@@ -574,16 +623,19 @@
             Adding Custom Panels and Info Blocks in CMS.
           </p>
           <div class="nodes-grid">
-            <div class="nodes-card">
+            <div class="nodes-card" data-platforms="flow cms">
               <div class="card-image">
                 <img
                   src="Image/Custom Node Builder.png"
                   alt="Custom Node Plugin"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category flow">FLOW</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Custom Node Builder</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">CMS</span>
+                </div>
                 <p class="card-author">by ノード開発株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -598,13 +650,13 @@
               </div>
             </div>
 
-            <div class="nodes-card">
+            <div class="nodes-card" data-platforms="flow">
               <div class="card-image">
                 <img
                   src="Image/Panel Creator Node.png"
                   alt="Panel Creator Node"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category flow">FLOW</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Panel Creator Node</h3>
@@ -622,13 +674,16 @@
               </div>
             </div>
 
-            <div class="nodes-card">
+            <div class="nodes-card" data-platforms="flow cms">
               <div class="card-image">
                 <img src="Image/Info Block Node.png" alt="Info Block Node" />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category flow">FLOW</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Info Block Node</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">CMS</span>
+                </div>
                 <p class="card-author">by インフォノード株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -643,13 +698,16 @@
               </div>
             </div>
 
-            <div class="nodes-card">
+            <div class="nodes-card" data-platforms="flow visualizer">
               <div class="card-image">
                 <img src="Image/Layout Node Pro.png" alt="Layout Node Plugin" />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category flow">FLOW</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Layout Node Pro</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">Visualizer</span>
+                </div>
                 <p class="card-author">by レイアウトノード株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -664,16 +722,19 @@
               </div>
             </div>
 
-            <div class="nodes-card">
+            <div class="nodes-card" data-platforms="flow cms">
               <div class="card-image">
                 <img
                   src="Image/Widget Node System.png"
                   alt="Widget Node Plugin"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category flow">FLOW</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Widget Node System</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">CMS</span>
+                </div>
                 <p class="card-author">by ウィジェットノード株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
@@ -688,10 +749,10 @@
               </div>
             </div>
 
-            <div class="nodes-card">
+            <div class="nodes-card" data-platforms="flow">
               <div class="card-image">
                 <img src="Image/Flow Node Builder.png" alt="Flow Node Plugin" />
-                <div class="card-category visualizer">VISUALIZER</div>
+                <div class="card-category flow">FLOW</div>
               </div>
               <div class="card-content">
                 <h3 class="card-title">Flow Node Builder</h3>
@@ -723,15 +784,41 @@
                 <b>node</b> with<br />
                 the community
               </h2>
-              <a href="#" class="submission-docs-link">
-                View documentation
-                <img
-                  src="Icon/Right.svg"
-                  alt="Right arrow"
-                  style="width: 3rem; height: 3rem; margin-left: 8px"
-                />
-              </a>
+              <p class="submission-description">
+                Join thousands of developers and contribute to the Re:Earth ecosystem. 
+                Submit your creations and help others build amazing geospatial experiences.
+              </p>
+              <div class="submission-actions">
+                <a href="#" class="submit-plugin-button">
+                  Submit Plugin
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14"/>
+                  </svg>
+                </a>
+                <a href="#" class="submission-docs-link">
+                  View documentation
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                  </svg>
+                </a>
+              </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Empty State Section -->
+      <section class="empty-state" id="emptyState" style="display: none">
+        <div class="container">
+          <div class="empty-state-content">
+            <div class="empty-state-icon">🔍</div>
+            <h3 class="empty-state-title">No plugins found</h3>
+            <p class="empty-state-description">
+              Try adjusting your platform filters to see more results.
+            </p>
+            <button class="empty-state-button" onclick="clearAllFilters()">
+              Clear Filters
+            </button>
           </div>
         </div>
       </section>
