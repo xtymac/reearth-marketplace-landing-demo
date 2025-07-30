@@ -60,230 +60,66 @@
         <div class="container">
           <div class="hero-content">
             <h1>Marketplace</h1>
-            <p>Discover community-made Plugin, Integration, Nodes and more</p>
-            <div class="search-wrapper">
-              <div class="search-container">
-                <input
-                  type="text"
-                  class="search-input"
-                  placeholder="Search the Marketplace"
-                />
-                <button class="search-button">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Platform Filter Section -->
-            <div class="hero-filter-section">
-              <div class="filter-options">
-                <label class="filter-checkbox">
-                  <input type="checkbox" value="cms" data-color="#4ecdc4" />
-                  <span class="checkmark cms">CMS</span>
-                </label>
-                <label class="filter-checkbox">
+            <p>Discover community-made Plugin for visualizer</p>
+            <p class="hero-submit-link-text">
+              Have something to share? 
+              <a href="plugin-submission.html" class="hero-submit-link">Submit your plugin</a>
+            </p>
+            <div class="hero-controls">
+              <div class="search-wrapper">
+                <div class="search-container">
                   <input
-                    type="checkbox"
-                    value="visualizer"
-                    data-color="#ff6b6b"
+                    type="text"
+                    class="search-input"
+                    placeholder="Search the Marketplace"
                   />
-                  <span class="checkmark visualizer">Visualizer</span>
-                </label>
-                <label class="filter-checkbox">
-                  <input type="checkbox" value="flow" data-color="#a29bfe" />
-                  <span class="checkmark flow">Flow</span>
-                </label>
+                  <button class="search-button">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="sort-section">
+                <select id="mainSortSelect" class="sort-select">
+                  <option value="date-uploaded">Sort by date uploaded</option>
+                  <option value="relevancy">Sort by relevancy</option>
+                  <option value="likes">Sort by most liked</option>
+                  <option value="downloads">Sort by most downloaded</option>
+                  <option value="name">Sort by name A-Z</option>
+                </select>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="featured-section">
+      <section class="main-plugin-section">
         <div class="container">
-          <h2 class="featured-title">Featured</h2>
-          <div class="featured-grid">
-            <div class="featured-card" data-platforms="visualizer">
+          <div class="main-plugin-grid">
+            <!-- 3D Building Visualization Plugin -->
+            <a href="plugin-detail.html" class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="956"
+              data-downloads="1200"
+              data-date="2024-01-15"
+            >
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/6e82e5cb4f3ab9225ed72467ef0e69d44c5d7ae5df84bd6fb057bd551da4bbb1.png"
                   alt="3D Building Visualization Plugin"
                 />
-                <div class="card-category visualizer">Visualizer</div>
               </div>
               <div class="card-content">
-                <h3 class="card-title">3D Building Visualization Plugin</h3>
-                <p class="card-description">
-                  Advanced 3D visualization tools for building and urban
-                  planning projects
-                </p>
-                <p class="card-author">株式会社福山コンサルタント</p>
-                <div class="card-stats">
-                  <div class="card-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-count">4.2</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">1.2k</span>
-                  </div>
-                </div>
-                <a href="#" class="card-link">詳しく見る →</a>
-              </div>
-            </div>
-
-            <div class="featured-card" data-platforms="cms">
-              <div class="card-image">
-                <img
-                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/b08e7da9cbd560cbd5c79f6c52b8ae620e48e28fc285b3bc083f89607b744496.png"
-                  alt="災害対応管理システム"
-                />
-                <div class="card-category cms">CMS</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">災害対応管理システム</h3>
-                <p class="card-description">住民個人の避難行動立案支援ツール</p>
-                <p class="card-author">株式会社福山コンサルタント</p>
-                <div class="card-stats">
-                  <div class="card-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-count">4.8</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">3.5k</span>
-                  </div>
-                </div>
-                <a href="#" class="card-link">詳しく見る →</a>
-              </div>
-            </div>
-
-            <div class="featured-card" data-platforms="reearth cms">
-              <div class="card-image">
-                <img
-                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/f3136d28067b0ea93cda918d99f0b58e26069750bd1fffb256d5e370b1b5fe5c.png"
-                  alt="都市OS連携プラグイン"
-                />
-                <div class="card-category reearth">Re:earth</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">都市OS連携プラグイン</h3>
-                <p class="card-description">
-                  スマートシティ向け統合データ管理システム
-                </p>
-                <div class="card-function-tags">
-                  <span class="function-tag">CMS</span>
-                </div>
-                <p class="card-author">日本電気株式会社 他</p>
-                <div class="card-stats">
-                  <div class="card-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-count">4.5</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">2.1k</span>
-                  </div>
-                </div>
-                <a href="#" class="card-link">詳しく見る →</a>
-              </div>
-            </div>
-
-            <div class="featured-card" data-platforms="traffic flow">
-              <div class="card-image">
-                <img
-                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E4%BA%A4%E9%80%9A%E7%AE%A1%E7%90%86%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0.png"
-                  alt="スマート交通管理システム"
-                />
-                <div class="card-category traffic">Traffic</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">スマート交通管理システム</h3>
-                <p class="card-description">
-                  AIを活用したリアルタイム交通最適化ソリューション
-                </p>
-                <div class="card-function-tags">
-                  <span class="function-tag">Flow</span>
-                </div>
-                <p class="card-author">交通システム株式会社</p>
-                <div class="card-stats">
-                  <div class="card-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-count">4.3</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">1.7k</span>
-                  </div>
-                </div>
-                <a href="#" class="card-link">詳しく見る →</a>
-              </div>
-            </div>
-          </div>
-          <!-- Scroll Indicators positioned outside the grid -->
-          <div class="scroll-indicator scroll-left">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <polyline points="15,18 9,12 15,6"></polyline>
-            </svg>
-          </div>
-          <div class="scroll-indicator scroll-right">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <polyline points="9,18 15,12 9,6"></polyline>
-            </svg>
-          </div>
-          <div class="featured-scroll-gradient"></div>
-        </div>
-      </section>
-
-      <section class="plugin-section">
-        <div class="container">
-          <div class="section-header">
-            <h2 class="plugin-title">Plugin</h2>
-            <a href="#" class="explore-more-link">
-              Explore more plugins
-              <img
-                src="Icon/Right.svg"
-                alt="Right arrow"
-                style="width: 3rem; height: 3rem"
-              />
-            </a>
-          </div>
-          <div class="plugin-grid">
-            <div class="plugin-card" data-platforms="visualizer">
-              <div class="card-image">
-                <img
-                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/79d833fa1e4df7a002d7663223ff3b9c38eaeba0ceaf0d0d8edc0be4b6ede5e6.png"
-                  alt="Geospatial Data Analytics Plugin"
-                />
-                <div class="card-category visualizer">VISUALIZER</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Geospatial Data Analytics</h3>
-                <p class="card-author">by データ分析株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
                     <span class="heart-icon">♡</span>
@@ -291,26 +127,42 @@
                   </div>
                   <div class="card-downloads">
                     <span class="download-icon">⬇</span>
-                    <span class="download-count">1.8k</span>
+                    <span class="download-count">1.2k</span>
                   </div>
                 </div>
+                <h3 class="card-title">3D Building Visualization</h3>
+                <p class="card-description">
+                  3D Building Visualization provides high-precision 3D modeling
+                  tools tailored for architects, city planners, and GIS
+                  professionals to create realistic visualize buildings in
+                  realistic urban environments, simulate infrastructure
+                  development, and analyze...
+                </p>
+                <p class="card-author">株式会社福山コンサルタント</p>
+                <div class="card-tags">
+                  <span class="tag">Urban Planning</span>
+                  <span class="tag">Architecture</span>
+                  <span class="tag">Visualization</span>
+                  <span class="tag">Urban</span>
+                </div>
               </div>
-            </div>
+            </a>
 
-            <div class="plugin-card" data-platforms="visualizer flow">
+            <!-- Weather API Integration -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="743"
+              data-downloads="1100"
+              data-date="2024-01-12"
+            >
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Weather%20API%20Integration.png"
                   alt="Weather API Integration Plugin"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
               </div>
               <div class="card-content">
-                <h3 class="card-title">Weather API Integration</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">Flow</span>
-                </div>
-                <p class="card-author">by 気象データ株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
                     <span class="heart-icon">♡</span>
@@ -321,23 +173,38 @@
                     <span class="download-count">1.1k</span>
                   </div>
                 </div>
+                <h3 class="card-title">Weather API Integration</h3>
+                <p class="card-description">
+                  Easily integrate real-time weather data into your application
+                  using this flexible Weather API Integration plugin. Collect
+                  temperature, humidity, pressure, wind speed, and precipitation
+                  data from multiple trusted weather services...
+                </p>
+                <p class="card-author">気象データ株式会社</p>
+                <div class="card-tags">
+                  <span class="tag">Weather</span>
+                  <span class="tag">API</span>
+                  <span class="tag">Real-time</span>
+                  <span class="tag">Sensor</span>
+                </div>
               </div>
             </div>
 
-            <div class="plugin-card" data-platforms="visualizer cms">
+            <!-- IoT Sensor Network -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="1542"
+              data-downloads="2300"
+              data-date="2024-01-10"
+            >
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/IoT%20Sensor%20Network.png"
                   alt="IoT Sensor Network Plugin"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
               </div>
               <div class="card-content">
-                <h3 class="card-title">IoT Sensor Network</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">CMS</span>
-                </div>
-                <p class="card-author">by センサーテック株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
                     <span class="heart-icon">♡</span>
@@ -348,20 +215,38 @@
                     <span class="download-count">2.3k</span>
                   </div>
                 </div>
+                <h3 class="card-title">IoT Sensor Network</h3>
+                <p class="card-description">
+                  The IoT Sensor Network plugin provides seamless integration of
+                  distributed sensor nodes to collect, process, and visualize
+                  real-time environmental and operational data. Ideal for smart
+                  cities, industrial automation, agriculture, and building m...
+                </p>
+                <p class="card-author">センサーテック株式会社</p>
+                <div class="card-tags">
+                  <span class="tag">IoT</span>
+                  <span class="tag">Network</span>
+                  <span class="tag">Monitoring</span>
+                  <span class="tag">Sensor</span>
+                </div>
               </div>
             </div>
 
-            <div class="plugin-card" data-platforms="visualizer">
+            <!-- Advanced GIS Mapping -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="2087"
+              data-downloads="3200"
+              data-date="2024-01-08"
+            >
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Advanced%20GIS%20Mapping.png"
                   alt="Advanced GIS Mapping Plugin"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
               </div>
               <div class="card-content">
-                <h3 class="card-title">Advanced GIS Mapping</h3>
-                <p class="card-author">by 地理情報システム株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
                     <span class="heart-icon">♡</span>
@@ -372,23 +257,41 @@
                     <span class="download-count">3.2k</span>
                   </div>
                 </div>
+                <h3 class="card-title">Advanced GIS Mapping</h3>
+                <p class="card-description">
+                  Advanced GIS Mapping empowers users to visualize geospatial
+                  data with enhanced map styling, custom overlay options, and
+                  support for complex spatial query operations. Analyze data
+                  using tools for spatial queries, buffering and spatial
+                  analysis; and optimize performance with real-time geospatial
+                  updates, and customizable map layers for local and world
+                  mapping...
+                </p>
+                <p class="card-author">ジーマップ・ラボ</p>
+                <div class="card-tags">
+                  <span class="tag">GIS</span>
+                  <span class="tag">Mapping</span>
+                  <span class="tag">Analysis</span>
+                  <span class="tag">Geospatial</span>
+                </div>
               </div>
             </div>
 
-            <div class="plugin-card" data-platforms="visualizer flow">
+            <!-- Smart Mobility Hub -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="1834"
+              data-downloads="2700"
+              data-date="2024-01-05"
+            >
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Smart%20Mobility%20Hub.png"
                   alt="Smart Mobility Hub Plugin"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
               </div>
               <div class="card-content">
-                <h3 class="card-title">Smart Mobility Hub</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">Flow</span>
-                </div>
-                <p class="card-author">by モビリティソリューション株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
                     <span class="heart-icon">♡</span>
@@ -399,23 +302,39 @@
                     <span class="download-count">2.7k</span>
                   </div>
                 </div>
+                <h3 class="card-title">Smart Mobility Hub</h3>
+                <p class="card-description">
+                  Smart Mobility Hub offers multiple transportation modes—public
+                  transit, shared mobility, bikes, and walking—to enhance city
+                  mobility. Enhanced with flow route planning, intermodal
+                  connections, and API integrations with mapping, traffic, and
+                  real-time data feeds.
+                </p>
+                <p class="card-author">モビリティソリューション株式会社</p>
+                <div class="card-tags">
+                  <span class="tag">Mobility</span>
+                  <span class="tag">Transportation</span>
+                  <span class="tag">Smart City</span>
+                  <span class="tag">Urban</span>
+                </div>
               </div>
             </div>
 
-            <div class="plugin-card" data-platforms="visualizer cms">
+            <!-- Green Energy Monitor -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="1345"
+              data-downloads="1900"
+              data-date="2024-01-03"
+            >
               <div class="card-image">
                 <img
                   src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Green%20Energy%20Monitor.png"
                   alt="Green Energy Monitor Plugin"
                 />
-                <div class="card-category visualizer">VISUALIZER</div>
               </div>
               <div class="card-content">
-                <h3 class="card-title">Green Energy Monitor</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">CMS</span>
-                </div>
-                <p class="card-author">by 環境テクノロジー株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
                     <span class="heart-icon">♡</span>
@@ -426,44 +345,160 @@
                     <span class="download-count">1.9k</span>
                   </div>
                 </div>
+                <h3 class="card-title">Green Energy Monitor</h3>
+                <p class="card-description">
+                  The IoT Sensor Network plugin provides seamless integration of
+                  distributed sensor nodes to collect, process, and visualize
+                  real-time environmental and operational data. Ideal for smart
+                  cities, industrial automation, agriculture, and building m...
+                </p>
+                <p class="card-author">環境テクノロジー株式会社</p>
+                <div class="card-tags">
+                  <span class="tag">Green Energy</span>
+                  <span class="tag">Monitoring</span>
+                  <span class="tag">Environmental</span>
+                  <span class="tag">Renewable</span>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section class="integration-section">
-        <div class="container">
-          <div class="section-header">
-            <h2 class="integration-title">Integration</h2>
-            <a href="#" class="explore-more-link">
-              Explore more integration
-              <img
-                src="Icon/Right.svg"
-                alt="Right arrow"
-                style="width: 3rem; height: 3rem"
-              />
-            </a>
-          </div>
-          <p class="integration-subtitle">
-            Integration for CMS to add custom panels and info blocks in CMS for
-            displaying data and stories.
-          </p>
-          <div class="integration-grid">
-            <div class="integration-card" data-platforms="cms visualizer">
+            <!-- Land Use Classifier -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="987"
+              data-downloads="1450"
+              data-date="2024-01-01"
+            >
               <div class="card-image">
                 <img
-                  src="Image/CMS Data Integration.png"
-                  alt="CMS Integration Plugin"
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/79d833fa1e4df7a002d7663223ff3b9c38eaeba0ceaf0d0d8edc0be4b6ede5e6.png"
+                  alt="Land Use Classifier Plugin"
                 />
-                <div class="card-category cms">CMS</div>
               </div>
               <div class="card-content">
-                <h3 class="card-title">CMS Data Integration</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">Visualizer</span>
+                <div class="card-stats">
+                  <div class="card-likes">
+                    <span class="heart-icon">♡</span>
+                    <span class="likes-count">987</span>
+                  </div>
+                  <div class="card-downloads">
+                    <span class="download-icon">⬇</span>
+                    <span class="download-count">1.4k</span>
+                  </div>
                 </div>
-                <p class="card-author">by コンテンツ管理株式会社</p>
+                <h3 class="card-title">Land Use Classifier</h3>
+                <p class="card-description">
+                  Automatically classifies land types (e.g., urban, forest,
+                  water) using satellite imagery and machine learning. Ideal for
+                  environmental monitoring and urban planning.
+                </p>
+                <p class="card-author">ジーマップ・ラボ</p>
+                <div class="card-tags">
+                  <span class="tag">Land Use</span>
+                  <span class="tag">Environmental</span>
+                  <span class="tag">ML</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Real-Time Sensor Overlay -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="756"
+              data-downloads="1150"
+              data-date="2023-12-28"
+            >
+              <div class="card-image">
+                <img
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/b08e7da9cbd560cbd5c79f6c52b8ae620e48e28fc285b3bc083f89607b744496.png"
+                  alt="Real-Time Sensor Overlay Plugin"
+                />
+              </div>
+              <div class="card-content">
+                <div class="card-stats">
+                  <div class="card-likes">
+                    <span class="heart-icon">♡</span>
+                    <span class="likes-count">756</span>
+                  </div>
+                  <div class="card-downloads">
+                    <span class="download-icon">⬇</span>
+                    <span class="download-count">1.1k</span>
+                  </div>
+                </div>
+                <h3 class="card-title">Real-Time Sensor Overlay</h3>
+                <p class="card-description">
+                  Displays real-time environmental data (e.g., air quality,
+                  temperature, humidity) from IoT sensors directly on the map,
+                  with dynamic visual indicators.
+                </p>
+                <p class="card-author">エンバイロメンテ</p>
+                <div class="card-tags">
+                  <span class="tag">Sensors</span>
+                  <span class="tag">Real-time</span>
+                  <span class="tag">Environmental Data</span>
+                  <span class="tag">IoT</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Time-Lapse Terrain Viewer -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="623"
+              data-downloads="890"
+              data-date="2023-12-25"
+            >
+              <div class="card-image">
+                <img
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/f3136d28067b0ea93cda918d99f0b58e26069750bd1fffb256d5e370b1b5fe5c.png"
+                  alt="Time-Lapse Terrain Viewer Plugin"
+                />
+              </div>
+              <div class="card-content">
+                <div class="card-stats">
+                  <div class="card-likes">
+                    <span class="heart-icon">♡</span>
+                    <span class="likes-count">623</span>
+                  </div>
+                  <div class="card-downloads">
+                    <span class="download-icon">⬇</span>
+                    <span class="download-count">890</span>
+                  </div>
+                </div>
+                <h3 class="card-title">Time-Lapse Terrain Viewer</h3>
+                <p class="card-description">
+                  Visualize terrain changes over time with animated time layers.
+                  Supports import of historical elevation, satellite, or weather
+                  data.
+                </p>
+                <p class="card-author">クロノマップ・スタジオ</p>
+                <div class="card-tags">
+                  <span class="tag">Terrain</span>
+                  <span class="tag">Animation</span>
+                  <span class="tag">Historical</span>
+                  <span class="tag">Temporal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Infrastructure Planning & Analysis -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="1247"
+              data-downloads="2100"
+              data-date="2024-01-18"
+            >
+              <div class="card-image">
+                <img
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E4%BA%A4%E9%80%9A%E7%AE%A1%E7%90%86%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0.png"
+                  alt="Infrastructure Planning & Analysis Plugin"
+                />
+              </div>
+              <div class="card-content">
                 <div class="card-stats">
                   <div class="card-likes">
                     <span class="heart-icon">♡</span>
@@ -471,220 +506,42 @@
                   </div>
                   <div class="card-downloads">
                     <span class="download-icon">⬇</span>
-                    <span class="download-count">2.4k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="integration-card" data-platforms="cms">
-              <div class="card-image">
-                <img
-                  src="Image/Story Builder Integration.png"
-                  alt="Story Builder Integration"
-                />
-                <div class="card-category cms">CMS</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Story Builder Integration</h3>
-                <p class="card-author">by ストーリーテック株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">890</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">1.6k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="integration-card" data-platforms="cms visualizer">
-              <div class="card-image">
-                <img
-                  src="Image/Custom Data Panel.png"
-                  alt="Data Panel Integration"
-                />
-                <div class="card-category cms">CMS</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Custom Data Panel</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">Visualizer</span>
-                </div>
-                <p class="card-author">by データパネル株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">1.5k</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">2.8k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="integration-card" data-platforms="cms">
-              <div class="card-image">
-                <img
-                  src="Image/Info Block Builder.png"
-                  alt="Info Block Integration"
-                />
-                <div class="card-category cms">CMS</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Info Block Builder</h3>
-                <p class="card-author">by インフォブロック株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">2.3k</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">3.5k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="integration-card" data-platforms="cms flow">
-              <div class="card-image">
-                <img
-                  src="Image/Content Hub Integration.png"
-                  alt="Content Hub Integration"
-                />
-                <div class="card-category cms">CMS</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Content Hub Integration</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">Flow</span>
-                </div>
-                <p class="card-author">by コンテンツハブ株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">1.8k</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">2.9k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="integration-card" data-platforms="cms">
-              <div class="card-image">
-                <img
-                  src="Image/Media Manager Pro.png"
-                  alt="Media Manager Integration"
-                />
-                <div class="card-category cms">CMS</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Media Manager Pro</h3>
-                <p class="card-author">by メディア管理株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">1.4k</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">2.2k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="nodes-section">
-        <div class="container">
-          <div class="section-header">
-            <h2 class="nodes-title">Nodes</h2>
-            <a href="#" class="explore-more-link">
-              Explore more nodes
-              <img
-                src="Icon/Right.svg"
-                alt="Right arrow"
-                style="width: 3rem; height: 3rem"
-              />
-            </a>
-          </div>
-          <p class="nodes-subtitle">
-            Adding Custom Panels and Info Blocks in CMS.
-          </p>
-          <div class="nodes-grid">
-            <div class="nodes-card" data-platforms="flow cms">
-              <div class="card-image">
-                <img
-                  src="Image/Custom Node Builder.png"
-                  alt="Custom Node Plugin"
-                />
-                <div class="card-category flow">FLOW</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Custom Node Builder</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">CMS</span>
-                </div>
-                <p class="card-author">by ノード開発株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">1.1k</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
                     <span class="download-count">2.1k</span>
                   </div>
                 </div>
+                <h3 class="card-title">Infrastructure Planning & Analysis</h3>
+                <p class="card-description">
+                  Comprehensive infrastructure planning toolkit for road
+                  networks, utilities, and public facilities. Features advanced
+                  traffic simulation, cost estimation, environmental impact
+                  assessment, and construction phasing optimization for
+                  large-scale urban...
+                </p>
+                <p class="card-author">株式会社福山コンサルタント</p>
+                <div class="card-tags">
+                  <span class="tag">Infrastructure</span>
+                  <span class="tag">Planning</span>
+                  <span class="tag">Traffic Analysis</span>
+                  <span class="tag">Cost Estimation</span>
+                </div>
               </div>
             </div>
 
-            <div class="nodes-card" data-platforms="flow">
+            <!-- Disaster Response Toolkit -->
+            <div
+              class="main-plugin-card"
+              data-platforms="visualizer"
+              data-likes="1654"
+              data-downloads="2350"
+              data-date="2024-01-20"
+            >
               <div class="card-image">
                 <img
-                  src="Image/Panel Creator Node.png"
-                  alt="Panel Creator Node"
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Placeholder.png"
+                  alt="Disaster Response Toolkit Plugin"
                 />
-                <div class="card-category flow">FLOW</div>
               </div>
               <div class="card-content">
-                <h3 class="card-title">Panel Creator Node</h3>
-                <p class="card-author">by パネルクリエイター株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">950</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">1.8k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="nodes-card" data-platforms="flow cms">
-              <div class="card-image">
-                <img src="Image/Info Block Node.png" alt="Info Block Node" />
-                <div class="card-category flow">FLOW</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Info Block Node</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">CMS</span>
-                </div>
-                <p class="card-author">by インフォノード株式会社</p>
                 <div class="card-stats">
                   <div class="card-likes">
                     <span class="heart-icon">♡</span>
@@ -692,80 +549,23 @@
                   </div>
                   <div class="card-downloads">
                     <span class="download-icon">⬇</span>
-                    <span class="download-count">2.7k</span>
+                    <span class="download-count">2.3k</span>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="nodes-card" data-platforms="flow visualizer">
-              <div class="card-image">
-                <img src="Image/Layout Node Pro.png" alt="Layout Node Plugin" />
-                <div class="card-category flow">FLOW</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Layout Node Pro</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">Visualizer</span>
-                </div>
-                <p class="card-author">by レイアウトノード株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">2.0k</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">3.1k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="nodes-card" data-platforms="flow cms">
-              <div class="card-image">
-                <img
-                  src="Image/Widget Node System.png"
-                  alt="Widget Node Plugin"
-                />
-                <div class="card-category flow">FLOW</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Widget Node System</h3>
-                <div class="card-function-tags">
-                  <span class="function-tag">CMS</span>
-                </div>
-                <p class="card-author">by ウィジェットノード株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">1.7k</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">2.5k</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="nodes-card" data-platforms="flow">
-              <div class="card-image">
-                <img src="Image/Flow Node Builder.png" alt="Flow Node Plugin" />
-                <div class="card-category flow">FLOW</div>
-              </div>
-              <div class="card-content">
-                <h3 class="card-title">Flow Node Builder</h3>
-                <p class="card-author">by フローノード株式会社</p>
-                <div class="card-stats">
-                  <div class="card-likes">
-                    <span class="heart-icon">♡</span>
-                    <span class="likes-count">1.3k</span>
-                  </div>
-                  <div class="card-downloads">
-                    <span class="download-icon">⬇</span>
-                    <span class="download-count">2.0k</span>
-                  </div>
+                <h3 class="card-title">Disaster Response Toolkit</h3>
+                <p class="card-description">
+                  Comprehensive emergency management system for disaster
+                  preparedness and response. Features real-time hazard mapping,
+                  evacuation route planning, resource allocation tracking, and
+                  communication tools for emergency personnel and affected
+                  communities...
+                </p>
+                <p class="card-author">防災技術研究所</p>
+                <div class="card-tags">
+                  <span class="tag">Emergency</span>
+                  <span class="tag">Disaster Management</span>
+                  <span class="tag">Safety</span>
+                  <span class="tag">Response</span>
                 </div>
               </div>
             </div>
@@ -784,24 +584,10 @@
                 <b>node</b> with<br />
                 the community
               </h2>
-              <p class="submission-description">
-                Join thousands of developers and contribute to the Re:Earth ecosystem. 
-                Submit your creations and help others build amazing geospatial experiences.
-              </p>
-              <div class="submission-actions">
-                <a href="#" class="submit-plugin-button">
-                  Submit Plugin
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 5v14M5 12h14"/>
-                  </svg>
-                </a>
-                <a href="#" class="submission-docs-link">
-                  View documentation
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M7 17L17 7M17 7H7M17 7V17"/>
-                  </svg>
-                </a>
-              </div>
+              <a href="plugin-submission.html" class="submit-plugin-main-button">Submit Plugin</a>
+              <a href="#" class="submission-docs-link">
+                View documentation
+              </a>
             </div>
           </div>
         </div>
@@ -814,10 +600,10 @@
             <div class="empty-state-icon">🔍</div>
             <h3 class="empty-state-title">No plugins found</h3>
             <p class="empty-state-description">
-              Try adjusting your platform filters to see more results.
+              Try adjusting your search term to see more results.
             </p>
             <button class="empty-state-button" onclick="clearAllFilters()">
-              Clear Filters
+              Clear Search
             </button>
           </div>
         </div>

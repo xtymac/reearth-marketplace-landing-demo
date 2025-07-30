@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Plugin - Re:Earth Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="plugin-edit.css" />
+  <!-- CodeMirror for Markdown Editor -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/markdown/markdown.min.js"></script>
+  <!-- Marked for Markdown Preview -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="logo">
+          <img
+            src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Logo.svg"
+            alt="Re:Earth Logo"
+          />
+        </div>
+        <ul class="nav-menu">
+          <li><a href="#about">About Re:Earth</a></li>
+          <li class="dropdown">
+            <a href="#product"
+              >Product <span class="dropdown-arrow">▼</span></a
+            >
+            <div class="dropdown-content">
+              <a href="#">Feature 1</a>
+              <a href="#">Feature 2</a>
+              <a href="#">Feature 3</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#use-cases"
+              >Use Cases <span class="dropdown-arrow">▼</span></a
+            >
+            <div class="dropdown-content">
+              <a href="#">Case 1</a>
+              <a href="#">Case 2</a>
+              <a href="#">Case 3</a>
+            </div>
+          </li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#community">Community</a></li>
+          <li><a href="#learn">Learn</a></li>
+          <li><a href="index.html">Marketplace</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <div class="language-toggle">
+          <span class="lang-option active">EN</span>
+          <span class="lang-separator">|</span>
+          <span class="lang-option">日本語</span>
+        </div>
+        <button class="start-button">Start</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="edit-container">
+      <div class="edit-header">
+        <div class="logo-section">
+          <img
+            src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Logo.svg"
+            alt="Re:Earth Logo"
+            class="header-logo"
+          />
+          <div class="title-section">
+            <h1>Edit Plugin</h1>
+            <div class="plugin-info">
+              <span class="plugin-name">3D Building Visualization</span>
+              <span class="plugin-status-indicator">
+                <span class="status-dot draft"></span>
+                <span class="status-text">Draft</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="language-toggle-header">
+            <span class="lang-option active">EN</span>
+            <span class="lang-separator">|</span>
+            <span class="lang-option">日本語</span>
+          </div>
+          <div class="status-controls">
+            <div class="status-toggle">
+              <label class="toggle-switch">
+                <input type="checkbox" id="statusToggle" />
+                <span class="toggle-slider"></span>
+              </label>
+              <div class="status-labels">
+                <span class="status-label draft">Draft</span>
+                <span class="status-label public">Public</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edit-form-container">
+        <div class="form-content">
+          <form id="pluginEditForm" class="edit-form">
+            
+            <!-- Plugin Status Section -->
+            <div class="status-section">
+              <div class="status-card draft" id="statusCard">
+                <div class="status-icon">📝</div>
+                <div class="status-content">
+                  <h3>Draft Mode</h3>
+                  <p>Your plugin is currently in draft mode. Make your changes and publish when ready.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Overview Section with Markdown Editor -->
+            <div class="form-group overview-section">
+              <label class="form-label required">
+                <span class="label-text">Overview</span>
+                <span class="label-description">Generated from README.md, edit as needed</span>
+              </label>
+              <div class="markdown-editor-container">
+                <div class="editor-tabs">
+                  <button type="button" class="tab-button active" data-tab="editor">Editor</button>
+                  <button type="button" class="tab-button" data-tab="preview">Preview</button>
+                  <button type="button" class="tab-button" data-tab="split">Split View</button>
+                </div>
+                <div class="editor-content">
+                  <div class="editor-pane active" id="editorPane">
+                    <textarea id="overviewMarkdown" name="overview" class="markdown-textarea"># 3D Building Visualization Plugin
+
+## Overview
+The 3D Building Visualization plugin provides comprehensive tools for architects, city planners, and GIS professionals to create stunning three-dimensional representations of urban environments.
+
+## Features
+- **High-precision 3D modeling** tailored for professional use
+- **Realistic rendering** of buildings and infrastructure
+- **Integration with geospatial data** for accurate positioning
+- **Customizable materials and textures** for detailed visualization
+- **Performance optimization** for large-scale urban models
+
+## Use Cases
+- Urban planning and development visualization
+- Architectural design review and presentation
+- Infrastructure impact assessment
+- Smart city planning and analysis
+
+## Technical Requirements
+- Re:Earth Visualizer 1.0+
+- Modern web browser with WebGL support
+- Minimum 4GB RAM recommended
+
+## Installation
+1. Download the plugin from the marketplace
+2. Install through Re:Earth plugin manager
+3. Configure your 3D data sources
+4. Start visualizing!
+
+## Support
+For support and documentation, visit our [help center](https://docs.reearth.io) or contact our team.</textarea>
+                  </div>
+                  <div class="preview-pane" id="previewPane">
+                    <div class="markdown-preview" id="markdownPreview"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Workspace Selection -->
+            <div class="form-group">
+              <label for="workspace" class="form-label">Workspace</label>
+              <div class="workspace-selector-container">
+                <div class="workspace-selector disabled">
+                  <div class="workspace-icon">
+                    <div class="workspace-avatar">
+                      <span class="workspace-initial">福</span>
+                    </div>
+                  </div>
+                  <div class="workspace-info">
+                    <div class="workspace-name">株式会社福山コンサルタント</div>
+                    <div class="workspace-type">Company Workspace</div>
+                  </div>
+                  <div class="workspace-status">
+                    <span class="status-badge locked">Locked</span>
+                  </div>
+                </div>
+                <div class="workspace-help">
+                  This plugin belongs to your company workspace and cannot be transferred to another workspace.
+                </div>
+              </div>
+            </div>
+
+            <!-- Plugin Name -->
+            <div class="form-group">
+              <label for="pluginName" class="form-label required">Plugin Name</label>
+              <input
+                type="text"
+                id="pluginName"
+                name="pluginName"
+                class="form-input"
+                placeholder="Enter plugin name"
+                value="3D Building Visualization"
+                required
+              />
+              <div class="form-help">The plugin name will be displayed throughout the interface to help identify your plugin.</div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+              <label for="description" class="form-label required">Description</label>
+              <textarea
+                id="description"
+                name="description"
+                class="form-textarea"
+                placeholder="Describe your plugin's functionality and features"
+                rows="4"
+                required
+              >3D Building Visualization provides high-precision 3D modeling tools tailored for architects, city planners, and GIS professionals to create realistic visualize buildings in realistic urban environments, simulate infrastructure development, and analyze spatial relationships with enhanced detail and accuracy.</textarea>
+              <div class="form-help">Provide a detailed description of what your plugin does and its key features.</div>
+            </div>
+
+            <!-- Plugin Images -->
+            <div class="form-group">
+              <label for="pluginImages" class="form-label required">Plugin Image</label>
+              
+              <div class="image-upload-section">
+                <div class="file-input-area">
+                  <input
+                    type="file"
+                    id="pluginImages"
+                    name="pluginImages"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    class="file-input-hidden"
+                    multiple
+                  />
+                  <button type="button" class="file-choose-btn" id="chooseFileBtn">Choose File</button>
+                  <span class="file-status" id="fileStatus">4 files selected</span>
+                </div>
+                
+                <div class="upload-help-text">
+                  Upload at least one plugin screenshot or cover image (Recommended: 1280×800 pixels)
+                </div>
+                
+                <!-- Image Thumbnails -->
+                <div class="image-thumbnails-container" id="imageThumbnails">
+                  <!-- Pre-populated with existing images -->
+                  <div class="thumbnail-item primary-thumbnail" data-image-id="1">
+                    <img src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/6e82e5cb4f3ab9225ed72467ef0e69d44c5d7ae5df84bd6fb057bd551da4bbb1.png" alt="Plugin Screenshot">
+                    <div class="thumbnail-overlay">
+                      <button type="button" class="thumbnail-action set-primary" title="Set as Primary">⭐</button>
+                      <button type="button" class="thumbnail-action remove" title="Remove">×</button>
+                    </div>
+                    <div class="primary-indicator">Primary</div>
+                  </div>
+                  
+                  <div class="thumbnail-item" data-image-id="2">
+                    <img src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Weather%20API%20Integration.png" alt="Plugin Screenshot">
+                    <div class="thumbnail-overlay">
+                      <button type="button" class="thumbnail-action set-primary" title="Set as Primary">⭐</button>
+                      <button type="button" class="thumbnail-action remove" title="Remove">×</button>
+                    </div>
+                  </div>
+                  
+                  <div class="thumbnail-item" data-image-id="3">
+                    <img src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/IoT%20Sensor%20Network.png" alt="Plugin Screenshot">
+                    <div class="thumbnail-overlay">
+                      <button type="button" class="thumbnail-action set-primary" title="Set as Primary">⭐</button>
+                      <button type="button" class="thumbnail-action remove" title="Remove">×</button>
+                    </div>
+                  </div>
+                  
+                  <div class="thumbnail-item" data-image-id="4">
+                    <img src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Advanced%20GIS%20Mapping.png" alt="Plugin Screenshot">
+                    <div class="thumbnail-overlay">
+                      <button type="button" class="thumbnail-action set-primary" title="Set as Primary">⭐</button>
+                      <button type="button" class="thumbnail-action remove" title="Remove">×</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Plugin Versions -->
+            <div class="form-group">
+              <label class="form-label">Plugin Versions</label>
+              
+              <!-- Current Version Display -->
+              <div class="current-version-section">
+                <h4>Current Version</h4>
+                <div class="version-item current-version">
+                  <div class="version-info">
+                    <div class="version-header">
+                      <span class="version-number">v1.2.0</span>
+                      <span class="version-status current">Current</span>
+                    </div>
+                    <div class="version-details">
+                      <span class="file-name">3d-building-visualization-v1.2.zip</span>
+                      <span class="file-size">2.4 MB</span>
+                      <span class="file-date">Published: 2024-01-15</span>
+                    </div>
+                  </div>
+                  <div class="version-actions">
+                    <button type="button" class="version-action-btn download-btn" title="Download">⬇</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- New Version Upload -->
+              <div class="new-version-section">
+                <h4>Upload New Version</h4>
+                <div class="version-input-section">
+                  <div class="version-number-input">
+                    <label for="newVersion" class="version-label">Version Number</label>
+                    <input
+                      type="text"
+                      id="newVersion"
+                      name="newVersion"
+                      class="version-input"
+                      placeholder="e.g., 1.3.0"
+                    />
+                    <div class="version-help">Use semantic versioning (major.minor.patch)</div>
+                  </div>
+                  
+                  <div class="release-notes-input">
+                    <label for="releaseNotes" class="version-label">Release Notes</label>
+                    <textarea
+                      id="releaseNotes"
+                      name="releaseNotes"
+                      class="release-notes-textarea"
+                      placeholder="What's new in this version? List bug fixes, new features, improvements..."
+                      rows="3"
+                    ></textarea>
+                    <div class="version-help">Describe what changed in this version for users</div>
+                  </div>
+                </div>
+
+                <div class="file-upload-area" id="fileUploadArea">
+                  <input
+                    type="file"
+                    id="pluginFile"
+                    name="pluginFile"
+                    accept=".zip,.tar,.tar.gz"
+                    class="file-input"
+                  />
+                  <div class="file-upload-content">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">
+                      <strong>Click to upload new version</strong> or drag and drop
+                    </div>
+                    <div class="upload-formats">ZIP, TAR files up to 50MB</div>
+                  </div>
+                </div>
+                <div id="newFileInfo" class="file-info" style="display: none;">
+                  <div class="file-details">
+                    <span class="file-name" id="newFileName">No file selected</span>
+                    <span class="file-size" id="newFileSize"></span>
+                    <span class="file-date" id="newFileDate"></span>
+                  </div>
+                  <button type="button" class="remove-file-btn">Remove File</button>
+                </div>
+              </div>
+
+              <!-- Version History -->
+              <div class="version-history-section">
+                <h4>Version History</h4>
+                <div class="version-history-list">
+                  <div class="version-item">
+                    <div class="version-info">
+                      <div class="version-header">
+                        <span class="version-number">v1.1.0</span>
+                        <span class="version-status">Previous</span>
+                      </div>
+                      <div class="version-details">
+                        <span class="file-name">3d-building-visualization-v1.1.zip</span>
+                        <span class="file-size">2.2 MB</span>
+                        <span class="file-date">Published: 2023-12-10</span>
+                      </div>
+                      <div class="version-notes">
+                        <strong>Release Notes:</strong> Fixed rendering performance issues, added new material options, improved compatibility with latest browsers.
+                      </div>
+                    </div>
+                    <div class="version-actions">
+                      <button type="button" class="version-action-btn download-btn" title="Download">⬇</button>
+                      <button type="button" class="version-action-btn rollback-btn" title="Rollback to this version">↶</button>
+                    </div>
+                  </div>
+                  
+                  <div class="version-item">
+                    <div class="version-info">
+                      <div class="version-header">
+                        <span class="version-number">v1.0.0</span>
+                        <span class="version-status">Previous</span>
+                      </div>
+                      <div class="version-details">
+                        <span class="file-name">3d-building-visualization-v1.0.zip</span>
+                        <span class="file-size">2.0 MB</span>
+                        <span class="file-date">Published: 2023-11-15</span>
+                      </div>
+                      <div class="version-notes">
+                        <strong>Release Notes:</strong> Initial release with core 3D building visualization features, basic material support, and WebGL rendering.
+                      </div>
+                    </div>
+                    <div class="version-actions">
+                      <button type="button" class="version-action-btn download-btn" title="Download">⬇</button>
+                      <button type="button" class="version-action-btn rollback-btn" title="Rollback to this version">↶</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="form-group">
+              <label for="tags" class="form-label">Tags</label>
+              <input
+                type="text"
+                id="tags"
+                name="tags"
+                class="form-input"
+                placeholder="Enter tags separated by commas (e.g., 3D, data, image)"
+                value="Urban Planning, Architecture, Visualization, Urban"
+              />
+              <div class="form-help">Add optional tags to help users discover your plugin. Separate multiple tags with commas.</div>
+            </div>
+
+            <!-- Plugin Preview -->
+            <div id="pluginPreview" class="plugin-preview">
+              <h3>Plugin Preview</h3>
+              <div class="preview-card">
+                <div class="preview-header">
+                  <h4 id="previewName">3D Building Visualization</h4>
+                  <span id="previewType" class="preview-type">Visualizer</span>
+                </div>
+                <p id="previewDescription">3D Building Visualization provides high-precision 3D modeling tools tailored for architects, city planners, and GIS professionals to create realistic visualize buildings in realistic urban environments, simulate infrastructure development, and analyze spatial relationships with enhanced detail and accuracy.</p>
+                <div id="previewTags" class="preview-tags">
+                  <span class="tag">Urban Planning</span>
+                  <span class="tag">Architecture</span>
+                  <span class="tag">Visualization</span>
+                  <span class="tag">Urban</span>
+                </div>
+                <div class="preview-file-info">
+                  <span id="previewFileName">Current: v1.2.0 (3d-building-visualization-v1.2.zip)</span>
+                  <span id="previewFileSize">2.4 MB</span>
+                  <span id="previewNewVersion" style="display: none;">New Version: <span id="newVersionNumber"></span></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+              <button type="button" class="secondary-button" id="cancelBtn">Cancel</button>
+              <button type="button" class="secondary-button" id="saveDraftBtn">Save as Draft</button>
+              <button type="submit" class="submit-button">
+                <span class="button-text">Update Plugin</span>
+                <span class="loading-spinner" style="display: none;">⟳</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+      <div class="loading-content">
+        <div class="loading-spinner-large"></div>
+        <p>Updating your plugin...</p>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Plugin Updated Successfully!</h3>
+        </div>
+        <div class="modal-body">
+          <div class="success-icon">✅</div>
+          <p>Your plugin has been updated successfully. Changes are now live in the marketplace.</p>
+        </div>
+        <div class="modal-actions">
+          <button id="viewPlugin" class="primary-button">View Plugin</button>
+          <button id="backToEdit" class="secondary-button">Continue Editing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publish Confirmation Modal -->
+    <div id="publishModal" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Publish Plugin?</h3>
+        </div>
+        <div class="modal-body">
+          <div class="warning-icon">⚠️</div>
+          <p>Are you sure you want to publish this plugin? Once published, it will be visible to all users in the marketplace.</p>
+          <div class="publish-checklist">
+            <div class="checklist-item">
+              <span class="check">✓</span>
+              <span>Plugin file is uploaded</span>
+            </div>
+            <div class="checklist-item">
+              <span class="check">✓</span>
+              <span>Description is complete</span>
+            </div>
+            <div class="checklist-item">
+              <span class="check">✓</span>
+              <span>Images are uploaded</span>
+            </div>
+            <div class="checklist-item">
+              <span class="check">✓</span>
+              <span>Overview documentation is ready</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="confirmPublish" class="primary-button">Publish Plugin</button>
+          <button id="cancelPublish" class="secondary-button">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Messages -->
+    <div id="errorMessages" class="error-container" style="display: none;">
+      <div class="error-content">
+        <div class="error-icon">⚠️</div>
+        <div id="errorText"></div>
+        <button id="closeError" class="close-error">×</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <div class="footer-logo">
+            <img
+              src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Logo.svg"
+              alt="Re:Earth Logo"
+            />
+          </div>
+          <p class="footer-description">
+            Re:Earth is a web-based platform for visualizing and analyzing
+            geospatial data. Create interactive maps, stories, and experiences
+            with our powerful tools.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#">Features</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">Documentation</a></li>
+              <li><a href="#">API</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Tutorials</a></li>
+              <li><a href="#">Case Studies</a></li>
+              <li><a href="#">Community</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Status</a></li>
+              <li><a href="#">Report Bug</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press</a></li>
+              <li><a href="#">Partners</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <p>&copy; 2025 Re:Earth contributors.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="plugin-edit.js"></script>
+</body>
+</html>

@@ -1,0 +1,1355 @@
+/* Plugin Edit Page Styles - Extends Plugin Submission CSS */
+
+/* Main Container */
+.edit-container {
+  min-height: 100vh;
+  background-color: #fefaf0;
+  padding-top: 80px;
+}
+
+/* Edit Header Section */
+.edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-header h1 {
+  color: #000;
+  font-family: 'Noto Sans JP';
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.plugin-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.plugin-name {
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.plugin-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.draft {
+  background-color: #fbbf24;
+}
+
+.status-dot.public {
+  background-color: #10b981;
+}
+
+.status-text {
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Status Controls */
+.status-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-toggle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fbbf24;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #10b981;
+}
+
+input:focus + .toggle-slider {
+  box-shadow: 0 0 1px #10b981;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.status-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.status-label {
+  font-family: 'Noto Sans JP';
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+}
+
+.status-label.draft {
+  color: #f59e0b;
+}
+
+.status-label.public {
+  color: #10b981;
+}
+
+/* Form Container */
+.edit-form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+/* Status Section */
+.status-section {
+  margin-bottom: 2rem;
+}
+
+.status-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid;
+  transition: all 0.3s ease;
+}
+
+.status-card.draft {
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.status-card.public {
+  background: #d1fae5;
+  border-color: #10b981;
+}
+
+.status-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.status-content h3 {
+  color: #000;
+  font-family: 'Noto Sans JP';
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.status-content p {
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Overview Section with Markdown Editor */
+.overview-section {
+  margin-bottom: 3rem;
+}
+
+.label-text {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.label-description {
+  color: #666;
+  font-size: 13px;
+  font-weight: 400;
+  margin-left: 0.5rem;
+}
+
+.markdown-editor-container {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.markdown-editor-container:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.editor-tabs {
+  display: flex;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.tab-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-button:hover {
+  background: rgba(0, 123, 255, 0.05);
+  color: #007bff;
+}
+
+.tab-button.active {
+  color: #007bff;
+  background: #fff;
+  border-bottom-color: #007bff;
+}
+
+.editor-content {
+  position: relative;
+  min-height: 400px;
+}
+
+.editor-pane,
+.preview-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+}
+
+.editor-pane.active,
+.preview-pane.active {
+  display: block;
+}
+
+.editor-content.split-view .editor-pane,
+.editor-content.split-view .preview-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: block;
+}
+
+.editor-content.split-view .editor-pane {
+  left: 0;
+  right: 50%;
+  border-right: 1px solid #e9ecef;
+}
+
+.editor-content.split-view .preview-pane {
+  left: 50%;
+  right: 0;
+}
+
+.markdown-textarea {
+  width: 100%;
+  height: 400px;
+  border: none;
+  padding: 1rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  background: transparent;
+  color: #333;
+}
+
+.markdown-preview {
+  padding: 1rem;
+  height: 400px;
+  overflow-y: auto;
+  font-family: 'Noto Sans JP';
+  line-height: 1.6;
+  color: #333;
+}
+
+.markdown-preview h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.markdown-preview h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.markdown-preview h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.markdown-preview p {
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.markdown-preview ul,
+.markdown-preview ol {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.markdown-preview li {
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.markdown-preview code {
+  background: #f1f3f4;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9em;
+  color: #d73a49;
+}
+
+.markdown-preview pre {
+  background: #f6f8fa;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.markdown-preview pre code {
+  background: none;
+  padding: 0;
+  color: #333;
+}
+
+.markdown-preview blockquote {
+  border-left: 4px solid #dfe2e5;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #6a737d;
+  font-style: italic;
+}
+
+.markdown-preview a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.markdown-preview a:hover {
+  text-decoration: underline;
+}
+
+/* CodeMirror Overrides */
+.CodeMirror {
+  height: 400px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  border: none;
+  background: transparent;
+}
+
+.CodeMirror-focused .CodeMirror-cursor {
+  border-left: 2px solid #007bff;
+}
+
+.CodeMirror-selected {
+  background: rgba(0, 123, 255, 0.1);
+}
+
+/* File Upload Enhancements */
+.file-upload-area.uploaded {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #f0fdf4;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 1px solid #10b981;
+}
+
+.file-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.file-name {
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+.file-size,
+.file-date {
+  font-family: 'Noto Sans JP';
+  font-size: 12px;
+  color: #666;
+}
+
+.replace-file-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-family: 'Noto Sans JP';
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.replace-file-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* Workspace Selector */
+.workspace-selector-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.workspace-selector {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  background: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.workspace-selector.disabled {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.workspace-selector:not(.disabled):hover {
+  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.workspace-icon {
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.workspace-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.workspace-avatar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.1) 100%);
+  border-radius: 12px;
+}
+
+.workspace-initial {
+  color: white;
+  font-family: 'Noto Sans JP';
+  font-size: 18px;
+  font-weight: 700;
+  z-index: 1;
+  position: relative;
+}
+
+.workspace-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.workspace-name {
+  color: #333;
+  font-family: 'Noto Sans JP';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.workspace-type {
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.workspace-status {
+  margin-left: 1rem;
+  flex-shrink: 0;
+}
+
+.status-badge {
+  padding: 0.375rem 0.75rem;
+  border-radius: 16px;
+  font-family: 'Noto Sans JP';
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.locked {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.workspace-help {
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 13px;
+  line-height: 1.4;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #fbbf24;
+}
+
+/* Version Management */
+.current-version-section,
+.new-version-section,
+.version-history-section {
+  margin-bottom: 2rem;
+}
+
+.current-version-section h4,
+.new-version-section h4,
+.version-history-section h4 {
+  color: #333;
+  font-family: 'Noto Sans JP';
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.version-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.version-item:hover {
+  border-color: #007bff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+}
+
+.version-item.current-version {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+}
+
+.version-info {
+  flex: 1;
+}
+
+.version-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.version-number {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  background: #f1f3f4;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+}
+
+.version-status {
+  font-family: 'Noto Sans JP';
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.version-status.current {
+  background: #10b981;
+  color: white;
+}
+
+.version-status:not(.current) {
+  background: #6b7280;
+  color: white;
+}
+
+.version-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.version-details .file-name {
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.version-details .file-size,
+.version-details .file-date {
+  font-family: 'Noto Sans JP';
+  font-size: 12px;
+  color: #666;
+}
+
+.version-notes {
+  font-family: 'Noto Sans JP';
+  font-size: 13px;
+  line-height: 1.4;
+  color: #555;
+  background: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 3px solid #007bff;
+}
+
+.version-notes strong {
+  color: #333;
+}
+
+.version-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.version-action-btn {
+  background: #fff;
+  color: #666;
+  border: 2px solid #e9ecef;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.version-action-btn:hover {
+  border-color: #007bff;
+  color: #007bff;
+  transform: translateY(-1px);
+}
+
+.version-action-btn.download-btn:hover {
+  background: #007bff;
+  color: white;
+}
+
+.version-action-btn.rollback-btn:hover {
+  background: #f59e0b;
+  color: white;
+  border-color: #f59e0b;
+}
+
+/* New Version Upload Section */
+.version-input-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.version-number-input,
+.release-notes-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.version-label {
+  color: #333;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.version-input {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.version-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.release-notes-textarea {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  resize: vertical;
+  min-height: 80px;
+  transition: all 0.3s ease;
+}
+
+.release-notes-textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.version-help {
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 12px;
+  margin-top: 0.5rem;
+  line-height: 1.3;
+}
+
+.remove-file-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-family: 'Noto Sans JP';
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.remove-file-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.version-history-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Refined Image Upload Section */
+.image-upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.file-input-area {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.file-choose-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.file-choose-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.file-status {
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  flex: 1;
+}
+
+.upload-help-text {
+  color: #666;
+  font-family: 'Noto Sans JP';
+  font-size: 13px;
+  line-height: 1.4;
+  margin-left: 0.5rem;
+}
+
+/* Image Thumbnails Container */
+.image-thumbnails-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.thumbnail-item {
+  position: relative;
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #e9ecef;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.thumbnail-item:hover {
+  border-color: #007bff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+.thumbnail-item.primary-thumbnail {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.thumbnail-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail-item:hover .thumbnail-overlay {
+  opacity: 1;
+}
+
+.thumbnail-action {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.thumbnail-action:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.thumbnail-action.set-primary {
+  color: #f59e0b;
+}
+
+.thumbnail-action.set-primary:hover {
+  background: #f59e0b;
+  color: white;
+}
+
+.thumbnail-action.remove {
+  color: #ef4444;
+}
+
+.thumbnail-action.remove:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.primary-indicator {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  background: rgba(16, 185, 129, 0.9);
+  color: white;
+  font-size: 9px;
+  font-weight: 600;
+  text-align: center;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: 'Noto Sans JP';
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Enhanced Image Upload */
+.uploaded-images-grid .uploaded-image-item {
+  position: relative;
+}
+
+.image-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.uploaded-image-item:hover .image-actions {
+  opacity: 1;
+}
+
+.image-action {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.image-action:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.image-action.primary-image {
+  color: #f59e0b;
+}
+
+.image-action.primary-image:hover {
+  background: #f59e0b;
+  color: white;
+}
+
+.image-action.remove-image {
+  color: #ef4444;
+}
+
+.image-action.remove-image:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.primary-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: #f59e0b;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: 'Noto Sans JP';
+  text-transform: uppercase;
+}
+
+/* Enhanced Form Actions */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.secondary-button {
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-family: 'Noto Sans JP';
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #ddd;
+  background: #fff;
+  color: #666;
+}
+
+.secondary-button:hover {
+  border-color: #007bff;
+  color: #007bff;
+  transform: translateY(-1px);
+}
+
+/* Enhanced Modals */
+.publish-checklist {
+  text-align: left;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  color: #333;
+}
+
+.checklist-item:last-child {
+  margin-bottom: 0;
+}
+
+.checklist-item .check {
+  color: #10b981;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.warning-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #f59e0b;
+}
+
+/* Tag Styling in Preview */
+.preview-tags .tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-family: 'Noto Sans JP';
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  margin-right: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .edit-form-container {
+    max-width: 800px;
+  }
+  
+  .editor-content.split-view .editor-pane,
+  .editor-content.split-view .preview-pane {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    display: block;
+  }
+  
+  .editor-content.split-view .editor-pane {
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .markdown-textarea,
+  .markdown-preview,
+  .CodeMirror {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .edit-container {
+    padding-top: 0;
+  }
+  
+  .edit-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .status-toggle {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .status-labels {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .secondary-button,
+  .submit-button {
+    width: 100%;
+  }
+  
+  .editor-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab-button {
+    flex: 1;
+    min-width: 80px;
+    padding: 0.5rem 1rem;
+    font-size: 13px;
+  }
+  
+  .markdown-textarea,
+  .markdown-preview,
+  .CodeMirror {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-header h1 {
+    font-size: 20px;
+  }
+  
+  .plugin-info {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .status-card {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .status-icon {
+    font-size: 1.5rem;
+  }
+  
+  .status-content h3 {
+    font-size: 16px;
+  }
+  
+  .markdown-textarea,
+  .markdown-preview,
+  .CodeMirror {
+    height: 200px;
+  }
+  
+  .file-info {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .replace-file-btn {
+    width: 100%;
+  }
+  
+  .version-input-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .version-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .version-actions {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .version-history-list {
+    max-height: 300px;
+  }
+  
+  .file-input-area {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+  
+  .file-choose-btn,
+  .file-status {
+    width: 100%;
+  }
+  
+  .image-thumbnails-container {
+    justify-content: center;
+  }
+  
+  .thumbnail-item {
+    width: 70px;
+    height: 52px;
+  }
+  
+  .workspace-selector {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .workspace-icon {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .workspace-status {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
