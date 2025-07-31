@@ -92,9 +92,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (searchTerm) {
       console.log('Searching for:', searchTerm);
-      // Add your search functionality here
-      // For example, you could make an API call or filter results
-      alert(`Searching for: ${searchTerm}`);
+      // Redirect to search results page with search term
+      window.location.href = `search-results.html?q=${encodeURIComponent(
+        searchTerm
+      )}`;
     } else {
       alert('Please enter a search term');
     }
@@ -203,6 +204,264 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   });
+});
+
+// Main Plugin Card Interactions
+document.addEventListener('DOMContentLoaded', function () {
+  const mainPluginCards = document.querySelectorAll('.main-plugin-card');
+
+  mainPluginCards.forEach((card) => {
+    // Card click interaction
+    card.addEventListener('click', function (e) {
+      // Don't trigger if clicking on heart icon
+      if (e.target.classList.contains('heart-icon')) {
+        return;
+      }
+
+      const cardTitle = card.querySelector('.card-title').textContent;
+      console.log('Plugin card clicked:', cardTitle);
+
+      // Add subtle click animation
+      card.style.transform = 'scale(0.98)';
+      setTimeout(() => {
+        card.style.transform = '';
+      }, 150);
+    });
+
+    // Heart icon interaction
+    const heartIcon = card.querySelector('.heart-icon');
+    if (heartIcon) {
+      heartIcon.addEventListener('click', function (e) {
+        e.stopPropagation();
+
+        if (this.textContent === '♡') {
+          this.textContent = '♥';
+          this.style.color = '#FF6B6B';
+
+          // Update likes count
+          const likesCount = card.querySelector('.likes-count');
+          const currentLikes = parseInt(
+            likesCount.textContent.replace('k', '000').replace('.', '')
+          );
+          const newLikes = currentLikes + 1;
+          likesCount.textContent = formatCount(newLikes);
+
+          // Update data attribute for sorting
+          card.setAttribute('data-likes', newLikes);
+        } else {
+          this.textContent = '♡';
+          this.style.color = '#999';
+
+          // Update likes count
+          const likesCount = card.querySelector('.likes-count');
+          const currentLikes = parseInt(
+            likesCount.textContent.replace('k', '000').replace('.', '')
+          );
+          const newLikes = Math.max(0, currentLikes - 1);
+          likesCount.textContent = formatCount(newLikes);
+
+          // Update data attribute for sorting
+          card.setAttribute('data-likes', newLikes);
+        }
+
+        console.log(
+          'Heart clicked for:',
+          card.querySelector('.card-title').textContent
+        );
+      });
+    }
+  });
+});
+
+// Sort Functionality
+document.addEventListener('DOMContentLoaded', function () {
+  const sortSelect = document.getElementById('mainSortSelect');
+
+  function sortCards(sortBy) {
+    const pluginGrid = document.querySelector('.main-plugin-grid');
+    const cards = Array.from(pluginGrid.querySelectorAll('.main-plugin-card'));
+
+    cards.sort((a, b) => {
+      switch (sortBy) {
+        case 'date-uploaded':
+          return (
+            new Date(b.getAttribute('data-date')) -
+            new Date(a.getAttribute('data-date'))
+          );
+
+        case 'relevancy':
+          return (
+            parseInt(b.getAttribute('data-likes')) -
+            parseInt(a.getAttribute('data-likes'))
+          );
+
+        case 'likes':
+          return (
+            parseInt(b.getAttribute('data-likes')) -
+            parseInt(a.getAttribute('data-likes'))
+          );
+
+        case 'downloads':
+          return (
+            parseInt(b.getAttribute('data-downloads')) -
+            parseInt(a.getAttribute('data-downloads'))
+          );
+
+        case 'name':
+          const nameA = a
+            .querySelector('.card-title')
+            .textContent.toLowerCase();
+          const nameB = b
+            .querySelector('.card-title')
+            .textContent.toLowerCase();
+          return nameA.localeCompare(nameB);
+
+        default:
+          return 0;
+      }
+    });
+
+    // Re-append sorted cards with animation
+    cards.forEach((card, index) => {
+      card.style.animationDelay = `${index * 0.1}s`;
+      card.classList.add('sort-animation');
+      pluginGrid.appendChild(card);
+    });
+
+    setTimeout(() => {
+      cards.forEach((card) => {
+        card.classList.remove('sort-animation');
+      });
+    }, 600);
+  }
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', function () {
+      sortCards(this.value);
+    });
+  }
+});
+
+// Helper function for formatting counts
+function formatCount(count) {
+  if (count >= 1000) {
+    return (count / 1000).toFixed(1) + 'k';
+  }
+  return count.toString();
+}
+
+// Global function for empty state button
+window.clearAllFilters = function () {
+  // Clear search input
+  const searchInput = document.querySelector('.search-input');
+  if (searchInput) {
+    searchInput.value = '';
+    // Clear any search highlights
+    const allCards = document.querySelectorAll('.main-plugin-card');
+    allCards.forEach((card) => {
+      card.style.border = '';
+      card.style.boxShadow = '';
+    });
+
+    // Hide empty state
+    const emptyState = document.getElementById('emptyState');
+    if (emptyState) {
+      emptyState.style.display = 'none';
+    }
+  }
+};
+
+// Enhanced search functionality for main plugin cards
+document.addEventListener('DOMContentLoaded', function () {
+  const searchInput = document.querySelector('.search-input');
+  const searchButton = document.querySelector('.search-button');
+  const emptyState = document.getElementById('emptyState');
+
+  function performSearch() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    if (searchTerm) {
+      const allCards = document.querySelectorAll('.main-plugin-card');
+      let foundCount = 0;
+
+      allCards.forEach((card) => {
+        const title = card
+          .querySelector('.card-title')
+          .textContent.toLowerCase();
+        const author =
+          card.querySelector('.card-author')?.textContent.toLowerCase() || '';
+        const description =
+          card.querySelector('.card-description')?.textContent.toLowerCase() ||
+          '';
+        const tags = Array.from(card.querySelectorAll('.tag'))
+          .map((tag) => tag.textContent.toLowerCase())
+          .join(' ');
+
+        const matchesSearch =
+          title.includes(searchTerm) ||
+          author.includes(searchTerm) ||
+          description.includes(searchTerm) ||
+          tags.includes(searchTerm);
+
+        if (matchesSearch) {
+          card.style.border = '2px solid #64b4ea';
+          card.style.boxShadow = '0 8px 32px rgba(100, 180, 234, 0.3)';
+          foundCount++;
+        } else {
+          card.style.border = '';
+          card.style.boxShadow = '';
+        }
+      });
+
+      if (foundCount === 0) {
+        emptyState.style.display = 'block';
+      } else {
+        emptyState.style.display = 'none';
+        // Scroll to first match
+        const firstMatch = document.querySelector(
+          '.main-plugin-card[style*="border"]'
+        );
+        if (firstMatch) {
+          firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    } else {
+      // Clear search highlights and hide empty state
+      const allCards = document.querySelectorAll('.main-plugin-card');
+      allCards.forEach((card) => {
+        card.style.border = '';
+        card.style.boxShadow = '';
+      });
+      emptyState.style.display = 'none';
+    }
+  }
+
+  // Override previous search functionality
+  if (searchButton) {
+    searchButton.replaceWith(searchButton.cloneNode(true));
+    const newSearchButton = document.querySelector('.search-button');
+    newSearchButton.addEventListener('click', performSearch);
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+
+    // Clear search highlights when input is cleared
+    searchInput.addEventListener('input', function () {
+      if (this.value.trim() === '') {
+        const allCards = document.querySelectorAll('.main-plugin-card');
+        allCards.forEach((card) => {
+          card.style.border = '';
+          card.style.boxShadow = '';
+        });
+        emptyState.style.display = 'none';
+      }
+    });
+  }
 });
 
 // Featured section horizontal scroll functionality

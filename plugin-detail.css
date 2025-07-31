@@ -1,0 +1,1089 @@
+/* Plugin Detail Page Specific Styles */
+
+.plugin-detail-main {
+  padding-top: 80px;
+  min-height: 100vh;
+}
+
+/* Header Search Bar */
+.header-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 1.5rem;
+}
+
+.header-search-input {
+  width: 240px;
+  height: 40px;
+  padding: 0 2.5rem 0 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  font-size: 0.9rem;
+  color: #333;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.header-search-input::placeholder {
+  color: #999;
+}
+
+.header-search-input:focus {
+  border-color: #0066cc;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  width: 280px;
+}
+
+.header-search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.header-search-button:hover {
+  background: rgba(0, 102, 204, 0.1);
+  color: #0066cc;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb-section {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.breadcrumb a {
+  color: #0066cc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover {
+  color: #004499;
+}
+
+.breadcrumb-separator {
+  color: #ccc;
+}
+
+.breadcrumb-current {
+  color: #333;
+  font-weight: 500;
+}
+
+/* Plugin Overview Section */
+.plugin-overview {
+  background: #fff;
+  padding: 2rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.plugin-overview-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Plugin Media */
+.plugin-media {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.plugin-main-image {
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f5f5;
+  border: 1px solid #eee;
+}
+
+.plugin-main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plugin-thumbnails {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.thumbnail:hover,
+.thumbnail.active {
+  opacity: 1;
+  border-color: #0066cc;
+}
+
+/* Plugin Info */
+.plugin-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.plugin-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.plugin-category {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.plugin-category.visualizer {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+}
+
+.plugin-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.plugin-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.plugin-developer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.developer-label {
+  color: #666;
+}
+
+.developer-name {
+  color: #333;
+  font-weight: 500;
+}
+
+.plugin-stats {
+  display: none; /* Hidden as stats moved to actions and metadata */
+}
+
+.plugin-likes {
+  display: flex;
+  align-items: center;
+}
+
+.like-button {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  color: #666;
+  height: 48px;
+  min-width: 80px;
+}
+
+.like-button:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+  transform: translateY(-1px);
+}
+
+.like-button.liked {
+  background: rgba(255, 107, 107, 0.1);
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.like-button .heart-icon {
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.like-button.liked .heart-icon {
+  color: #ff6b6b;
+}
+
+.like-button .like-count {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.like-button.liked .like-count {
+  color: #ff6b6b;
+}
+
+.plugin-downloads {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+/* Plugin Actions */
+.plugin-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.install-button {
+  background: #0066cc;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  height: 48px;
+  min-width: 140px;
+}
+
+.install-button:hover {
+  background: #0052a3;
+  transform: translateY(-1px);
+}
+
+.download-button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  height: 48px;
+  min-width: 140px;
+}
+
+.download-button:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+
+/* Plugin Metadata */
+.plugin-metadata {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.metadata-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metadata-label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.metadata-value {
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* Plugin Content Section */
+.plugin-content {
+  background: #fefaf0;
+  padding: 3rem 0;
+}
+
+.plugin-content-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.plugin-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.content-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.content-section h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.content-section p {
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.content-section p:last-child {
+  margin-bottom: 0;
+}
+
+/* Feature List */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.feature-list li:last-child {
+  border-bottom: none;
+}
+
+.feature-list strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Use Cases Grid */
+.use-cases-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.use-case-item {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #0066cc;
+}
+
+.use-case-item h3 {
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.use-case-item p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Installation Steps */
+.installation-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.step-number {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #0066cc;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.step-content h3 {
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.step-content p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Comments Section */
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.comment-item {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #0066cc;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.commenter-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.commenter-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.comment-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.comment-text {
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Sidebar */
+.plugin-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sidebar-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-section h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Technical Information */
+.tech-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tech-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tech-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.tech-value {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* Version History */
+.version-history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.version-item {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #0066cc;
+}
+
+.version-number {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.version-date {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 0.25rem 0;
+}
+
+.version-changes {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Support Links */
+.support-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.support-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  color: #0066cc;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.support-link:hover {
+  background: #f0f7ff;
+  border-color: #b3d9ff;
+}
+
+.link-icon {
+  font-size: 1.2rem;
+}
+
+/* Related Plugins Section */
+.related-plugins {
+  background: white;
+  padding: 3rem 0;
+}
+
+.related-plugins h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.related-plugins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* Plugin Card Styles (reused from main page) */
+.plugin-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #eee;
+}
+
+.plugin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-category {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-category.visualizer {
+  background: rgba(255, 107, 107, 0.9);
+  color: white;
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.card-function-tags {
+  margin: 0.5rem 0;
+}
+
+.function-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: rgba(78, 205, 196, 0.1);
+  color: #4ecdc4;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-author {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.card-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.card-likes,
+.card-downloads {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .plugin-overview-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .plugin-content-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .use-cases-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-search-container {
+    margin-right: 1rem;
+  }
+  
+  .header-search-input {
+    width: 180px;
+  }
+  
+  .header-search-input:focus {
+    width: 200px;
+  }
+  
+  .plugin-title {
+    font-size: 2rem;
+  }
+  
+  .plugin-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .plugin-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .install-button,
+  .download-button,
+  .like-button {
+    justify-content: center;
+  }
+  
+  .plugin-metadata {
+    grid-template-columns: 1fr;
+  }
+  
+  .related-plugins-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Plugin stats section is now hidden */
+  
+  .comment-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* Change Log Section */
+.changelog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.changelog-item {
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 2px dashed #4A90E2;
+  transition: all 0.3s ease;
+}
+
+.changelog-item:hover {
+  border-color: #357abd;
+  background: #fafbfc;
+}
+
+.changelog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4A90E2;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.changelog-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 1rem 0;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.changelog-version {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+  margin: 0;
+}
+
+.changelog-date {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  font-weight: 400;
+  margin: 0;
+}
+
+.changelog-description {
+  color: #6c757d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.changelog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.changelog-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #f1f3f5;
+  color: #495057;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  border: 1px solid #e9ecef;
+  transition: all 0.2s ease;
+}
+
+.changelog-tag:hover {
+  background: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.changelog-tag.feature {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  border-color: rgba(40, 167, 69, 0.2);
+}
+
+.changelog-tag.bug-fix {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border-color: rgba(220, 53, 69, 0.2);
+}
+
+.changelog-tag.improvement {
+  background: rgba(255, 193, 7, 0.1);
+  color: #e67e22;
+  border-color: rgba(255, 193, 7, 0.2);
+}
+
+.changelog-tag.major {
+  background: rgba(102, 16, 242, 0.1);
+  color: #6610f2;
+  border-color: rgba(102, 16, 242, 0.2);
+}
+
+.changelog-tag.performance {
+  background: rgba(23, 162, 184, 0.1);
+  color: #17a2b8;
+  border-color: rgba(23, 162, 184, 0.2);
+}
+
+.changelog-tag.compatibility {
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+  border-color: rgba(108, 117, 125, 0.2);
+}
+
+.changelog-tag.materials {
+  background: rgba(255, 111, 97, 0.1);
+  color: #ff6f61;
+  border-color: rgba(255, 111, 97, 0.2);
+}
+
+.changelog-tag.lighting {
+  background: rgba(255, 206, 84, 0.1);
+  color: #ffce54;
+  border-color: rgba(255, 206, 84, 0.2);
+}
+
+.changelog-tag.collaboration {
+  background: rgba(162, 155, 254, 0.1);
+  color: #a29bfe;
+  border-color: rgba(162, 155, 254, 0.2);
+}
+
+.changelog-tag.cloud {
+  background: rgba(116, 185, 255, 0.1);
+  color: #74b9ff;
+  border-color: rgba(116, 185, 255, 0.2);
+}
+
+.changelog-tag.ui-ux {
+  background: rgba(253, 121, 168, 0.1);
+  color: #fd79a8;
+  border-color: rgba(253, 121, 168, 0.2);
+}
+
+.changelog-tag.accessibility {
+  background: rgba(0, 184, 148, 0.1);
+  color: #00b894;
+  border-color: rgba(0, 184, 148, 0.2);
+}
+
+.changelog-tag.data-import {
+  background: rgba(238, 90, 36, 0.1);
+  color: #ee5a24;
+  border-color: rgba(238, 90, 36, 0.2);
+}
+
+.changelog-tag.bim {
+  background: rgba(85, 239, 196, 0.1);
+  color: #55efc4;
+  border-color: rgba(85, 239, 196, 0.2);
+}
+
+.changelog-tag.doc-update {
+  background: rgba(74, 144, 226, 0.1);
+  color: #4A90E2;
+  border-color: rgba(74, 144, 226, 0.2);
+}
+
+.changelog-tag.initial {
+  background: rgba(138, 43, 226, 0.1);
+  color: #8a2be2;
+  border-color: rgba(138, 43, 226, 0.2);
+}
+
+.changelog-tag.visualization {
+  background: rgba(255, 99, 132, 0.1);
+  color: #ff6384;
+  border-color: rgba(255, 99, 132, 0.2);
+}
+
+.changelog-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.changelog-toggle {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.changelog-toggle:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+  color: #495057;
+}
+
+.toggle-icon {
+  font-size: 0.8rem;
+  transition: transform 0.2s ease;
+}
+
+.changelog-toggle[data-expanded="true"] .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.changelog-toggle[data-expanded="true"] .toggle-text:after {
+  content: ' Versions';
+}
+
+.changelog-toggle[data-expanded="false"] .toggle-text:after {
+  content: ' Versions';
+}
+
+/* Responsive Design for Change Log */
+@media (max-width: 768px) {
+  .changelog-item {
+    padding: 1rem;
+  }
+  
+  .changelog-title {
+    font-size: 1.1rem;
+  }
+  
+  .changelog-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .changelog-version {
+    font-size: 0.85rem;
+  }
+  
+  .changelog-date {
+    font-size: 0.8rem;
+  }
+  
+  .changelog-description {
+    font-size: 0.9rem;
+  }
+  
+  .changelog-tags {
+    gap: 0.4rem;
+  }
+  
+  .changelog-tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
+}
