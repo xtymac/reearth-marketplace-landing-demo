@@ -758,6 +758,518 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Changelog Editor Functionality
+    function initializeChangelogEditor() {
+        const toggleBtn = document.getElementById('toggleChangelogEditor');
+        const changelogEditor = document.getElementById('changelogEditor');
+        const changelogTabBtns = document.querySelectorAll('.changelog-editor-tabs .tab-btn');
+        const changelogEditorPane = document.getElementById('changelogEditorPane');
+        const changelogPreviewPane = document.getElementById('changelogPreviewPane');
+        const changelogNotesTextarea = document.getElementById('changelogNotes');
+        const changelogPreview = document.getElementById('changelogNotesPreview');
+
+        // Initialize changelog data structure
+        let changelogData = loadChangelogData();
+        let currentEditingVersion = null;
+
+        // Toggle changelog editor visibility
+        if (toggleBtn && changelogEditor) {
+            toggleBtn.addEventListener('click', function() {
+                const isVisible = changelogEditor.style.display !== 'none';
+                changelogEditor.style.display = isVisible ? 'none' : 'block';
+                
+                const toggleText = toggleBtn.querySelector('.toggle-text');
+                const toggleIcon = toggleBtn.querySelector('.toggle-icon');
+                
+                if (isVisible) {
+                    toggleText.textContent = 'Edit Changelog';
+                    toggleIcon.textContent = '📝';
+                } else {
+                    toggleText.textContent = 'Hide Editor';
+                    toggleIcon.textContent = '✖️';
+                    // Set today's date as default
+                    const dateInput = document.getElementById('changelogDate');
+                    if (dateInput && !dateInput.value) {
+                        dateInput.value = new Date().toISOString().split('T')[0];
+                    }
+                }
+            });
+        }
+
+        // Changelog editor tabs
+        changelogTabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tab = this.getAttribute('data-tab');
+                
+                // Update active tab
+                changelogTabBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update content display
+                changelogEditorPane.classList.remove('active');
+                changelogPreviewPane.classList.remove('active');
+                
+                if (tab === 'editor') {
+                    changelogEditorPane.classList.add('active');
+                } else if (tab === 'preview') {
+                    changelogPreviewPane.classList.add('active');
+                    updateChangelogPreview();
+                }
+            });
+        });
+
+        // Update changelog preview
+        if (changelogNotesTextarea) {
+            changelogNotesTextarea.addEventListener('input', updateChangelogPreview);
+        }
+
+        function updateChangelogPreview() {
+            if (changelogPreview && typeof marked !== 'undefined') {
+                const content = changelogNotesTextarea.value || '';
+                try {
+                    changelogPreview.innerHTML = marked.parse(content);
+                } catch (error) {
+                    changelogPreview.innerHTML = '<p>Error rendering preview</p>';
+                }
+            }
+        }
+
+        // Initialize form actions
+        initializeChangelogFormActions();
+        initializeChangelogTools();
+        initializeExpandableNotes();
+        initializeEditChangelogButtons();
+    }
+
+    function initializeChangelogFormActions() {
+        const addBtn = document.getElementById('addChangelogEntry');
+        const updateBtn = document.getElementById('updateChangelogEntry');
+        const cancelBtn = document.getElementById('cancelEditChangelog');
+        const clearBtn = document.getElementById('clearChangelogForm');
+
+        if (addBtn) {
+            addBtn.addEventListener('click', addChangelogEntry);
+        }
+
+        if (updateBtn) {
+            updateBtn.addEventListener('click', updateChangelogEntry);
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', cancelChangelogEdit);
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', clearChangelogForm);
+        }
+    }
+
+    function initializeChangelogTools() {
+        const exportMarkdownBtn = document.getElementById('exportMarkdown');
+        const exportJsonBtn = document.getElementById('exportJson');
+        const generateChangelogBtn = document.getElementById('generateChangelog');
+        const importChangelogBtn = document.getElementById('importChangelog');
+        const importFileInput = document.getElementById('importChangelogFile');
+
+        if (exportMarkdownBtn) {
+            exportMarkdownBtn.addEventListener('click', exportChangelogAsMarkdown);
+        }
+
+        if (exportJsonBtn) {
+            exportJsonBtn.addEventListener('click', exportChangelogAsJson);
+        }
+
+        if (generateChangelogBtn) {
+            generateChangelogBtn.addEventListener('click', generateChangelogFromGit);
+        }
+
+        if (importChangelogBtn) {
+            importChangelogBtn.addEventListener('click', () => importFileInput.click());
+        }
+
+        if (importFileInput) {
+            importFileInput.addEventListener('change', importChangelogFile);
+        }
+    }
+
+    function initializeExpandableNotes() {
+        const expandBtns = document.querySelectorAll('.expand-notes-btn');
+        
+        expandBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const version = this.getAttribute('data-version');
+                const versionItem = document.querySelector(`[data-version="${version}"]`);
+                const detailedNotes = versionItem.querySelector('.notes-detailed');
+                const isExpanded = detailedNotes.style.display !== 'none';
+                
+                detailedNotes.style.display = isExpanded ? 'none' : 'block';
+                this.textContent = isExpanded ? 'Show Details' : 'Hide Details';
+            });
+        });
+    }
+
+    function initializeEditChangelogButtons() {
+        const editBtns = document.querySelectorAll('.edit-changelog-btn');
+        
+        editBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const version = this.getAttribute('data-version');
+                editChangelogEntry(version);
+            });
+        });
+    }
+
+    function loadChangelogData() {
+        // In a real app, this would load from an API or local storage
+        return {
+            '1.2.0': {
+                version: '1.2.0',
+                date: '2024-01-15',
+                type: 'minor',
+                notes: `## What's New
+- Enhanced rendering engine with 40% better performance
+- New advanced material system with PBR support
+- Improved LOD (Level of Detail) management for large scenes
+- Added real-time shadow mapping
+
+## Bug Fixes
+- Fixed memory leak in texture management
+- Resolved camera controls on touch devices
+- Fixed rendering artifacts on AMD graphics cards
+
+## Breaking Changes
+- Updated material configuration format (migration guide available)`
+            },
+            '1.1.0': {
+                version: '1.1.0',
+                date: '2023-12-10',
+                type: 'minor',
+                notes: `## Improvements
+- Fixed rendering performance issues on older hardware
+- Added new material options for realistic surfaces
+- Improved compatibility with latest browsers
+- Enhanced error handling and user feedback
+
+## Bug Fixes
+- Resolved texture loading issues in Safari
+- Fixed coordinate system inconsistencies`
+            },
+            '1.0.0': {
+                version: '1.0.0',
+                date: '2023-11-15',
+                type: 'major',
+                notes: `## Features
+- Core 3D building visualization engine
+- Basic material support for buildings
+- WebGL-based rendering system
+- Integration with Re:Earth Visualizer
+- Support for common 3D model formats
+
+## Initial Capabilities
+- Real-time 3D building rendering
+- Camera controls and navigation
+- Basic lighting system`
+            }
+        };
+    }
+
+    function addChangelogEntry() {
+        const versionInput = document.getElementById('changelogVersion');
+        const dateInput = document.getElementById('changelogDate');
+        const typeInput = document.getElementById('changelogType');
+        const notesInput = document.getElementById('changelogNotes');
+
+        const version = versionInput.value.trim();
+        const date = dateInput.value;
+        const type = typeInput.value;
+        const notes = notesInput.value.trim();
+
+        if (!version || !date || !notes) {
+            showError('Please fill in all required fields (Version, Date, and Release Notes)');
+            return;
+        }
+
+        // Validate semantic versioning
+        const versionRegex = /^\d+\.\d+\.\d+$/;
+        if (!versionRegex.test(version)) {
+            showError('Please use semantic versioning format (e.g., 1.2.3)');
+            return;
+        }
+
+        // Add to version history
+        addVersionToHistory(version, date, type, notes);
+        
+        clearChangelogForm();
+        showSuccessMessage(`Version ${version} added to changelog successfully!`);
+    }
+
+    function updateChangelogEntry() {
+        if (!currentEditingVersion) return;
+
+        const versionInput = document.getElementById('changelogVersion');
+        const dateInput = document.getElementById('changelogDate');
+        const typeInput = document.getElementById('changelogType');
+        const notesInput = document.getElementById('changelogNotes');
+
+        const version = versionInput.value.trim();
+        const date = dateInput.value;
+        const type = typeInput.value;
+        const notes = notesInput.value.trim();
+
+        // Update the version in the display
+        updateVersionInHistory(currentEditingVersion, version, date, type, notes);
+        
+        clearChangelogForm();
+        cancelChangelogEdit();
+        showSuccessMessage(`Version ${version} updated successfully!`);
+    }
+
+    function editChangelogEntry(version) {
+        const changelogData = loadChangelogData();
+        const versionData = changelogData[version];
+        
+        if (!versionData) return;
+
+        // Fill form with existing data
+        document.getElementById('changelogVersion').value = versionData.version;
+        document.getElementById('changelogDate').value = versionData.date;
+        document.getElementById('changelogType').value = versionData.type;
+        document.getElementById('changelogNotes').value = versionData.notes;
+
+        // Show/hide appropriate buttons
+        document.getElementById('addChangelogEntry').style.display = 'none';
+        document.getElementById('updateChangelogEntry').style.display = 'inline-block';
+        document.getElementById('cancelEditChangelog').style.display = 'inline-block';
+
+        // Store current editing version
+        currentEditingVersion = version;
+
+        // Show editor if hidden
+        const changelogEditor = document.getElementById('changelogEditor');
+        if (changelogEditor.style.display === 'none') {
+            document.getElementById('toggleChangelogEditor').click();
+        }
+
+        showSuccessMessage(`Editing version ${version}. Make your changes and click Update.`);
+    }
+
+    function cancelChangelogEdit() {
+        currentEditingVersion = null;
+        
+        // Show/hide appropriate buttons
+        document.getElementById('addChangelogEntry').style.display = 'inline-block';
+        document.getElementById('updateChangelogEntry').style.display = 'none';
+        document.getElementById('cancelEditChangelog').style.display = 'none';
+        
+        clearChangelogForm();
+    }
+
+    function clearChangelogForm() {
+        document.getElementById('changelogVersion').value = '';
+        document.getElementById('changelogDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('changelogType').value = 'minor';
+        document.getElementById('changelogNotes').value = '';
+        
+        // Clear preview
+        const preview = document.getElementById('changelogNotesPreview');
+        if (preview) preview.innerHTML = '';
+    }
+
+    function addVersionToHistory(version, date, type, notes) {
+        const versionList = document.getElementById('versionHistoryList');
+        
+        // Create new version item
+        const versionItem = document.createElement('div');
+        versionItem.className = 'version-item';
+        versionItem.setAttribute('data-version', version);
+        
+        const summary = extractSummaryFromNotes(notes);
+        
+        versionItem.innerHTML = `
+            <div class="version-info">
+                <div class="version-header">
+                    <span class="version-number">v${version}</span>
+                    <span class="version-status">New</span>
+                    <span class="version-type-badge ${type}">${capitalizeFirst(type)}</span>
+                </div>
+                <div class="version-details">
+                    <span class="file-name">plugin-v${version}.zip</span>
+                    <span class="file-size">Pending upload</span>
+                    <span class="file-date">Created: ${new Date(date).toLocaleDateString()}</span>
+                </div>
+                <div class="version-notes">
+                    <div class="notes-header">
+                        <strong>Release Notes:</strong>
+                        <button class="expand-notes-btn" data-version="${version}">Show Details</button>
+                    </div>
+                    <div class="notes-summary">${summary}</div>
+                    <div class="notes-detailed" style="display: none;">
+                        <div class="changelog-content">
+                            ${marked.parse(notes)}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="version-actions">
+                <button type="button" class="version-action-btn edit-changelog-btn" title="Edit Changelog" data-version="${version}">✏️</button>
+            </div>
+        `;
+        
+        // Insert at the beginning (after current version if exists)
+        const currentVersionItem = versionList.querySelector('.current-version-item');
+        if (currentVersionItem) {
+            versionList.insertBefore(versionItem, currentVersionItem.nextSibling);
+        } else {
+            versionList.insertBefore(versionItem, versionList.firstChild);
+        }
+        
+        // Initialize event listeners for the new item
+        const expandBtn = versionItem.querySelector('.expand-notes-btn');
+        const editBtn = versionItem.querySelector('.edit-changelog-btn');
+        
+        expandBtn.addEventListener('click', function() {
+            const detailedNotes = versionItem.querySelector('.notes-detailed');
+            const isExpanded = detailedNotes.style.display !== 'none';
+            
+            detailedNotes.style.display = isExpanded ? 'none' : 'block';
+            this.textContent = isExpanded ? 'Show Details' : 'Hide Details';
+        });
+        
+        editBtn.addEventListener('click', function() {
+            editChangelogEntry(version);
+        });
+    }
+
+    function updateVersionInHistory(oldVersion, newVersion, date, type, notes) {
+        const versionItem = document.querySelector(`[data-version="${oldVersion}"]`);
+        if (!versionItem) return;
+
+        const summary = extractSummaryFromNotes(notes);
+        
+        // Update version number
+        versionItem.setAttribute('data-version', newVersion);
+        versionItem.querySelector('.version-number').textContent = `v${newVersion}`;
+        versionItem.querySelector('.version-type-badge').textContent = capitalizeFirst(type);
+        versionItem.querySelector('.version-type-badge').className = `version-type-badge ${type}`;
+        
+        // Update details
+        versionItem.querySelector('.file-name').textContent = `plugin-v${newVersion}.zip`;
+        versionItem.querySelector('.file-date').textContent = `Updated: ${new Date(date).toLocaleDateString()}`;
+        
+        // Update notes
+        versionItem.querySelector('.notes-summary').textContent = summary;
+        versionItem.querySelector('.changelog-content').innerHTML = marked.parse(notes);
+        
+        // Update expand button data attribute
+        versionItem.querySelector('.expand-notes-btn').setAttribute('data-version', newVersion);
+        versionItem.querySelector('.edit-changelog-btn').setAttribute('data-version', newVersion);
+    }
+
+    function extractSummaryFromNotes(notes) {
+        // Extract first line or first bullet point as summary
+        const lines = notes.split('\n').filter(line => line.trim());
+        for (let line of lines) {
+            line = line.trim();
+            if (line.startsWith('- ') || line.startsWith('* ')) {
+                return line.substring(2).trim();
+            } else if (line && !line.startsWith('#')) {
+                return line;
+            }
+        }
+        return 'Version update with various improvements and fixes.';
+    }
+
+    function capitalizeFirst(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function exportChangelogAsMarkdown() {
+        const changelogData = loadChangelogData();
+        let markdown = '# Changelog\n\nAll notable changes to this plugin will be documented here.\n\n';
+        
+        // Sort versions in descending order
+        const sortedVersions = Object.keys(changelogData).sort((a, b) => {
+            const aVersion = a.split('.').map(Number);
+            const bVersion = b.split('.').map(Number);
+            
+            for (let i = 0; i < Math.max(aVersion.length, bVersion.length); i++) {
+                const aNum = aVersion[i] || 0;
+                const bNum = bVersion[i] || 0;
+                if (aNum !== bNum) return bNum - aNum;
+            }
+            return 0;
+        });
+        
+        sortedVersions.forEach(version => {
+            const data = changelogData[version];
+            markdown += `## [${version}] - ${data.date}\n\n${data.notes}\n\n`;
+        });
+        
+        downloadFile(`changelog.md`, markdown, 'text/markdown');
+        showSuccessMessage('Changelog exported as Markdown!');
+    }
+
+    function exportChangelogAsJson() {
+        const changelogData = loadChangelogData();
+        const jsonData = JSON.stringify(changelogData, null, 2);
+        
+        downloadFile(`changelog.json`, jsonData, 'application/json');
+        showSuccessMessage('Changelog exported as JSON!');
+    }
+
+    function generateChangelogFromGit() {
+        // In a real implementation, this would call a Git API
+        const mockGitData = [
+            'v1.2.0: Enhanced rendering engine and performance improvements',
+            'v1.1.0: Bug fixes and browser compatibility updates',
+            'v1.0.0: Initial release'
+        ];
+        
+        const generatedChangelog = mockGitData.join('\n');
+        document.getElementById('changelogNotes').value = generatedChangelog;
+        
+        showSuccessMessage('Generated changelog from Git history! Review and edit as needed.');
+    }
+
+    function importChangelogFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const content = e.target.result;
+            
+            try {
+                if (file.name.endsWith('.json')) {
+                    const data = JSON.parse(content);
+                    // Process JSON changelog data
+                    showSuccessMessage('JSON changelog imported successfully!');
+                } else {
+                    // Process as markdown/text
+                    document.getElementById('changelogNotes').value = content;
+                    showSuccessMessage('Changelog file imported successfully!');
+                }
+            } catch (error) {
+                showError('Error parsing changelog file. Please check the format.');
+            }
+        };
+        
+        reader.readAsText(file);
+        event.target.value = ''; // Reset file input
+    }
+
+    function downloadFile(filename, content, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }
+
     // Initialize all functionality
     function initialize() {
         try {
@@ -766,6 +1278,7 @@ document.addEventListener('DOMContentLoaded', function() {
             initializeStatusToggle();
             initializeImageUpload();
             initializeVersionManagement();
+            initializeChangelogEditor(); // Add changelog editor initialization
             initializeFormValidation();
             initializeModals();
             initializeFormSubmission();

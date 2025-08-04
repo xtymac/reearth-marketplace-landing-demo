@@ -367,15 +367,165 @@ For support and documentation, visit our [help center](https://docs.reearth.io) 
                 </div>
               </div>
 
-              <!-- Version History -->
+              <!-- Version History & Changelog -->
               <div class="version-history-section">
-                <h4>Version History</h4>
-                <div class="version-history-list">
-                  <div class="version-item">
+                <div class="section-header">
+                  <h4>Version History & Changelog</h4>
+                  <div class="section-actions">
+                    <button type="button" class="toggle-btn" id="toggleChangelogEditor">
+                      <span class="toggle-text">Edit Changelog</span>
+                      <span class="toggle-icon">📝</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Changelog Editor (Initially Hidden) -->
+                <div class="changelog-editor" id="changelogEditor" style="display: none;">
+                  <div class="editor-header">
+                    <h5>📝 Changelog Editor</h5>
+                    <p class="editor-description">Manage your plugin's version history and release notes. Changes will be saved automatically.</p>
+                  </div>
+
+                  <div class="changelog-form">
+                    <div class="changelog-entry-form" id="changelogEntryForm">
+                      <div class="form-row">
+                        <div class="form-field">
+                          <label for="changelogVersion">Version</label>
+                          <input type="text" id="changelogVersion" placeholder="e.g., 1.3.0" class="form-input">
+                        </div>
+                        <div class="form-field">
+                          <label for="changelogDate">Release Date</label>
+                          <input type="date" id="changelogDate" class="form-input">
+                        </div>
+                        <div class="form-field">
+                          <label for="changelogType">Release Type</label>
+                          <select id="changelogType" class="form-select">
+                            <option value="major">Major Release</option>
+                            <option value="minor" selected>Minor Release</option>
+                            <option value="patch">Patch/Bugfix</option>
+                            <option value="beta">Beta Release</option>
+                            <option value="alpha">Alpha Release</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- Release Notes Editor -->
+                      <div class="form-field">
+                        <label for="changelogNotes">Release Notes</label>
+                        <div class="changelog-editor-tabs">
+                          <button type="button" class="tab-btn active" data-tab="editor">Write</button>
+                          <button type="button" class="tab-btn" data-tab="preview">Preview</button>
+                        </div>
+                        
+                        <div class="changelog-editor-content">
+                          <div class="editor-pane active" id="changelogEditorPane">
+                            <textarea id="changelogNotes" class="changelog-textarea" placeholder="## What's New
+- Added new feature A
+- Improved performance of feature B
+- Fixed issue with feature C
+
+## Breaking Changes
+- Changed API endpoint structure
+
+## Bug Fixes
+- Fixed memory leak in visualization module
+- Resolved rendering issues on mobile devices
+
+## Known Issues
+- Feature X may have compatibility issues with older browsers"></textarea>
+                          </div>
+                          <div class="preview-pane" id="changelogPreviewPane">
+                            <div class="changelog-preview" id="changelogNotesPreview"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="changelog-actions">
+                        <button type="button" class="secondary-btn" id="clearChangelogForm">Clear</button>
+                        <button type="button" class="primary-btn" id="addChangelogEntry">Add Version Entry</button>
+                        <button type="button" class="primary-btn" id="updateChangelogEntry" style="display: none;">Update Entry</button>
+                        <button type="button" class="secondary-btn" id="cancelEditChangelog" style="display: none;">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Changelog Management Tools -->
+                  <div class="changelog-tools">
+                    <div class="tool-section">
+                      <h6>📤 Export Changelog</h6>
+                      <div class="export-options">
+                        <button type="button" class="tool-btn" id="exportMarkdown">Export as Markdown</button>
+                        <button type="button" class="tool-btn" id="exportJson">Export as JSON</button>
+                        <button type="button" class="tool-btn" id="generateChangelog">Auto-Generate from Git</button>
+                      </div>
+                    </div>
+                    
+                    <div class="tool-section">
+                      <h6>📥 Import Changelog</h6>
+                      <div class="import-options">
+                        <input type="file" id="importChangelogFile" accept=".md,.json,.txt" style="display: none;">
+                        <button type="button" class="tool-btn" id="importChangelog">Import from File</button>
+                        <span class="import-help">Support: .md, .json, .txt files</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Version History Display -->
+                <div class="version-history-list" id="versionHistoryList">
+                  <div class="version-item current-version-item" data-version="1.2.0">
+                    <div class="version-info">
+                      <div class="version-header">
+                        <span class="version-number">v1.2.0</span>
+                        <span class="version-status current">Current</span>
+                        <span class="version-type-badge minor">Minor</span>
+                      </div>
+                      <div class="version-details">
+                        <span class="file-name">3d-building-visualization-v1.2.zip</span>
+                        <span class="file-size">2.4 MB</span>
+                        <span class="file-date">Published: 2024-01-15</span>
+                      </div>
+                      <div class="version-notes">
+                        <div class="notes-header">
+                          <strong>Release Notes:</strong>
+                          <button class="expand-notes-btn" data-version="1.2.0">Show Details</button>
+                        </div>
+                        <div class="notes-summary">Enhanced rendering engine with improved performance and new material system.</div>
+                        <div class="notes-detailed" style="display: none;">
+                          <div class="changelog-content">
+                            <h6>What's New</h6>
+                            <ul>
+                              <li>Enhanced rendering engine with 40% better performance</li>
+                              <li>New advanced material system with PBR support</li>
+                              <li>Improved LOD (Level of Detail) management for large scenes</li>
+                              <li>Added real-time shadow mapping</li>
+                            </ul>
+                            <h6>Bug Fixes</h6>
+                            <ul>
+                              <li>Fixed memory leak in texture management</li>
+                              <li>Resolved camera controls on touch devices</li>
+                              <li>Fixed rendering artifacts on AMD graphics cards</li>
+                            </ul>
+                            <h6>Breaking Changes</h6>
+                            <ul>
+                              <li>Updated material configuration format (migration guide available)</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="version-actions">
+                      <button type="button" class="version-action-btn download-btn" title="Download">⬇</button>
+                      <button type="button" class="version-action-btn edit-changelog-btn" title="Edit Changelog" data-version="1.2.0">✏️</button>
+                    </div>
+                  </div>
+                  
+                  <div class="version-item" data-version="1.1.0">
                     <div class="version-info">
                       <div class="version-header">
                         <span class="version-number">v1.1.0</span>
                         <span class="version-status">Previous</span>
+                        <span class="version-type-badge minor">Minor</span>
                       </div>
                       <div class="version-details">
                         <span class="file-name">3d-building-visualization-v1.1.zip</span>
@@ -383,20 +533,42 @@ For support and documentation, visit our [help center](https://docs.reearth.io) 
                         <span class="file-date">Published: 2023-12-10</span>
                       </div>
                       <div class="version-notes">
-                        <strong>Release Notes:</strong> Fixed rendering performance issues, added new material options, improved compatibility with latest browsers.
+                        <div class="notes-header">
+                          <strong>Release Notes:</strong>
+                          <button class="expand-notes-btn" data-version="1.1.0">Show Details</button>
+                        </div>
+                        <div class="notes-summary">Performance improvements and browser compatibility updates.</div>
+                        <div class="notes-detailed" style="display: none;">
+                          <div class="changelog-content">
+                            <h6>Improvements</h6>
+                            <ul>
+                              <li>Fixed rendering performance issues on older hardware</li>
+                              <li>Added new material options for realistic surfaces</li>
+                              <li>Improved compatibility with latest browsers</li>
+                              <li>Enhanced error handling and user feedback</li>
+                            </ul>
+                            <h6>Bug Fixes</h6>
+                            <ul>
+                              <li>Resolved texture loading issues in Safari</li>
+                              <li>Fixed coordinate system inconsistencies</li>
+                            </ul>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="version-actions">
                       <button type="button" class="version-action-btn download-btn" title="Download">⬇</button>
                       <button type="button" class="version-action-btn rollback-btn" title="Rollback to this version">↶</button>
+                      <button type="button" class="version-action-btn edit-changelog-btn" title="Edit Changelog" data-version="1.1.0">✏️</button>
                     </div>
                   </div>
                   
-                  <div class="version-item">
+                  <div class="version-item" data-version="1.0.0">
                     <div class="version-info">
                       <div class="version-header">
                         <span class="version-number">v1.0.0</span>
                         <span class="version-status">Previous</span>
+                        <span class="version-type-badge major">Major</span>
                       </div>
                       <div class="version-details">
                         <span class="file-name">3d-building-visualization-v1.0.zip</span>
@@ -404,12 +576,79 @@ For support and documentation, visit our [help center](https://docs.reearth.io) 
                         <span class="file-date">Published: 2023-11-15</span>
                       </div>
                       <div class="version-notes">
-                        <strong>Release Notes:</strong> Initial release with core 3D building visualization features, basic material support, and WebGL rendering.
+                        <div class="notes-header">
+                          <strong>Release Notes:</strong>
+                          <button class="expand-notes-btn" data-version="1.0.0">Show Details</button>
+                        </div>
+                        <div class="notes-summary">Initial release with core 3D building visualization features.</div>
+                        <div class="notes-detailed" style="display: none;">
+                          <div class="changelog-content">
+                            <h6>Features</h6>
+                            <ul>
+                              <li>Core 3D building visualization engine</li>
+                              <li>Basic material support for buildings</li>
+                              <li>WebGL-based rendering system</li>
+                              <li>Integration with Re:Earth Visualizer</li>
+                              <li>Support for common 3D model formats</li>
+                            </ul>
+                            <h6>Initial Capabilities</h6>
+                            <ul>
+                              <li>Real-time 3D building rendering</li>
+                              <li>Camera controls and navigation</li>
+                              <li>Basic lighting system</li>
+                            </ul>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="version-actions">
                       <button type="button" class="version-action-btn download-btn" title="Download">⬇</button>
                       <button type="button" class="version-action-btn rollback-btn" title="Rollback to this version">↶</button>
+                      <button type="button" class="version-action-btn edit-changelog-btn" title="Edit Changelog" data-version="1.0.0">✏️</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Changelog Template Help -->
+                <div class="changelog-help" id="changelogHelp" style="display: none;">
+                  <div class="help-header">
+                    <h6>📋 Changelog Templates & Best Practices</h6>
+                    <button type="button" class="close-help-btn">×</button>
+                  </div>
+                  
+                  <div class="help-content">
+                    <div class="template-section">
+                      <h7>Standard Template:</h7>
+                      <pre class="template-code">## What's New
+- Added feature A
+- Enhanced feature B
+
+## Improvements  
+- Improved performance of X
+- Better error handling
+
+## Bug Fixes
+- Fixed issue with Y
+- Resolved problem Z
+
+## Breaking Changes
+- Changed API endpoint
+- Updated configuration format
+
+## Known Issues
+- Issue A (workaround: do X)
+</pre>
+                    </div>
+                    
+                    <div class="best-practices">
+                      <h7>Best Practices:</h7>
+                      <ul>
+                        <li>Use clear, descriptive language</li>
+                        <li>Group changes by type (features, fixes, etc.)</li>
+                        <li>Include migration guides for breaking changes</li>
+                        <li>Mention known issues and workarounds</li>
+                        <li>Follow semantic versioning (major.minor.patch)</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
