@@ -99,34 +99,35 @@ const Marketplace = () => {
               </div>
               
               <nav className="hidden md:flex space-x-8">
-                <a href="https://reearth.io/about" className="text-gray-700 hover:text-gray-900 font-medium">About Re:Earth</a>
+                <a href="https://reearth.io/about" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>About Re:Earth</a>
                 <div className="relative group">
-                  <button className="flex items-center text-gray-700 hover:text-gray-900 font-medium">
+                  <button className="flex items-center text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>
                     Product <ChevronDown className="ml-1 w-4 h-4" />
                   </button>
                   <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <div className="py-2">
-                      <a href="https://reearth.io/product/cms" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">CMS</a>
-                      <a href="https://reearth.io/product/visualizer" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Visualizer</a>
+                      <a href="https://reearth.io/product/cms" className="block px-4 py-2 text-gray-700 hover:bg-gray-50" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>CMS</a>
+                      <a href="https://reearth.io/product/visualizer" className="block px-4 py-2 text-gray-700 hover:bg-gray-50" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Visualizer</a>
                     </div>
                   </div>
                 </div>
-                <a href="https://reearth.io/pricing" className="text-gray-700 hover:text-gray-900 font-medium">Pricing</a>
-                <a href="https://reearth.io/community" className="text-gray-700 hover:text-gray-900 font-medium">Community</a>
-                <a href="https://reearth.io/learn" className="text-gray-700 hover:text-gray-900 font-medium">Learn</a>
+                <a href="https://reearth.io/pricing" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Pricing</a>
+                <a href="https://reearth.io/community" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Community</a>
+                <a href="https://reearth.io/learn" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Learn</a>
+                <a href="#" className="text-blue-600" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Marketplace</a>
               </nav>
             </div>
 
             {/* Right side */}
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2 text-sm">
-                <span className="text-gray-900 font-medium">日本語</span>
+                <span className="text-gray-900 font-medium" style={{ fontFamily: '"Noto Sans JP"' }}>日本語</span>
                 <span className="text-gray-400">|</span>
-                <span className="text-gray-600">Sign up</span>
+                <span className="text-gray-600" style={{ fontFamily: 'Outfit' }}>Sign up</span>
               </div>
               <button 
                 className="text-white px-6 py-2 rounded-md text-sm font-semibold transition-colors"
-                style={{ backgroundColor: '#0089D4' }}
+                style={{ backgroundColor: '#0089D4', fontFamily: 'Outfit' }}
                 onMouseEnter={(e) => e.target.style.backgroundColor = '#007BB8'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = '#0089D4'}
               >
@@ -262,7 +263,7 @@ const Marketplace = () => {
         </div>
 
         {/* Plugin Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" style={{ alignItems: 'stretch' }}>
           {filteredAndSortedPlugins.length > 0 ? (
             filteredAndSortedPlugins.map((plugin) => (
               <PluginCard key={plugin.id} plugin={plugin} />
