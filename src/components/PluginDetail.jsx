@@ -347,10 +347,25 @@ const getPluginDocumentation = (plugin) => {
     <>
       {/* Overview Section */}
       <div className="w-full">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
-        <p className="text-gray-700 leading-relaxed">
-          {docContent.overview}
-        </p>
+        {/* Overview Title + Divider + Content Group - isolated from parent gap */}
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900" style={{ margin: 0 }}>Overview</h2>
+          
+          {/* Horizontal Divider */}
+          <div 
+            style={{
+              width: '1232px',
+              maxWidth: '100%',
+              height: '1px',
+              background: 'var(--background-2, #D4D4D4)',
+              margin: '18px auto 18px auto'
+            }}
+          />
+          
+          <p className="text-gray-700 leading-relaxed" style={{ margin: 0 }}>
+            {docContent.overview}
+          </p>
+        </div>
       </div>
 
       {/* Key Features Section */}
@@ -726,6 +741,52 @@ const PluginDetail = () => {
   const { id } = useParams();
   const plugin = pluginData.find(p => p.id === parseInt(id));
   const [selectedImage, setSelectedImage] = useState(0);
+  
+  // Like functionality state
+  const [likeState, setLikeState] = useState(() => {
+    // Initialize from localStorage
+    const savedLikes = localStorage.getItem('plugin-likes');
+    const likes = savedLikes ? JSON.parse(savedLikes) : {};
+    return {
+      isLiked: likes[id] || false,
+      count: plugin ? plugin.likes + (likes[id] ? 1 : 0) : 0
+    };
+  });
+  
+  const [isClickDebounced, setIsClickDebounced] = useState(false);
+
+  // Like toggle handler with debouncing and persistence
+  const handleLikeToggle = () => {
+    if (isClickDebounced) return;
+    
+    setIsClickDebounced(true);
+    setTimeout(() => setIsClickDebounced(false), 200);
+    
+    const newIsLiked = !likeState.isLiked;
+    const newCount = newIsLiked 
+      ? likeState.count + 1
+      : Math.max(plugin.likes, likeState.count - 1); // Prevent going below base value
+    
+    // Update state optimistically
+    setLikeState({
+      isLiked: newIsLiked,
+      count: newCount
+    });
+    
+    // Persist to localStorage
+    const savedLikes = localStorage.getItem('plugin-likes');
+    const likes = savedLikes ? JSON.parse(savedLikes) : {};
+    likes[id] = newIsLiked;
+    localStorage.setItem('plugin-likes', JSON.stringify(likes));
+  };
+
+  // Handle keyboard interactions
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleLikeToggle();
+    }
+  };
 
   if (!plugin) {
     return (
@@ -799,27 +860,29 @@ const PluginDetail = () => {
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto bg-white rounded-lg" style={{ maxWidth: '1280px', padding: '24px', marginTop: '24px', marginBottom: '24px', gap: '24px', display: 'flex', flexDirection: 'column' }}>
-        {/* Breadcrumbs */}
-        <nav className="flex items-center space-x-2 text-sm mb-1">
-          <Link to="/" className="text-blue-600 hover:underline">Marketplace</Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-gray-700">{plugin.title}</span>
-        </nav>
+      <main className="mx-auto bg-white rounded-lg" style={{ maxWidth: '1280px', padding: '24px', marginTop: '24px', marginBottom: '24px' }}>
+        {/* Breadcrumb + Divider + Content Group - isolated from parent */}
+        <div>
+          {/* Breadcrumbs */}
+          <nav className="flex items-center space-x-2 text-sm" style={{ margin: 0 }}>
+            <Link to="/" className="text-blue-600 hover:underline">Marketplace</Link>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-700">{plugin.title}</span>
+          </nav>
 
-        {/* Horizontal Divider */}
-        <div 
-          style={{
-            width: '1232px',
-            maxWidth: '100%',
-            height: '1px',
-            background: 'var(--background-2, #D4D4D4)',
-            borderRadius: '1px',
-            margin: '0 auto 4px auto'
-          }}
-        />
+          {/* Horizontal Divider */}
+          <div 
+            style={{
+              width: '1232px',
+              maxWidth: '100%',
+              height: '1px',
+              background: 'var(--background-2, #D4D4D4)',
+              borderRadius: '1px',
+              margin: '18px auto 18px auto'
+            }}
+          />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12" style={{ margin: 0 }}>
           {/* Left Column - Images */}
           <div className="space-y-4">
             {/* Main Image */}
@@ -902,8 +965,8 @@ const PluginDetail = () => {
               >
                 Download ZIP
               </button>
-              <div 
-                className="flex items-center text-gray-600"
+              <button 
+                className={`flex items-center transition-all duration-150 ${likeState.isLiked ? 'text-red-500' : 'text-gray-600'} hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
                 style={{ 
                   display: 'flex',
                   alignItems: 'center',
@@ -912,12 +975,26 @@ const PluginDetail = () => {
                   padding: '12px 20px',
                   borderRadius: '6px',
                   gap: '8px',
-                  backgroundColor: '#F5F5F5'
+                  backgroundColor: '#F5F5F5',
+                  border: 'none',
+                  cursor: 'pointer'
                 }}
+                onClick={handleLikeToggle}
+                onKeyDown={handleKeyDown}
+                role="button"
+                tabIndex={0}
+                aria-pressed={likeState.isLiked}
+                aria-label={likeState.isLiked ? "Unlike this plugin" : "Like this plugin"}
               >
-                <Heart className="w-4 h-4" />
-                <span className="text-sm font-medium">{plugin.likes}</span>
-              </div>
+                {likeState.isLiked ? (
+                  <Heart className="w-4 h-4 fill-current" />
+                ) : (
+                  <Heart className="w-4 h-4" />
+                )}
+                <span className="text-sm font-medium" style={{ minWidth: '24px', textAlign: 'left' }}>
+                  {likeState.count}
+                </span>
+              </button>
             </div>
 
             {/* Plugin Details Grid */}
@@ -952,45 +1029,113 @@ const PluginDetail = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Documentation Section */}
-        <div 
-          className="flex flex-col gap-6 p-6"
-          style={{
-            maxWidth: '1280px',
-            width: '100%',
-            alignItems: 'flex-start',
-            borderRadius: '6px',
-            background: '#FFF',
-            margin: '28px auto 0 auto'
-          }}
-        >
-          {getPluginDocumentation(plugin)}
-        </div>
-
-        {/* Change Log Section */}
-        <div 
-          className="flex flex-col gap-6 p-6"
-          style={{
-            maxWidth: '1280px',
-            width: '100%',
-            alignItems: 'flex-start',
-            borderRadius: '6px',
-            background: '#FFF',
-            margin: '28px auto 0 auto'
-          }}
-        >
-          <h2 className="text-2xl font-bold text-gray-900">Change Log</h2>
-          {getChangeLogEntries(plugin.id).map((entry, index) => (
-            <ChangeLogEntry key={index} entry={entry} />
-          ))}
+          </div>
         </div>
       </main>
 
+      {/* Documentation Section */}
+      <div 
+        className="mx-auto bg-white rounded-lg"
+        style={{ 
+          maxWidth: '1280px', 
+          margin: '28px auto 0 auto', 
+          padding: '24px', 
+          background: '#FFF', 
+          borderRadius: '6px' 
+        }}
+      >
+        <div className="flex flex-col" style={{ gap: '24px' }}>
+          {getPluginDocumentation(plugin)}
+        </div>
+      </div>
+
+      {/* Change Log Section */}
+      <div 
+        className="mx-auto bg-white rounded-lg"
+        style={{ 
+          maxWidth: '1280px', 
+          margin: '28px auto 0 auto', 
+          padding: '24px', 
+          background: '#FFF', 
+          borderRadius: '6px' 
+        }}
+      >
+        <div className="flex flex-col">
+          {/* Change Log Title + Divider + Content Group - isolated from parent gap */}
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900" style={{ margin: 0 }}>Change Log</h2>
+            
+            {/* Horizontal Divider */}
+            <div 
+              style={{
+                width: '1232px',
+                maxWidth: '100%',
+                height: '1px',
+                background: 'var(--background-2, #D4D4D4)',
+                margin: '18px auto 18px auto'
+              }}
+            />
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', margin: 0 }}>
+              {getChangeLogEntries(plugin.id).map((entry, index) => (
+                <ChangeLogEntry key={index} entry={entry} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Call to Action Section */}
+      <div 
+        className="mx-auto"
+        style={{ 
+          maxWidth: '1280px', 
+          margin: '28px auto 0 auto',
+          padding: '0'
+        }}
+      >
+        <div className="text-left relative overflow-hidden" style={{ paddingTop: '80px', paddingBottom: '0', paddingLeft: '24px', paddingRight: '24px' }}>
+          {/* Background image on the right */}
+          <div className="absolute right-0 top-0 bottom-0 w-1/2 flex items-center justify-end opacity-30 z-0">
+            <img
+              src="/images/submission.png"
+              alt="Submit Plugin"
+              className="h-full w-auto object-contain"
+            />
+          </div>
+          
+          <div className="relative z-10 max-w-2xl">
+            <div className="mb-8">
+              <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                Build something great? Share
+              </h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                your plugin with the community
+              </h2>
+            </div>
+            
+            <div className="space-y-4" style={{ marginBottom: '0' }}>
+              <button 
+                className="text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors shadow-lg"
+                style={{ backgroundColor: '#0089D4' }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#007BB8'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#0089D4'}
+              >
+                Submit Plugin
+              </button>
+              <div style={{ marginBottom: '0' }}>
+                <a href="#" className="text-blue-600 hover:underline font-semibold">
+                  View documentation
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <footer className="bg-white border-t border-gray-200" style={{ marginTop: '24px' }}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8" style={{ paddingTop: '24px', paddingBottom: '24px' }}>
           <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
             <span>© 2024 Re:Earth contributors</span>
             <a href="#" className="hover:text-gray-700 transition-colors">Terms</a>

@@ -1,12 +1,24 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, ChevronDown, X, SearchX } from 'lucide-react';
 import PluginCard from './PluginCard';
 import { pluginData } from '../data/pluginData';
+import { authService } from '../services/authService';
 
 const Marketplace = () => {
   const [sortBy, setSortBy] = useState('date uploaded');
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const navigate = useNavigate();
+  const isAuthenticated = authService.isAuthenticated();
+
+  const handlePluginSubmit = () => {
+    if (isAuthenticated) {
+      navigate('/plugins/new');
+    } else {
+      navigate('/login?next=/plugins/new');
+    }
+  };
 
   // Clear all filters and reset to default state
   const clearFilters = () => {
@@ -126,10 +138,12 @@ const Marketplace = () => {
                 <span className="text-gray-600" style={{ fontFamily: 'Outfit' }}>Sign up</span>
               </div>
               <button 
+                onClick={handlePluginSubmit}
                 className="text-white px-6 py-2 rounded-md text-sm font-semibold transition-colors"
                 style={{ backgroundColor: '#0089D4', fontFamily: 'Outfit' }}
                 onMouseEnter={(e) => e.target.style.backgroundColor = '#007BB8'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = '#0089D4'}
+                aria-label="Start plugin submission"
               >
                 Start
               </button>
@@ -180,9 +194,9 @@ const Marketplace = () => {
                 letterSpacing: '-0.24px'
               }}
             >
-              Have something to share? <a 
-                href="#" 
-                className="hover:underline"
+              Have something to share? <button 
+                onClick={handlePluginSubmit}
+                className="hover:underline bg-transparent border-none p-0 cursor-pointer"
                 style={{
                   color: '#0089D4',
                   fontFamily: 'Outfit',
@@ -192,9 +206,10 @@ const Marketplace = () => {
                   lineHeight: '140%',
                   letterSpacing: '-0.24px'
                 }}
+                aria-label="Submit your plugin"
               >
                 Submit your plugin
-              </a>
+              </button>
             </p>
           </div>
           
@@ -317,7 +332,7 @@ const Marketplace = () => {
         )}
 
         {/* Call to Action */}
-        <div className="text-left mt-20 py-20 relative overflow-hidden">
+        <div className="text-left relative overflow-hidden" style={{ marginTop: '80px', paddingTop: '80px', paddingBottom: '0' }}>
           {/* Background image on the right */}
           <div className="absolute right-0 top-0 bottom-0 w-1/2 flex items-center justify-end opacity-30 z-0">
             <img
@@ -337,16 +352,18 @@ const Marketplace = () => {
               </h2>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-4" style={{ marginBottom: '0' }}>
               <button 
+                onClick={handlePluginSubmit}
                 className="text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors shadow-lg"
                 style={{ backgroundColor: '#0089D4' }}
                 onMouseEnter={(e) => e.target.style.backgroundColor = '#007BB8'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = '#0089D4'}
+                aria-label="Submit plugin to marketplace"
               >
                 Submit Plugin
               </button>
-              <div>
+              <div style={{ marginBottom: '0' }}>
                 <a href="#" className="text-blue-600 hover:underline font-semibold">
                   View documentation
                 </a>
@@ -357,7 +374,7 @@ const Marketplace = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-20">
+      <footer className="bg-white border-t border-gray-200" style={{ marginTop: '24px' }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
             <span>© 2024 Re:Earth contributors</span>
