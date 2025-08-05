@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, CheckCircle, ArrowLeft, X, Github, FolderOpen, Plus, ChevronDown, Search, User, LogOut, Settings, LayoutDashboard } from 'lucide-react';
+import { Upload, CheckCircle, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
 import DashboardNav from './DashboardNav';
 
 const PluginUpload = () => {
@@ -46,12 +45,12 @@ const PluginUpload = () => {
     }
   };
 
-  const versionLabelOptions = [
-    { id: 'bug-fix', label: 'Bug Fix', color: 'bg-red-100 text-red-800' },
-    { id: 'new-feature', label: 'New Feature', color: 'bg-green-100 text-green-800' },
-    { id: 'doc-update', label: 'Doc Update', color: 'bg-blue-100 text-blue-800' },
-    { id: 'ui-update', label: 'UI Update', color: 'bg-pink-100 text-pink-800' }
-  ];
+  // const versionLabelOptions = [
+  //   { id: 'bug-fix', label: 'Bug Fix', color: 'bg-red-100 text-red-800' },
+  //   { id: 'new-feature', label: 'New Feature', color: 'bg-green-100 text-green-800' },
+  //   { id: 'doc-update', label: 'Doc Update', color: 'bg-blue-100 text-blue-800' },
+  //   { id: 'ui-update', label: 'UI Update', color: 'bg-pink-100 text-pink-800' }
+  // ];
 
   // Close dropdowns when clicking outside
   useEffect(() => {

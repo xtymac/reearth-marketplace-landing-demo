@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronDown, User, LogOut, Settings, LayoutDashboard, X, FileText, GitBranch, AlertTriangle } from 'lucide-react';
-import { authService } from '../services/authService';
+import { X, FileText, GitBranch, AlertTriangle } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 
 const PluginEdit = () => {

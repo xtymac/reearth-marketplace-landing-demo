@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDown, User, LogOut, Settings, LayoutDashboard, ExternalLink, ChevronRight, Plus } from 'lucide-react';
-import { authService } from '../services/authService';
+import { ExternalLink, ChevronRight, Plus } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 
 const Dashboard = () => {
@@ -45,14 +44,14 @@ const Dashboard = () => {
     navigate(`/plugin/${pluginId}`);
   };
 
-  const getBadgeInitials = (name) => {
-    if (name === 'Default personal workspace') return 'De';
-    if (name === 'My playground') return 'My';
-    if (name === 'UC-12地区防災計画') return 'UC';
-    if (name === '株式会社福山コンサルタント') return '株';
-    if (name === 'Plugin Team') return 'PT';
-    return name.substring(0, 2).toUpperCase();
-  };
+  // const getBadgeInitials = (name) => {
+  //   if (name === 'Default personal workspace') return 'De';
+  //   if (name === 'My playground') return 'My';
+  //   if (name === 'UC-12地区防災計画') return 'UC';
+  //   if (name === '株式会社福山コンサルタント') return '株';
+  //   if (name === 'Plugin Team') return 'PT';
+  //   return name.substring(0, 2).toUpperCase();
+  // };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FCFAF4' }}>
@@ -318,8 +317,8 @@ const Dashboard = () => {
               </h3>
               <div className="space-y-3 text-sm text-gray-600" style={{ fontFamily: 'Outfit' }}>
                 <p>Welcome to Re:Earth! We invite you to join our user community.</p>
-                <p>If you have any questions, please don't hesitate to ask on <a href="#" className="text-blue-600 hover:underline">Discord</a>. There's a lot of valuable content and conversation to explore!</p>
-                <p>Searching for open data with compelling topics? Looking for inspiration for your project? Visit the <a href="#" className="text-blue-600 hover:underline">Topics</a> page and explore curated datasets and ideas!</p>
+                <p>If you have any questions, please don't hesitate to ask on <a href="https://discord.com/invite/reearth" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Discord</a>. There's a lot of valuable content and conversation to explore!</p>
+                <p>Searching for open data with compelling topics? Looking for inspiration for your project? Visit the <a href="https://reearth.io/topics" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Topics</a> page and explore curated datasets and ideas!</p>
               </div>
             </div>
 
@@ -370,11 +369,11 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
             <span>© 2024 Re:Earth contributors</span>
-            <a href="#" className="hover:text-gray-700 transition-colors">Terms</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Cookies</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Cookie Settings</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Contact</a>
+            <a href="https://reearth.io/terms" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Terms</a>
+            <a href="https://reearth.io/privacy" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Privacy</a>
+            <a href="https://reearth.io/cookies" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Cookies</a>
+            <a href="https://reearth.io/cookie-settings" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Cookie Settings</a>
+            <a href="https://reearth.io/contact" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Contact</a>
           </div>
         </div>
       </footer>
