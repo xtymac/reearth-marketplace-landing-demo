@@ -22,10 +22,12 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - `src/App.js` - Main React application with routing including Dashboard route
 - `src/components/Marketplace.jsx` - Main marketplace component with responsive navigation and card grid
 - `src/components/PluginCard.jsx` - Individual plugin card component with consistent height layout
-- `src/components/PluginDetail.jsx` - Plugin detail view component with comprehensive documentation, change log sections, and Edit plugin button
-- `src/components/Dashboard.jsx` - User dashboard with three-column layout, workspace management, and project tabs
+- `src/components/PluginDetail.jsx` - Plugin detail view component with comprehensive documentation, change log sections, and conditional Edit plugin button
+- `src/components/Dashboard.jsx` - User dashboard with three-column layout, workspace management, and project tabs using DashboardNav
+- `src/components/DashboardNav.jsx` - Specialized navigation component for dashboard pages with logo and user avatar dropdown
 - `src/components/Login.jsx` - User authentication and login component
-- `src/components/PluginUpload.jsx` - Plugin upload and management interface with integrated navbar and footer
+- `src/components/PluginUpload.jsx` - Plugin upload and management interface with DashboardNav integration
+- `src/components/PluginEdit.jsx` - Plugin editing interface using DashboardNav with form controls and settings
 - `src/components/ProtectedRoute.jsx` - Route protection wrapper for authenticated pages
 - `src/data/pluginData.js` - Plugin data with comprehensive descriptions and metadata
 - `src/services/pluginService.js` - Plugin data management services
@@ -38,6 +40,7 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 
 ### Core Components
 - **Navigation System**: Responsive header with proper Re:Earth branding, dropdown menus, consistent typography, and user avatar dropdown
+- **Dashboard Navigation**: Specialized DashboardNav component for dashboard-specific pages with dashboard logo and simplified layout
 - **Dashboard System**: Three-column layout with workspace management, project tabs, and user-friendly interface
 - **Authentication System**: Login functionality with protected routes, user session management, and avatar dropdown
 - **Search & Filter**: Real-time search functionality with comprehensive plugin filtering
@@ -59,33 +62,27 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **Plugin Management**: Edit plugin functionality with placeholder implementation for future features
 
 ### Latest Updates (Current Commit)
-- **Dashboard Implementation**: Complete user dashboard with professional interface
-  - Three-column responsive layout with workspace management, content area, and shortcuts
-  - Workspace selection with Personal and Team groups, including Japanese workspace names
-  - Project tabs (CMS Project, Visualizer Project, Plugins) with default Plugins tab
-  - Plugin list with table-like grid layout showing workspace/plugin names and platform tags
-  - Welcome card with community information and shortcut cards for Visualizer/CMS editors
-  - Integrated logged-in navbar and footer for consistent user experience
-- **Enhanced Authentication & Navigation**: Improved user experience across components
-  - Avatar dropdown with user information header showing username and email with fallback logic
-  - Navigation handlers for Dashboard, Settings, and Logout functionality
-  - Login redirect improvements to return users to original page after authentication
-  - New tab functionality for plugin submission links throughout the application
-- **Plugin Upload Enhancements**: Integrated UI components and improved navigation
-  - Reused logged-in navbar component for consistent header experience
-  - Added standard site footer to maintain design consistency
-  - Updated breadcrumb navigation with Dashboard link for better user flow
-  - Maintained all form functionality while integrating shared UI components
-- **Plugin Detail Improvements**: Enhanced functionality and user interactions
-  - Added "Edit plugin" button with proper styling between Download ZIP and Like buttons
-  - Fixed "Submit Plugin" CTA button to properly link to New Plugin page
-  - Maintained comprehensive documentation and change log sections
-  - Improved button layout and interaction patterns
-- **UI/UX Optimizations**: Refined layouts and responsive behavior
-  - Optimized plugin list grid with better column proportions (2fr_120px_60px)
-  - Enhanced title display with workspace/plugin name format and platform tags
-  - Improved mobile responsive design with vertical stacking on small screens
-  - Table-style headers positioned outside individual cards for cleaner presentation
+- **Dashboard Navigation Implementation**: Specialized navigation component for dashboard pages
+  - Created DashboardNav component with dashboard logo and streamlined interface
+  - Dashboard logo integration with clickable navigation back to dashboard
+  - Simplified navigation layout focusing on dashboard functionality
+  - Reused existing user avatar dropdown functionality for consistency
+  - Applied to all dashboard-related pages: /dashboard, /plugin/new, /plugin/[id]/edit
+- **Authentication-Based UI Controls**: Enhanced security and user experience
+  - "Edit plugin" button now conditionally displays only for authenticated users
+  - Improved user experience by hiding irrelevant actions for non-authenticated users
+  - Maintained consistent button layout and styling for authenticated users
+  - Enhanced security by preventing unauthorized access attempts through UI
+- **Component Architecture Improvements**: Better code organization and reusability
+  - Extracted dashboard navigation into reusable DashboardNav component
+  - Reduced code duplication across dashboard pages
+  - Improved maintainability with centralized dashboard navigation logic
+  - Consistent navigation behavior across all dashboard-related functionality
+- **File Structure Enhancements**: Updated project organization
+  - Added Dashboard_logo.png to public/Image/ directory for dashboard branding
+  - Organized navigation components for better code structure
+  - Maintained consistent naming conventions and file organization
+  - Enhanced asset management for dashboard-specific resources
 
 ## Development Commands
 

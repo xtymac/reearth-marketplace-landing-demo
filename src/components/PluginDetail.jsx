@@ -1137,27 +1137,26 @@ const PluginDetail = () => {
               >
                 Download ZIP
               </button>
-              <button 
-                className="text-gray-700 font-medium transition-colors hover:bg-gray-300"
-                style={{ 
-                  display: 'flex',
-                  padding: 'var(--spacing-pc-3, 12px) var(--spacing-pc-5, 20px)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: 'var(--spacing-pc-2, 8px)',
-                  borderRadius: 'var(--radius-pc-md, 6px)',
-                  background: 'var(--text-weakest, #E5E5E5)',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-                onClick={() => {
-                  // Placeholder for future edit plugin page linking
-                  console.log('Edit plugin clicked - placeholder');
-                }}
-                aria-label="Edit plugin"
-              >
-                Edit plugin
-              </button>
+              {isAuthenticated && (
+                <button 
+                  className="text-gray-700 font-medium transition-colors hover:bg-gray-300"
+                  style={{ 
+                    display: 'flex',
+                    padding: 'var(--spacing-pc-3, 12px) var(--spacing-pc-5, 20px)',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 'var(--spacing-pc-2, 8px)',
+                    borderRadius: 'var(--radius-pc-md, 6px)',
+                    background: 'var(--text-weakest, #E5E5E5)',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => navigate(`/plugin/${plugin.id}/edit`)}
+                  aria-label="Edit plugin"
+                >
+                  Edit plugin
+                </button>
+              )}
               <button 
                 className={`flex items-center transition-all duration-150 ${likeState.isLiked ? 'text-red-500' : 'text-gray-600'} hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
                 style={{ 

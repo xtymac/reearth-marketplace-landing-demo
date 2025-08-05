@@ -4,6 +4,7 @@ import Marketplace from './components/Marketplace';
 import PluginDetail from './components/PluginDetail';
 import Login from './components/Login';
 import PluginUpload from './components/PluginUpload';
+import PluginEdit from './components/PluginEdit';
 import Dashboard from './components/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
@@ -29,6 +30,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <PluginUpload />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/plugin/:id/edit" 
+            element={
+              <ProtectedRoute>
+                <PluginEdit />
               </ProtectedRoute>
             } 
           />
