@@ -171,10 +171,6 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
     navigate(`/plugin/${id}`);
   };
 
-  const handleReadmeEdit = () => {
-    setTempReadme(pluginData.readme);
-    setReadmeMode('edit');
-  };
 
   const handleReadmeSave = () => {
     setPluginData(prev => ({ ...prev, readme: tempReadme }));
