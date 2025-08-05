@@ -250,7 +250,7 @@ const PluginEdit = () => {
                       <div key={index} className="relative">
                         <img
                           src={image}
-                          alt={`Plugin image ${index + 1}`}
+                          alt={`Plugin ${index + 1}`}
                           className="w-16 h-16 object-cover rounded-md border"
                         />
                         <button
@@ -373,11 +373,11 @@ const PluginEdit = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
             <span>© 2024 Re:Earth contributors</span>
-            <a href="#" className="hover:text-gray-700 transition-colors">Terms</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Cookies</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Cookie Settings</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Contact</a>
+            <a href="https://reearth.io/terms" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Terms</a>
+            <a href="https://reearth.io/privacy" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Privacy</a>
+            <a href="https://reearth.io/cookies" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Cookies</a>
+            <a href="https://reearth.io/cookie-settings" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Cookie Settings</a>
+            <a href="https://reearth.io/contact" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Contact</a>
           </div>
         </div>
       </footer>

@@ -1173,7 +1173,6 @@ const PluginDetail = () => {
                 }}
                 onClick={handleLikeToggle}
                 onKeyDown={handleKeyDown}
-                role="button"
                 tabIndex={0}
                 aria-pressed={likeState.isLiked}
                 aria-label={likeState.isLiked ? "Unlike this plugin" : "Like this plugin"}
@@ -1317,7 +1316,7 @@ const PluginDetail = () => {
                 Submit Plugin
               </button>
               <div style={{ marginBottom: '0' }}>
-                <a href="#" className="text-blue-600 hover:underline font-semibold">
+                <a href="https://reearth.io/docs" className="text-blue-600 hover:underline font-semibold" target="_blank" rel="noopener noreferrer">
                   View documentation
                 </a>
               </div>
@@ -1331,11 +1330,11 @@ const PluginDetail = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8" style={{ paddingTop: '24px', paddingBottom: '24px' }}>
           <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
             <span>© 2024 Re:Earth contributors</span>
-            <a href="#" className="hover:text-gray-700 transition-colors">Terms</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Cookies</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Cookie Settings</a>
-            <a href="#" className="hover:text-gray-700 transition-colors">Contact</a>
+            <a href="https://reearth.io/terms" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Terms</a>
+            <a href="https://reearth.io/privacy" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Privacy</a>
+            <a href="https://reearth.io/cookies" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Cookies</a>
+            <a href="https://reearth.io/cookie-settings" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Cookie Settings</a>
+            <a href="https://reearth.io/contact" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Contact</a>
           </div>
         </div>
       </footer>
