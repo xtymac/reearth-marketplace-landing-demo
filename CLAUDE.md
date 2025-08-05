@@ -62,6 +62,20 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **Plugin Management**: Edit plugin functionality with Plugin Status toggle (Draft/Public states) and GitHub repository upload support
 
 ### Latest Updates (Current Commit)
+- **Markdown Editor Implementation**: Advanced README editing functionality in PluginEdit component
+  - Implemented tabbed Markdown editor with Edit and Preview modes
+  - Fixed content area height at 526px with scrollable overflow
+  - Integrated marked.js library for proper Markdown rendering
+  - Added comprehensive CSS styling for all Markdown elements in preview mode
+  - Clean tab interface with active state indicators and blue underline
+  - Auto-save functionality when switching between Edit and Preview tabs
+  - Save and Cancel buttons below the editor for both tabs
+  - Monospace font for edit mode, styled preview with proper typography
+- **Updated Color Scheme**: Consistent branding across edit interface
+  - Active sidebar items now use #2CC3FF (light blue) background
+  - Plugin Status toggle uses #2CC3FF when active/Public
+  - All Save buttons updated to #00A2EA (darker blue)
+  - Hover effects use opacity changes to maintain color consistency
 - **Plugin Management Enhancements**: Enhanced plugin editing and upload capabilities
   - Added Plugin Status toggle in PluginEdit component with Draft/Public states
   - Implemented GitHub repository upload option as alternative to local file upload
@@ -115,11 +129,16 @@ serve -s build
 
 ## Design System
 
-- **Primary Colors**: Blue accent (#0089D4), background (#FEFAF0)
+- **Primary Colors**: 
+  - Blue accent: #0089D4 (general links and accents)
+  - Light blue: #2CC3FF (active states, toggles)
+  - Dark blue: #00A2EA (primary actions, Save buttons)
+  - Background: #FEFAF0
 - **Typography**: 
   - English text: Outfit font family (16px, 400 weight, 140% line-height for navigation)
   - Japanese text: "Noto Sans JP" font family
   - Headings: Outfit font with various sizes (56px for main title, 24px for subtitles)
+  - Code/Markdown editor: SF Mono, Monaco, Cascadia Code, Roboto Mono, Consolas, Courier New (monospace)
 - **Layout**: CSS Grid with responsive breakpoints (1/2/3 columns)
 - **Card Design**: Consistent heights using flexbox with 16:9 aspect ratio images
 - **Responsive Design**: Mobile-first approach with desktop enhancements

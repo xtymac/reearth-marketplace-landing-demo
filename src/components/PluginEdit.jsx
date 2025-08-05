@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { X, FileText, GitBranch, AlertTriangle } from 'lucide-react';
 import DashboardNav from './DashboardNav';
@@ -16,9 +16,60 @@ const PluginEdit = () => {
       '/Image/Geospatial Data Analytics.png',
       '/Image/Detail/e22b4d43-6527-4018-bcfd-32f1f654c69c.png',
       '/Image/Detail/3aef1042-83fe-439e-b376-fa9aca050dd8.png'
-    ]
+    ],
+    readme: `# 🏙️ 3D Building Visualization
+
+**3D Building Visualization** is a powerful plugin designed to enhance urban planning workflows through immersive 3D representations of buildings and cityscapes. Perfect for architects, city planners, and disaster management teams, it provides real-time visualization of infrastructure within your Visualizer project.
+
+---
+
+## ✨ Features
+
+- 🏗️ Render realistic 3D building models from geospatial data  
+- 📊 Integrate zoning, demographic, or utility data overlays  
+- 🔄 Real-time updates for planning simulations and stakeholder presentations  
+- 🚧 Use in conjunction with disaster planning or development analysis tools  
+
+---
+
+## 📦 Use Cases
+
+- City development and zoning meetings  
+- Urban resilience planning and simulation  
+- Architectural concept visualization  
+- Interactive presentations for public and governmental review  
+
+---
+
+## 🏷️ Tags
+
+\`Urban Planning\` \`防災\` \`データビジュアライザー\`
+
+---
+
+## 🚀 Getting Started
+
+1. Add the plugin to your Visualizer workspace  
+2. Upload or connect to your 3D building dataset (e.g., CityGML, GeoJSON)  
+3. Configure layers and styling from the plugin settings  
+4. Start exploring your city in 3D!
+
+---
+
+## 📄 License
+
+MIT License © 2025 YourCompanyName
+
+---
+
+## 📬 Support
+
+Have questions or feature requests?  
+Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
   });
   const [newTag, setNewTag] = useState('');
+  const [readmeMode, setReadmeMode] = useState('preview'); // 'edit' or 'preview'
+  const [tempReadme, setTempReadme] = useState('');
   const fileInputRef = useRef(null);
 
   const sidebarItems = [
@@ -86,6 +137,65 @@ const PluginEdit = () => {
     navigate(`/plugin/${id}`);
   };
 
+  const handleReadmeEdit = () => {
+    setTempReadme(pluginData.readme);
+    setReadmeMode('edit');
+  };
+
+  const handleReadmeSave = () => {
+    setPluginData(prev => ({ ...prev, readme: tempReadme }));
+    setReadmeMode('preview');
+  };
+
+  const handleReadmeCancel = () => {
+    setTempReadme('');
+    setReadmeMode('preview');
+  };
+
+  const [markedLoaded, setMarkedLoaded] = useState(false);
+
+  useEffect(() => {
+    // Load marked library dynamically
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+    script.async = true;
+    script.onload = () => setMarkedLoaded(true);
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const renderMarkdown = (text) => {
+    // If marked is loaded, use it for better rendering
+    if (markedLoaded && window.marked) {
+      return window.marked.parse(text);
+    }
+
+    // Fallback to simple markdown rendering
+    let html = text
+      // Headers
+      .replace(/^### (.*$)/gm, '<h3 class="text-lg font-semibold text-gray-900 mb-2">$1</h3>')
+      .replace(/^## (.*$)/gm, '<h2 class="text-xl font-semibold text-gray-900 mb-3">$1</h2>')
+      .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-gray-900 mb-4">$1</h1>')
+      // Bold text
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+      // Inline code
+      .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>')
+      // Links
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline">$1</a>')
+      // Horizontal rules
+      .replace(/^---$/gm, '<hr class="border-gray-300 my-4">')
+      // Lists
+      .replace(/^- (.*$)/gm, '<li class="ml-4">• $1</li>')
+      .replace(/^(\d+)\. (.*$)/gm, '<li class="ml-4">$1. $2</li>')
+      // Line breaks
+      .replace(/\n/g, '<br>');
+
+    return html;
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FEFAF0' }}>
       {/* Header */}
@@ -123,10 +233,15 @@ const PluginEdit = () => {
                     onClick={() => setActiveSection(item.id)}
                     className={`w-full flex items-center space-x-3 px-4 py-3 text-left transition-colors ${
                       isActive 
-                        ? 'bg-blue-500 text-white' 
+                        ? 'text-white' 
                         : 'text-gray-700 hover:bg-gray-50'
                     } ${item.id === 'General' ? 'rounded-t-lg' : ''} ${item.id === 'Danger Zone' ? 'rounded-b-lg' : ''}`}
-                    style={{ fontFamily: 'Outfit', fontSize: '14px', fontWeight: 500 }}
+                    style={{ 
+                      fontFamily: 'Outfit', 
+                      fontSize: '14px', 
+                      fontWeight: 500,
+                      backgroundColor: isActive ? '#2CC3FF' : 'transparent'
+                    }}
                   >
                     <IconComponent className="w-4 h-4" />
                     <span>{item.label}</span>
@@ -145,18 +260,28 @@ const PluginEdit = () => {
                   className="text-2xl font-semibold text-gray-900 mb-2"
                   style={{ fontFamily: 'Outfit' }}
                 >
-                  General
+                  {activeSection}
                 </h1>
                 <p 
-                  className="text-gray-600"
-                  style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                  style={{ 
+                    color: 'var(--text-default, #0A0A0A)',
+                    fontFamily: 'Outfit',
+                    fontSize: '14px',
+                    fontStyle: 'normal',
+                    fontWeight: 400,
+                    lineHeight: '140%'
+                  }}
                 >
-                  General and Basic Settings of the Project
+                  {activeSection === 'General' && 'General and Basic Settings of the Project'}
+                  {activeSection === 'README' && 'This will be shown as the plugin\'s Overview—describe what it does and how to use it.'}
+                  {activeSection === 'Version' && 'Manage plugin versions and releases'}
+                  {activeSection === 'Danger Zone' && 'Permanent actions that cannot be undone'}
                 </p>
               </div>
 
-              {/* Form Fields */}
-              <div className="space-y-8">
+              {/* Content based on active section */}
+              {activeSection === 'General' && (
+                <div className="space-y-8">
                 {/* Plugin Status */}
                 <div>
                   <label 
@@ -167,9 +292,10 @@ const PluginEdit = () => {
                   </label>
                   <button
                     onClick={handleStatusToggle}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                      pluginData.status === 'Public' ? 'bg-blue-500' : 'bg-gray-300'
-                    }`}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+                    style={{
+                      backgroundColor: pluginData.status === 'Public' ? '#2CC3FF' : '#E5E7EB'
+                    }}
                   >
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -330,8 +456,8 @@ const PluginEdit = () => {
                     />
                     <button
                       onClick={addTag}
-                      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
-                      style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                      className="px-4 py-2 text-white rounded-md hover:opacity-90 focus:outline-none"
+                      style={{ fontFamily: 'Outfit', fontSize: '14px', backgroundColor: '#00A2EA' }}
                     >
                       Add
                     </button>
@@ -345,13 +471,188 @@ const PluginEdit = () => {
                   </p>
                 </div>
               </div>
+              )}
 
-              {/* Action Buttons */}
+              {/* README Section */}
+              {activeSection === 'README' && (
+                <div>
+                  {/* Markdown Editor Container */}
+                  <div className="border border-gray-300 rounded-lg overflow-hidden">
+                    {/* Edit/Preview Tabs */}
+                    <div className="flex border-b border-gray-300 bg-gray-50">
+                      <button
+                        onClick={() => {
+                          if (readmeMode === 'preview') {
+                            setTempReadme(pluginData.readme);
+                          }
+                          setReadmeMode('edit');
+                        }}
+                        className={`px-6 py-3 text-sm font-medium transition-colors relative ${
+                          readmeMode === 'edit'
+                            ? 'text-gray-900 bg-white'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                        style={{ fontFamily: 'Outfit' }}
+                      >
+                        Edit
+                        {readmeMode === 'edit' && (
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"></div>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (readmeMode === 'edit' && tempReadme) {
+                            setPluginData(prev => ({ ...prev, readme: tempReadme }));
+                          }
+                          setReadmeMode('preview');
+                        }}
+                        className={`px-6 py-3 text-sm font-medium transition-colors relative ${
+                          readmeMode === 'preview'
+                            ? 'text-gray-900 bg-white'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                        style={{ fontFamily: 'Outfit' }}
+                      >
+                        Preview
+                        {readmeMode === 'preview' && (
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"></div>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Content Area */}
+                    <div style={{ height: '526px', overflow: 'hidden', backgroundColor: 'white' }}>
+                      {/* Edit Mode */}
+                      {readmeMode === 'edit' && (
+                        <textarea
+                          value={tempReadme || pluginData.readme}
+                          onChange={(e) => setTempReadme(e.target.value)}
+                          className="w-full h-full p-4 border-0 resize-none focus:outline-none font-mono"
+                          style={{ 
+                            fontSize: '14px', 
+                            lineHeight: '1.6',
+                            fontFamily: "'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace"
+                          }}
+                          placeholder="Type your markdown here..."
+                        />
+                      )}
+
+                      {/* Preview Mode */}
+                      {readmeMode === 'preview' && (
+                        <div 
+                          className="h-full overflow-y-auto p-4 markdown-preview"
+                          style={{ fontFamily: 'Outfit', fontSize: '14px', lineHeight: '1.6' }}
+                        >
+                          <style jsx>{`
+                            .markdown-preview h1 {
+                              font-size: 28px;
+                              font-weight: 600;
+                              margin-bottom: 16px;
+                              padding-bottom: 8px;
+                              border-bottom: 1px solid #eee;
+                            }
+                            .markdown-preview h2 {
+                              font-size: 22px;
+                              font-weight: 600;
+                              margin-top: 24px;
+                              margin-bottom: 12px;
+                            }
+                            .markdown-preview h3 {
+                              font-size: 18px;
+                              font-weight: 600;
+                              margin-top: 20px;
+                              margin-bottom: 10px;
+                            }
+                            .markdown-preview p {
+                              margin-bottom: 12px;
+                            }
+                            .markdown-preview ul,
+                            .markdown-preview ol {
+                              margin-bottom: 12px;
+                              padding-left: 24px;
+                            }
+                            .markdown-preview li {
+                              margin-bottom: 4px;
+                            }
+                            .markdown-preview code {
+                              background-color: #f6f8fa;
+                              padding: 2px 4px;
+                              border-radius: 3px;
+                              font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+                              font-size: 85%;
+                            }
+                            .markdown-preview pre {
+                              background-color: #f6f8fa;
+                              padding: 12px;
+                              border-radius: 6px;
+                              overflow-x: auto;
+                              margin-bottom: 12px;
+                            }
+                            .markdown-preview pre code {
+                              background-color: transparent;
+                              padding: 0;
+                            }
+                            .markdown-preview blockquote {
+                              border-left: 4px solid #dfe2e5;
+                              padding-left: 16px;
+                              color: #6a737d;
+                              margin-bottom: 12px;
+                            }
+                            .markdown-preview hr {
+                              border: 0;
+                              height: 1px;
+                              background-color: #e1e4e8;
+                              margin: 24px 0;
+                            }
+                            .markdown-preview strong {
+                              font-weight: 600;
+                            }
+                            .markdown-preview em {
+                              font-style: italic;
+                            }
+                            .markdown-preview a {
+                              color: #0066cc;
+                              text-decoration: none;
+                            }
+                            .markdown-preview a:hover {
+                              text-decoration: underline;
+                            }
+                          `}</style>
+                          <div 
+                            dangerouslySetInnerHTML={{ __html: renderMarkdown(pluginData.readme) }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Action Buttons for README */}
+                  <div className="flex gap-4 mt-6">
+                    <button
+                      onClick={handleReadmeSave}
+                      className="text-white px-6 py-2 rounded-md font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                      style={{ fontFamily: 'Outfit', backgroundColor: '#00A2EA' }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={handleReadmeCancel}
+                      className="bg-gray-100 text-gray-700 px-6 py-2 rounded-md font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                      style={{ fontFamily: 'Outfit' }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons - only show for General section */}
+              {activeSection === 'General' && (
               <div className="flex gap-4 mt-8 pt-6 border-t border-gray-200">
                 <button
                   onClick={handleSave}
-                  className="bg-blue-500 text-white px-6 py-2 rounded-md font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  style={{ fontFamily: 'Outfit' }}
+                  className="text-white px-6 py-2 rounded-md font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  style={{ fontFamily: 'Outfit', backgroundColor: '#00A2EA' }}
                 >
                   Save
                 </button>
@@ -363,6 +664,7 @@ const PluginEdit = () => {
                   Cancel
                 </button>
               </div>
+              )}
             </div>
           </div>
         </div>
