@@ -26,8 +26,8 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - `src/components/Dashboard.jsx` - User dashboard with three-column layout, workspace management, and project tabs using DashboardNav
 - `src/components/DashboardNav.jsx` - Specialized navigation component for dashboard pages with logo and user avatar dropdown
 - `src/components/Login.jsx` - User authentication and login component
-- `src/components/PluginUpload.jsx` - Plugin upload and management interface with DashboardNav integration
-- `src/components/PluginEdit.jsx` - Plugin editing interface using DashboardNav with form controls and settings
+- `src/components/PluginUpload.jsx` - Plugin upload and management interface with DashboardNav integration and GitHub repository upload option
+- `src/components/PluginEdit.jsx` - Plugin editing interface using DashboardNav with form controls, Plugin Status toggle (Draft/Public), and settings
 - `src/components/ProtectedRoute.jsx` - Route protection wrapper for authenticated pages
 - `src/data/pluginData.js` - Plugin data with comprehensive descriptions and metadata
 - `src/services/pluginService.js` - Plugin data management services
@@ -59,25 +59,25 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **User Authentication**: Secure login system with protected routes, user data storage, and avatar dropdown functionality
 - **Dashboard Interface**: Comprehensive user dashboard with workspace selection, project tabs, and activity tracking
 - **Plugin Upload**: Complete plugin submission workflow with form validation, file handling, and integrated UI
-- **Plugin Management**: Edit plugin functionality with placeholder implementation for future features
+- **Plugin Management**: Edit plugin functionality with Plugin Status toggle (Draft/Public states) and GitHub repository upload support
 
 ### Latest Updates (Current Commit)
-- **Netlify Deployment Fixes**: Resolved production build errors for successful deployment
-  - Added .env file with CI=false to prevent ESLint warnings from breaking builds
-  - Cleaned up unused imports across Dashboard.jsx, PluginEdit.jsx, and PluginUpload.jsx components
-  - Fixed href="#" accessibility warnings with proper Re:Earth URLs
-  - Removed deprecated @tailwindcss/line-clamp plugin from configuration
-  - Significantly reduced ESLint warnings from 30+ to ~15 for cleaner builds
-- **Code Quality Improvements**: Enhanced maintainability and bundle optimization
-  - Eliminated unused variables and functions (getBadgeInitials, versionLabelOptions)
-  - Streamlined import statements reducing bundle size and compilation warnings
-  - Improved accessibility with proper href attributes for Discord, Topics, Terms, Privacy links
-  - Better error handling for production CI/CD environments
-- **Build Process Optimization**: Configured for reliable deployments
-  - Environment configuration to handle CI/CD pipeline requirements
-  - Tailwind CSS configuration updated for v3.3+ compatibility
-  - Reduced build warnings that could cause deployment failures
-  - Optimized for Netlify and other static hosting platforms
+- **Plugin Management Enhancements**: Enhanced plugin editing and upload capabilities
+  - Added Plugin Status toggle in PluginEdit component with Draft/Public states
+  - Implemented GitHub repository upload option as alternative to local file upload
+  - Enhanced form validation to handle both local file and GitHub URL inputs
+  - Added toggle UI with proper state management and visual feedback
+  - GitHub URL validation with regex pattern for repository format validation
+- **Dashboard Navigation Implementation**: Centralized navigation for dashboard pages
+  - Created DashboardNav component for /dashboard, /plugin/new, /plugin/[id]/edit pages
+  - Integrated dashboard logo functionality with clickable navigation back to dashboard
+  - Reduced code duplication by centralizing dashboard-specific navigation logic
+  - Maintained consistent user experience across authenticated dashboard pages
+- **Upload Workflow Improvements**: Flexible plugin submission methods
+  - Toggle between local file upload and GitHub repository options
+  - GitHub repository input with placeholder and validation
+  - Notes section explaining repository requirements (public, main branch only)
+  - Updated form handling to accommodate both upload methods with proper error handling
 
 ## Development Commands
 

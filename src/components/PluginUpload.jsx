@@ -10,11 +10,13 @@ const PluginUpload = () => {
     images: [],
     description: '',
     file: null,
+    githubUrl: '',
     version: 'v0.01',
     releaseNotes: '',
     versionLabels: [],
     functionTags: []
   });
+  const [uploadMethod, setUploadMethod] = useState('local'); // 'local' or 'github'
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [uploadedPluginId, setUploadedPluginId] = useState(null);
@@ -219,8 +221,21 @@ const PluginUpload = () => {
       newErrors.images = 'At least one plugin image is required';
     }
     
-    if (!formData.file) {
-      newErrors.file = 'Plugin file is required';
+    // Validate file or GitHub URL based on upload method
+    if (uploadMethod === 'local') {
+      if (!formData.file) {
+        newErrors.file = 'Plugin file is required';
+      }
+    } else if (uploadMethod === 'github') {
+      if (!formData.githubUrl.trim()) {
+        newErrors.githubUrl = 'GitHub repository URL is required';
+      } else {
+        // Basic GitHub URL validation
+        const githubUrlPattern = /^https?:\/\/(www\.)?github\.com\/[\w\-.]+\/[\w\-.]+\/?$/;
+        if (!githubUrlPattern.test(formData.githubUrl.trim())) {
+          newErrors.githubUrl = 'Please enter a valid GitHub repository URL (e.g., github.com/username/plugin-name)';
+        }
+      }
     }
 
     setErrors(newErrors);
@@ -228,7 +243,11 @@ const PluginUpload = () => {
   };
 
   const isFormValid = () => {
-    return formData.workspace && formData.name.trim() && formData.images.length > 0 && formData.file;
+    const hasFileOrGithub = uploadMethod === 'local' 
+      ? formData.file 
+      : formData.githubUrl.trim();
+    
+    return formData.workspace && formData.name.trim() && formData.images.length > 0 && hasFileOrGithub;
   };
 
   const handleSubmit = async (e) => {
@@ -257,11 +276,13 @@ const PluginUpload = () => {
       images: [],
       description: '',
       file: null,
+      githubUrl: '',
       version: 'v0.01',
       releaseNotes: '',
       versionLabels: [],
       functionTags: []
     });
+    setUploadMethod('local');
     setIsSuccess(false);
     setUploadedPluginId(null);
     setErrors({});
@@ -583,69 +604,123 @@ const PluginUpload = () => {
                 Plugin File <span className="text-red-500">*</span>
               </label>
               <div className="space-y-4">
-                {/* Upload Buttons */}
+                {/* Upload Method Selection */}
                 <div className="flex gap-3">
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 focus:outline-none"
+                    onClick={() => {
+                      setUploadMethod('local');
+                      setFormData(prev => ({ ...prev, githubUrl: '' }));
+                    }}
+                    className={`px-4 py-2 rounded-md text-sm focus:outline-none transition-colors ${
+                      uploadMethod === 'local'
+                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                    }`}
                   >
                     Upload from local
                   </button>
                   <button
                     type="button"
-                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50 focus:outline-none"
+                    onClick={() => {
+                      setUploadMethod('github');
+                      setFormData(prev => ({ ...prev, file: null }));
+                    }}
+                    className={`px-4 py-2 rounded-md text-sm focus:outline-none transition-colors ${
+                      uploadMethod === 'github'
+                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                    }`}
                   >
                     GitHub
                   </button>
                 </div>
 
-                {/* Drag and Drop Zone */}
-                <div 
-                  className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
-                    dragActive 
-                      ? 'border-blue-400 bg-blue-50' 
-                      : errors.file 
-                        ? 'border-red-300' 
-                        : 'border-blue-300'
-                  }`}
-                  onDragEnter={handleDragEnter}
-                  onDragLeave={handleDragLeave}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    onChange={handleFileChange}
-                    className="hidden"
-                    accept=".zip"
-                    disabled={isLoading}
-                  />
-                  <div className="flex justify-center mb-4">
-                    <div className="w-12 h-12 border-2 border-gray-400 rounded flex items-center justify-center">
-                      <Upload className="h-6 w-6 text-gray-400" />
+                {uploadMethod === 'local' ? (
+                  <>
+                    {/* Drag and Drop Zone */}
+                    <div 
+                      className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
+                        dragActive 
+                          ? 'border-blue-400 bg-blue-50' 
+                          : errors.file 
+                            ? 'border-red-300' 
+                            : 'border-blue-300'
+                      }`}
+                      onDragEnter={handleDragEnter}
+                      onDragLeave={handleDragLeave}
+                      onDragOver={handleDragOver}
+                      onDrop={handleDrop}
+                    >
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        onChange={handleFileChange}
+                        className="hidden"
+                        accept=".zip"
+                        disabled={isLoading}
+                      />
+                      <div className="flex justify-center mb-4">
+                        <div className="w-12 h-12 border-2 border-gray-400 rounded flex items-center justify-center">
+                          <Upload className="h-6 w-6 text-gray-400" />
+                        </div>
+                      </div>
+                      <p className="text-base text-gray-600 mb-1">
+                        Click or drag file to this area to upload
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        ZIP file up to 50MB
+                      </p>
                     </div>
-                  </div>
-                  <p className="text-base text-gray-600 mb-1">
-                    Click or drag file to this area to upload
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    ZIP file up to 50MB
-                  </p>
-                </div>
 
-                {/* Selected File Display */}
-                {formData.file && (
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Upload className="h-4 w-4 mr-2" />
-                    <span>{formData.file.name}</span>
-                  </div>
+                    {/* Selected File Display */}
+                    {formData.file && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Upload className="h-4 w-4 mr-2" />
+                        <span>{formData.file.name}</span>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {/* GitHub Repository Input */}
+                    <div className="space-y-3">
+                      <input
+                        type="url"
+                        placeholder="github.com/username/plugin-name"
+                        value={formData.githubUrl}
+                        onChange={(e) => setFormData(prev => ({ ...prev, githubUrl: e.target.value }))}
+                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                          errors.githubUrl ? 'border-red-300' : 'border-gray-300'
+                        }`}
+                        disabled={isLoading}
+                      />
+                      
+                      {/* GitHub Notes */}
+                      <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
+                        <p className="text-sm text-blue-800 font-medium mb-1">📌 Notes:</p>
+                        <ul className="text-sm text-blue-700 space-y-1">
+                          <li>• Set your repository to public</li>
+                          <li>• Only the main branch is used</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* GitHub URL Display */}
+                    {formData.githubUrl && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 0a10 10 0 00-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.13-1.1-1.43-1.1-1.43-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0010 0z" clipRule="evenodd" />
+                        </svg>
+                        <span>{formData.githubUrl}</span>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
-              {errors.file && (
+              {(errors.file || errors.githubUrl) && (
                 <p className="mt-1 text-sm text-red-600" role="alert">
-                  {errors.file}
+                  {errors.file || errors.githubUrl}
                 </p>
               )}
             </div>

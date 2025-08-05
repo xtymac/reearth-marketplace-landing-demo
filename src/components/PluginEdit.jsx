@@ -32,7 +32,7 @@ const PluginEdit = () => {
   const handleStatusToggle = () => {
     setPluginData(prev => ({
       ...prev,
-      status: prev.status === 'Public' ? 'Private' : 'Public'
+      status: prev.status === 'Public' ? 'Draft' : 'Public'
     }));
   };
 
