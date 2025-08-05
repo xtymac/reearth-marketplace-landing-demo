@@ -811,6 +811,14 @@ const PluginDetail = () => {
     navigate('/settings');
   };
 
+  const handleStartClick = () => {
+    if (isAuthenticated) {
+      navigate('/plugin/new');
+    } else {
+      navigate('/login');
+    }
+  };
+
   // Close user dropdown when clicking outside or on escape/tab
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -1017,10 +1025,12 @@ const PluginDetail = () => {
                     <span className="text-gray-600" style={{ fontFamily: 'Outfit' }}>Sign up</span>
                   </div>
                   <button 
+                    onClick={handleStartClick}
                     className="text-white px-6 py-2 rounded-md text-sm font-semibold transition-colors"
                     style={{ backgroundColor: '#0089D4', fontFamily: 'Outfit' }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = '#007BB8'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = '#0089D4'}
+                    aria-label="Start plugin submission"
                   >
                     Start
                   </button>
