@@ -62,6 +62,26 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **Plugin Management**: Edit plugin functionality with Plugin Status toggle (Draft/Public states) and GitHub repository upload support
 
 ### Latest Updates (Current Commit)
+- **Version Management System**: Complete version changelog editing interface
+  - Implemented Version tab with professional version cards matching Plugin detail page design
+  - Multi-tag selection system with four status labels: Bug Fix, New Feature, Doc Update, UI Update
+  - Custom tag dimensions: Bug Fix (62px), New Feature (96px), Doc Update (91px), UI Update (79px)
+  - Show more/less functionality with 2-line content truncation
+  - Edit mode with tag selection, content editing, and Save/Cancel functionality
+  - Version cards with proper styling: white background, subtle shadow, rounded corners
+  - Real-time tag toggle with visual feedback (opacity and border changes)
+- **Danger Zone Implementation**: Plugin deletion interface with safety warnings
+  - Added Danger Zone tab with Delete Plugin functionality
+  - Removed subtitle for cleaner layout
+  - Delete button with destructive styling (#F47579 background)
+  - Comprehensive warning text with proper neutral gray color (#737373)
+  - Support contact link with function link color (#0089D4)
+  - Multi-paragraph warning about irreversible actions and data loss
+- **Enhanced Plugin Edit Interface**: Improved navigation and user experience
+  - New version button positioned at top right of Version title
+  - Consistent dividers under all tab subtitles
+  - Updated header layout with conditional button placement
+  - Professional version history with expandable content
 - **Markdown Editor Implementation**: Advanced README editing functionality in PluginEdit component
   - Implemented tabbed Markdown editor with Edit and Preview modes
   - Fixed content area height at 526px with scrollable overflow

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { X, FileText, GitBranch, AlertTriangle } from 'lucide-react';
+import { X, FileText, GitBranch, AlertTriangle, Plus } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 
 const PluginEdit = () => {
@@ -70,6 +70,40 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
   const [newTag, setNewTag] = useState('');
   const [readmeMode, setReadmeMode] = useState('preview'); // 'edit' or 'preview'
   const [tempReadme, setTempReadme] = useState('');
+  const [versions, setVersions] = useState([
+    {
+      id: 1,
+      version: '2.1.3',
+      content: 'Performance improvements and bug fixes to enhance user experience. Fixed memory leaks, improved rendering performance by 25%, and resolved browser compatibility issues for smoother visualization workflows. Updated documentation with new API examples and enhanced user interface with better accessibility features.',
+      tags: ['Bug Fix', 'Doc Update', 'UI Update'],
+      isEditing: false,
+      isExpanded: false
+    },
+    {
+      id: 2,
+      version: '2.1.0',
+      content: 'Major update introducing comprehensive material library with 50+ realistic building materials and dynamic lighting system. Features include sun position simulation, shadow casting, and real-time atmospheric effects for enhanced realism.',
+      tags: ['New Feature'],
+      isEditing: false,
+      isExpanded: false
+    },
+    {
+      id: 3,
+      version: '1.9.2',
+      content: 'Comprehensive user interface improvements focusing on usability and accessibility. Redesigned control panels, added keyboard shortcuts, enhanced mobile responsiveness, and improved screen reader support for better inclusive design.',
+      tags: ['UI Update'],
+      isEditing: false,
+      isExpanded: false
+    },
+    {
+      id: 4,
+      version: '1.9.0',
+      content: 'Enhanced data handling capabilities with support for BIM file formats (IFC, RVT), automatic Level of Detail generation, improved GeoJSON parsing, and batch processing capabilities for handling large-scale architectural datasets efficiently.',
+      tags: ['New Feature', 'Doc Update'],
+      isEditing: false,
+      isExpanded: false
+    }
+  ]);
   const fileInputRef = useRef(null);
 
   const sidebarItems = [
@@ -150,6 +184,129 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
   const handleReadmeCancel = () => {
     setTempReadme('');
     setReadmeMode('preview');
+  };
+
+  const handleVersionEdit = (versionId) => {
+    setVersions(prev => prev.map(v => 
+      v.id === versionId ? { ...v, isEditing: true, tempContent: v.content, tempTags: [...v.tags] } : v
+    ));
+  };
+
+  const handleVersionSave = (versionId) => {
+    setVersions(prev => prev.map(v => 
+      v.id === versionId ? { 
+        ...v, 
+        isEditing: false, 
+        content: v.tempContent, 
+        tags: v.tempTags,
+        tempContent: undefined,
+        tempTags: undefined
+      } : v
+    ));
+  };
+
+  const handleVersionCancel = (versionId) => {
+    setVersions(prev => prev.map(v => 
+      v.id === versionId ? { 
+        ...v, 
+        isEditing: false, 
+        tempContent: undefined,
+        tempTags: undefined
+      } : v
+    ));
+  };
+
+  const handleVersionChange = (versionId, newContent) => {
+    setVersions(prev => prev.map(v => 
+      v.id === versionId ? { ...v, tempContent: newContent } : v
+    ));
+  };
+
+  const handleNewVersion = () => {
+    const newVersion = {
+      id: Math.max(...versions.map(v => v.id)) + 1,
+      version: '2.2.0', // This would be generated from YML file
+      content: 'New version with improvements and features',
+      tags: [],
+      isEditing: true,
+      tempContent: 'New version with improvements and features',
+      tempTags: [],
+      isExpanded: false
+    };
+    setVersions([newVersion, ...versions]);
+  };
+
+  const handleTagToggle = (versionId, tag) => {
+    setVersions(prev => prev.map(v => {
+      if (v.id === versionId) {
+        const currentTags = v.tempTags || v.tags;
+        const newTags = currentTags.includes(tag)
+          ? currentTags.filter(t => t !== tag)
+          : [...currentTags, tag];
+        return { ...v, tempTags: newTags };
+      }
+      return v;
+    }));
+  };
+
+  const getTagStyle = (tag) => {
+    const baseStyle = {
+      display: 'flex',
+      height: '28px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexShrink: 0,
+      borderRadius: '14px',
+      fontSize: '12px',
+      fontWeight: 500,
+      fontFamily: 'Outfit',
+      cursor: 'pointer',
+      border: 'none'
+    };
+
+    switch (tag) {
+      case 'Bug Fix':
+        return {
+          ...baseStyle,
+          width: '62px',
+          backgroundColor: '#FFE6E6',
+          color: '#D32F2F'
+        };
+      case 'New Feature':
+        return {
+          ...baseStyle,
+          width: '96px',
+          backgroundColor: '#FFF3E0',
+          color: '#F57C00'
+        };
+      case 'Doc Update':
+        return {
+          ...baseStyle,
+          width: '91px',
+          backgroundColor: '#E6F0FF',
+          color: '#1976D2'
+        };
+      case 'UI Update':
+        return {
+          ...baseStyle,
+          width: '79px',
+          backgroundColor: '#FFE6F5',
+          color: '#C2185B'
+        };
+      default:
+        return {
+          ...baseStyle,
+          width: '62px',
+          backgroundColor: '#F5F5F5',
+          color: '#666666'
+        };
+    }
+  };
+
+  const toggleVersionExpanded = (versionId) => {
+    setVersions(prev => prev.map(v => 
+      v.id === versionId ? { ...v, isExpanded: !v.isExpanded } : v
+    ));
   };
 
   const [markedLoaded, setMarkedLoaded] = useState(false);
@@ -255,13 +412,36 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
           <div className="flex-1">
             <div className="bg-white rounded-lg shadow-sm p-8">
               {/* Header */}
-              <div className="mb-8">
-                <h1 
-                  className="text-2xl font-semibold text-gray-900 mb-2"
-                  style={{ fontFamily: 'Outfit' }}
-                >
-                  {activeSection}
-                </h1>
+              <div className="mb-6">
+                <div className="flex justify-between items-start mb-2">
+                  <h1 
+                    className="text-2xl font-semibold text-gray-900"
+                    style={{ fontFamily: 'Outfit' }}
+                  >
+                    {activeSection}
+                  </h1>
+                  {activeSection === 'Version' && (
+                    <button
+                      onClick={handleNewVersion}
+                      className="text-white rounded-md hover:opacity-90 focus:outline-none"
+                      style={{
+                        display: 'flex',
+                        padding: '8px 16px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '8px',
+                        borderRadius: '6px',
+                        backgroundColor: '#00A2EA',
+                        fontFamily: 'Outfit',
+                        fontSize: '14px',
+                        fontWeight: 500
+                      }}
+                    >
+                      <Plus className="w-4 h-4" />
+                      New version
+                    </button>
+                  )}
+                </div>
                 <p 
                   style={{ 
                     color: 'var(--text-default, #0A0A0A)',
@@ -274,9 +454,10 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                 >
                   {activeSection === 'General' && 'General and Basic Settings of the Project'}
                   {activeSection === 'README' && 'This will be shown as the plugin\'s Overview—describe what it does and how to use it.'}
-                  {activeSection === 'Version' && 'Manage plugin versions and releases'}
-                  {activeSection === 'Danger Zone' && 'Permanent actions that cannot be undone'}
+                  {activeSection === 'Version' && 'Edit the changelog for each version. Version numbers are automatically loaded from the plugin\'s YML file.'}
+                  {activeSection === 'Danger Zone' && ''}
                 </p>
+                <div className="mt-4 border-b border-gray-200"></div>
               </div>
 
               {/* Content based on active section */}
@@ -642,6 +823,223 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                     >
                       Cancel
                     </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Version Section */}
+              {activeSection === 'Version' && (
+                <div className="space-y-4">
+                    {versions.map((version) => (
+                      <div 
+                        key={version.id} 
+                        style={{
+                          display: 'flex',
+                          padding: '20px 24px',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                          gap: '14px',
+                          alignSelf: 'stretch',
+                          borderRadius: '8px',
+                          border: '1px solid #D4D4D4',
+                          background: '#FFF',
+                          boxShadow: '2px 2px 2px 0 rgba(0, 0, 0, 0.05)'
+                        }}
+                      >
+                        <div className="flex justify-between items-start w-full">
+                          <div className="flex items-center gap-3">
+                            <h3 
+                              className="text-lg font-semibold text-gray-900"
+                              style={{ fontFamily: 'Outfit' }}
+                            >
+                              Version {version.version}
+                            </h3>
+                            {!version.isEditing && version.tags && version.tags.length > 0 && (
+                              <div className="flex gap-2">
+                                {version.tags.map((tag, index) => (
+                                  <span
+                                    key={index}
+                                    style={getTagStyle(tag)}
+                                  >
+                                    {tag === 'Bug Fix' ? 'Bug Fix' : 
+                                     tag === 'New Feature' ? 'New Feature' : 
+                                     tag === 'Doc Update' ? 'Doc Update' : 
+                                     'UI Update'}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          {!version.isEditing && (
+                            <button
+                              onClick={() => handleVersionEdit(version.id)}
+                              className="text-gray-600 hover:text-gray-900 text-sm font-medium"
+                              style={{ fontFamily: 'Outfit' }}
+                            >
+                              Edit
+                            </button>
+                          )}
+                        </div>
+
+                        {version.isEditing ? (
+                          <div className="w-full space-y-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Outfit' }}>
+                                Tags
+                              </label>
+                              <div className="flex gap-2 flex-wrap">
+                                {['Bug Fix', 'New Feature', 'Doc Update', 'UI Update'].map((tag) => {
+                                  const isSelected = (version.tempTags || version.tags).includes(tag);
+                                  return (
+                                    <button
+                                      key={tag}
+                                      onClick={() => handleTagToggle(version.id, tag)}
+                                      style={{
+                                        ...getTagStyle(tag),
+                                        opacity: isSelected ? 1 : 0.5,
+                                        border: isSelected ? '2px solid currentColor' : '2px solid transparent'
+                                      }}
+                                    >
+                                      {tag === 'Bug Fix' ? 'Bug Fix' : 
+                                       tag === 'New Feature' ? 'New Feature' : 
+                                       tag === 'Doc Update' ? 'Doc Update' : 
+                                       'UI Update'}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                            <textarea
+                              value={version.tempContent || version.content}
+                              onChange={(e) => handleVersionChange(version.id, e.target.value)}
+                              rows={4}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                              placeholder="Enter version description..."
+                            />
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleVersionSave(version.id)}
+                                className="px-4 py-2 text-white rounded-md hover:opacity-90 focus:outline-none"
+                                style={{ 
+                                  fontFamily: 'Outfit', 
+                                  fontSize: '14px',
+                                  backgroundColor: '#00A2EA'
+                                }}
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => handleVersionCancel(version.id)}
+                                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none"
+                                style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <p 
+                              className="text-gray-700"
+                              style={{ 
+                                fontFamily: 'Outfit', 
+                                fontSize: '16px', 
+                                lineHeight: '1.6',
+                                display: '-webkit-box',
+                                WebkitBoxOrient: 'vertical',
+                                WebkitLineClamp: version.isExpanded ? 'unset' : 2,
+                                overflow: version.isExpanded ? 'visible' : 'hidden'
+                              }}
+                            >
+                              {version.content}
+                            </p>
+                            <button
+                              onClick={() => toggleVersionExpanded(version.id)}
+                              className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-2"
+                              style={{ fontFamily: 'Outfit' }}
+                            >
+                              {version.isExpanded ? 'Show less' : 'Show more'}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                </div>
+              )}
+
+              {/* Danger Zone Section */}
+              {activeSection === 'Danger Zone' && (
+                <div className="space-y-6">
+                  {/* Delete Plugin Section */}
+                  <div>
+                    <h2 
+                      className="text-lg font-semibold text-gray-900 mb-4"
+                      style={{ fontFamily: 'Outfit' }}
+                    >
+                      Delete Plugin
+                    </h2>
+                    
+                    <button
+                      onClick={() => {
+                        // Handle delete plugin logic here
+                        console.log('Delete plugin clicked');
+                      }}
+                      className="text-white rounded-md hover:opacity-90 focus:outline-none mb-4"
+                      style={{
+                        display: 'flex',
+                        padding: '8px 16px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '6px',
+                        background: '#F47579',
+                        fontFamily: 'Outfit',
+                        fontSize: '14px',
+                        fontWeight: 500
+                      }}
+                    >
+                      Delete
+                    </button>
+
+                    <div 
+                      style={{
+                        color: '#737373',
+                        fontFamily: 'Outfit',
+                        fontSize: '14px',
+                        fontStyle: 'normal',
+                        fontWeight: 400,
+                        lineHeight: '140%'
+                      }}
+                    >
+                      <p className="mb-3">
+                        You are about to delete this plugin. This action is irreversible and will immediately remove the plugin from the marketplace and all workspaces.
+                      </p>
+                      <p className="mb-3">
+                        All associated data will be permanently deleted and cannot be recovered.
+                      </p>
+                      <p className="mb-3">
+                        If you're only taking a break, consider setting the plugin to draft instead.
+                      </p>
+                      <p>
+                        For assistance, please contact{' '}
+                        <a 
+                          href="mailto:support@reearth.io" 
+                          style={{
+                            color: '#0089D4',
+                            fontFamily: 'Outfit',
+                            fontSize: '14px',
+                            fontStyle: 'normal',
+                            fontWeight: 400,
+                            lineHeight: '140%',
+                            textDecoration: 'none'
+                          }}
+                          className="hover:underline"
+                        >
+                          support@reearth.io
+                        </a>
+                        .
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}
