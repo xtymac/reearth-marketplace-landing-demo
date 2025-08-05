@@ -813,7 +813,7 @@ const PluginDetail = () => {
 
   const handleStartClick = () => {
     if (isAuthenticated) {
-      navigate('/plugin/new');
+      navigate('/plugins/new');
     } else {
       navigate('/login');
     }
