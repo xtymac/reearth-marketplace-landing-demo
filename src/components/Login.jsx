@@ -11,7 +11,7 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const next = searchParams.get('next') || '/plugins/new';
+  const next = searchParams.get('next') || '/';
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +34,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center" style={{
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+      background: '#101010'
     }}>
       <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">

@@ -19,16 +19,17 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - Additional CSS and JS files for specific pages
 
 ### React Application
-- `src/App.js` - Main React application with routing
+- `src/App.js` - Main React application with routing including Dashboard route
 - `src/components/Marketplace.jsx` - Main marketplace component with responsive navigation and card grid
 - `src/components/PluginCard.jsx` - Individual plugin card component with consistent height layout
-- `src/components/PluginDetail.jsx` - Plugin detail view component with comprehensive documentation and change log sections
+- `src/components/PluginDetail.jsx` - Plugin detail view component with comprehensive documentation, change log sections, and Edit plugin button
+- `src/components/Dashboard.jsx` - User dashboard with three-column layout, workspace management, and project tabs
 - `src/components/Login.jsx` - User authentication and login component
-- `src/components/PluginUpload.jsx` - Plugin upload and management interface
+- `src/components/PluginUpload.jsx` - Plugin upload and management interface with integrated navbar and footer
 - `src/components/ProtectedRoute.jsx` - Route protection wrapper for authenticated pages
 - `src/data/pluginData.js` - Plugin data with comprehensive descriptions and metadata
 - `src/services/pluginService.js` - Plugin data management services
-- `src/services/authService.js` - Authentication and user management services
+- `src/services/authService.js` - Authentication and user management services with user data storage
 - `src/utils/randomGenerator.js` - Utility functions for stable random data generation
 - `public/` - Static assets including images and HTML template
 - `package.json` - React dependencies and build scripts
@@ -36,49 +37,55 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 ## Architecture
 
 ### Core Components
-- **Navigation System**: Responsive header with proper Re:Earth branding, dropdown menus, and consistent typography
-- **Authentication System**: Login functionality with protected routes and user session management
+- **Navigation System**: Responsive header with proper Re:Earth branding, dropdown menus, consistent typography, and user avatar dropdown
+- **Dashboard System**: Three-column layout with workspace management, project tabs, and user-friendly interface
+- **Authentication System**: Login functionality with protected routes, user session management, and avatar dropdown
 - **Search & Filter**: Real-time search functionality with comprehensive plugin filtering
 - **Plugin Grid**: CSS Grid layout with uniform card heights across all breakpoints
 - **Card Components**: Flex-based cards with 16:9 aspect ratio thumbnails and consistent content distribution
-- **Plugin Management**: Upload interface for plugin developers with form validation
-- **Interactive Elements**: Hover effects, search functionality, and responsive behavior
+- **Plugin Management**: Upload interface for plugin developers with form validation and integrated UI components
+- **Interactive Elements**: Hover effects, search functionality, responsive behavior, and edit functionality
 
 ### Key Features
 - **Consistent Typography**: Outfit font for English text, Noto Sans JP for Japanese text
 - **Uniform Card Heights**: CSS Grid with align-items: stretch ensures consistent row heights
 - **Responsive Design**: 1/2/3 column layouts based on screen size with maintained card consistency
 - **Professional Content**: Comprehensive plugin descriptions with detailed functionality explanations
-- **React Routing**: Single-page application with routing between marketplace, plugin detail, login, and upload views
-- **State Management**: React hooks for search, filtering, authentication, and plugin data management
-- **User Authentication**: Secure login system with protected routes for plugin management
-- **Plugin Upload**: Complete plugin submission workflow with form validation and file handling
+- **React Routing**: Single-page application with routing between marketplace, plugin detail, dashboard, login, and upload views
+- **State Management**: React hooks for search, filtering, authentication, workspace management, and plugin data management
+- **User Authentication**: Secure login system with protected routes, user data storage, and avatar dropdown functionality
+- **Dashboard Interface**: Comprehensive user dashboard with workspace selection, project tabs, and activity tracking
+- **Plugin Upload**: Complete plugin submission workflow with form validation, file handling, and integrated UI
+- **Plugin Management**: Edit plugin functionality with placeholder implementation for future features
 
 ### Latest Updates (Current Commit)
-- **Authentication System**: Implemented comprehensive user authentication
-  - Login component with form validation and user session management
-  - Protected routes wrapper to secure plugin management pages
-  - Authentication service with login/logout functionality and token management
-  - Integration with React Router for seamless navigation flow
-- **Plugin Upload System**: Complete plugin submission workflow
-  - Plugin upload component with comprehensive form validation
-  - File upload handling with drag-and-drop interface
-  - Multi-step form with plugin details, categories, and metadata
-  - Form validation with real-time feedback and error handling
-- **Enhanced Styling**: Dedicated CSS architecture
-  - plugin-detail.css with comprehensive styling for plugin detail pages
-  - Advanced change log styling with expandable sections and status tags
-  - Responsive design enhancements for all new components
-  - Consistent design language across authentication and upload interfaces
-- **Plugin Detail Enhancements**: Extended functionality for both HTML and React versions
-  - Comprehensive documentation sections with realistic content for all 9 plugins
-  - Change log functionality with version history and categorized updates
-  - Interactive elements with hover effects and smooth transitions
-  - Professional content tailored to each plugin's specific functionality
-- **Build System Updates**: Enhanced development workflow
-  - Updated package.json with new dependencies for authentication and routing
-  - Build artifacts updated to reflect latest component additions
-  - Maintained backward compatibility with existing static HTML prototype
+- **Dashboard Implementation**: Complete user dashboard with professional interface
+  - Three-column responsive layout with workspace management, content area, and shortcuts
+  - Workspace selection with Personal and Team groups, including Japanese workspace names
+  - Project tabs (CMS Project, Visualizer Project, Plugins) with default Plugins tab
+  - Plugin list with table-like grid layout showing workspace/plugin names and platform tags
+  - Welcome card with community information and shortcut cards for Visualizer/CMS editors
+  - Integrated logged-in navbar and footer for consistent user experience
+- **Enhanced Authentication & Navigation**: Improved user experience across components
+  - Avatar dropdown with user information header showing username and email with fallback logic
+  - Navigation handlers for Dashboard, Settings, and Logout functionality
+  - Login redirect improvements to return users to original page after authentication
+  - New tab functionality for plugin submission links throughout the application
+- **Plugin Upload Enhancements**: Integrated UI components and improved navigation
+  - Reused logged-in navbar component for consistent header experience
+  - Added standard site footer to maintain design consistency
+  - Updated breadcrumb navigation with Dashboard link for better user flow
+  - Maintained all form functionality while integrating shared UI components
+- **Plugin Detail Improvements**: Enhanced functionality and user interactions
+  - Added "Edit plugin" button with proper styling between Download ZIP and Like buttons
+  - Fixed "Submit Plugin" CTA button to properly link to New Plugin page
+  - Maintained comprehensive documentation and change log sections
+  - Improved button layout and interaction patterns
+- **UI/UX Optimizations**: Refined layouts and responsive behavior
+  - Optimized plugin list grid with better column proportions (2fr_120px_60px)
+  - Enhanced title display with workspace/plugin name format and platform tags
+  - Improved mobile responsive design with vertical stacking on small screens
+  - Table-style headers positioned outside individual cards for cleaner presentation
 
 ## Development Commands
 
