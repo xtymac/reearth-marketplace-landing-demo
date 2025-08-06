@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { X, FileText, GitBranch, AlertTriangle, Plus } from 'lucide-react';
+import { X, FileText, GitBranch, AlertTriangle, Plus, Upload } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 
 const PluginEdit = () => {
@@ -105,6 +105,15 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
     }
   ]);
   const fileInputRef = useRef(null);
+  const newVersionFileInputRef = useRef(null);
+  const [newVersionData, setNewVersionData] = useState({
+    file: null,
+    githubUrl: '',
+    uploadMethod: 'local',
+    releaseNotes: '',
+    versionLabels: []
+  });
+  const [dragActive, setDragActive] = useState(false);
 
   const sidebarItems = [
     { id: 'General', label: 'General', icon: FileText, active: true },
@@ -189,16 +198,33 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
   };
 
   const handleVersionSave = (versionId) => {
-    setVersions(prev => prev.map(v => 
-      v.id === versionId ? { 
-        ...v, 
-        isEditing: false, 
-        content: v.tempContent, 
-        tags: v.tempTags,
-        tempContent: undefined,
-        tempTags: undefined
-      } : v
-    ));
+    setVersions(prev => prev.map(v => {
+      if (v.id === versionId) {
+        if (v.isNewVersion) {
+          // For new versions, use data from newVersionData
+          return {
+            ...v, 
+            isEditing: false, 
+            isNewVersion: false, // Remove new version flag
+            content: newVersionData.releaseNotes, 
+            tags: newVersionData.versionLabels,
+            tempContent: undefined,
+            tempTags: undefined
+          };
+        } else {
+          // For existing versions, use temp data
+          return { 
+            ...v, 
+            isEditing: false, 
+            content: v.tempContent, 
+            tags: v.tempTags,
+            tempContent: undefined,
+            tempTags: undefined
+          };
+        }
+      }
+      return v;
+    }));
   };
 
   const handleVersionCancel = (versionId) => {
@@ -209,7 +235,18 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
         tempContent: undefined,
         tempTags: undefined
       } : v
-    ));
+    ).filter(v => !(v.id === versionId && v.isNewVersion)));
+    // Reset new version data if canceling a new version
+    const cancelingVersion = versions.find(v => v.id === versionId);
+    if (cancelingVersion?.isNewVersion) {
+      setNewVersionData({
+        file: null,
+        githubUrl: '',
+        uploadMethod: 'local',
+        releaseNotes: '',
+        versionLabels: []
+      });
+    }
   };
 
   const handleVersionChange = (versionId, newContent) => {
@@ -222,14 +259,23 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
     const newVersion = {
       id: Math.max(...versions.map(v => v.id)) + 1,
       version: '2.2.0', // This would be generated from YML file
-      content: 'New version with improvements and features',
+      content: '',
       tags: [],
       isEditing: true,
-      tempContent: 'New version with improvements and features',
+      tempContent: '',
       tempTags: [],
-      isExpanded: false
+      isExpanded: false,
+      isNewVersion: true // Mark as new version to show upload form
     };
     setVersions([newVersion, ...versions]);
+    // Reset new version data
+    setNewVersionData({
+      file: null,
+      githubUrl: '',
+      uploadMethod: 'local',
+      releaseNotes: '',
+      versionLabels: []
+    });
   };
 
   const handleTagToggle = (versionId, tag) => {
@@ -303,6 +349,58 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
     setVersions(prev => prev.map(v => 
       v.id === versionId ? { ...v, isExpanded: !v.isExpanded } : v
     ));
+  };
+
+  // New version upload handlers
+  const handleNewVersionFileChange = (e) => {
+    const file = e.target.files[0];
+    setNewVersionData(prev => ({
+      ...prev,
+      file
+    }));
+  };
+
+  const handleNewVersionDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+
+  const handleNewVersionDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  };
+
+  const handleNewVersionDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleNewVersionDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      const file = files[0];
+      if (file.type === 'application/zip' || file.name.endsWith('.zip')) {
+        setNewVersionData(prev => ({
+          ...prev,
+          file
+        }));
+      }
+    }
+  };
+
+  const handleNewVersionLabelToggle = (label) => {
+    setNewVersionData(prev => ({
+      ...prev,
+      versionLabels: prev.versionLabels.includes(label)
+        ? prev.versionLabels.filter(l => l !== label)
+        : [...prev.versionLabels, label]
+    }));
   };
 
   const [markedLoaded, setMarkedLoaded] = useState(false);
@@ -878,18 +976,194 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                         </div>
 
                         {version.isEditing ? (
-                          <div className="w-full space-y-4">
+                          <div className="w-full space-y-6">
+                            {/* Upload section for new versions */}
+                            {version.isNewVersion && (
+                              <div className="space-y-6">
+                                {/* Plugin File Upload */}
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Outfit' }}>
+                                    Plugin File <span className="text-red-500">*</span>
+                                  </label>
+                                  <div className="space-y-4">
+                                    {/* Upload Method Selection */}
+                                    <div className="flex gap-3">
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setNewVersionData(prev => ({ ...prev, uploadMethod: 'local', githubUrl: '' }));
+                                        }}
+                                        className={`px-4 py-2 rounded-md text-sm focus:outline-none transition-colors ${
+                                          newVersionData.uploadMethod === 'local'
+                                            ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                            : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                                        }`}
+                                        style={{ fontFamily: 'Outfit' }}
+                                      >
+                                        Upload from local
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setNewVersionData(prev => ({ ...prev, uploadMethod: 'github', file: null }));
+                                        }}
+                                        className={`px-4 py-2 rounded-md text-sm focus:outline-none transition-colors ${
+                                          newVersionData.uploadMethod === 'github'
+                                            ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                            : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                                        }`}
+                                        style={{ fontFamily: 'Outfit' }}
+                                      >
+                                        GitHub
+                                      </button>
+                                    </div>
+
+                                    {newVersionData.uploadMethod === 'local' ? (
+                                      <>
+                                        {/* Drag and Drop Zone */}
+                                        <div 
+                                          className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
+                                            dragActive 
+                                              ? 'border-blue-400 bg-blue-50' 
+                                              : 'border-blue-300'
+                                          }`}
+                                          onDragEnter={handleNewVersionDragEnter}
+                                          onDragLeave={handleNewVersionDragLeave}
+                                          onDragOver={handleNewVersionDragOver}
+                                          onDrop={handleNewVersionDrop}
+                                          onClick={() => newVersionFileInputRef.current?.click()}
+                                        >
+                                          <input
+                                            ref={newVersionFileInputRef}
+                                            type="file"
+                                            onChange={handleNewVersionFileChange}
+                                            className="hidden"
+                                            accept=".zip"
+                                          />
+                                          <div className="flex justify-center mb-4">
+                                            <div className="w-12 h-12 border-2 border-gray-400 rounded flex items-center justify-center">
+                                              <Upload className="h-6 w-6 text-gray-400" />
+                                            </div>
+                                          </div>
+                                          <p className="text-base text-gray-600 mb-1" style={{ fontFamily: 'Outfit' }}>
+                                            Click or drag file to this area to upload
+                                          </p>
+                                          <p className="text-sm text-gray-500" style={{ fontFamily: 'Outfit' }}>
+                                            ZIP file up to 50MB
+                                          </p>
+                                        </div>
+
+                                        {/* Selected File Display */}
+                                        {newVersionData.file && (
+                                          <div className="flex items-center text-sm text-gray-600">
+                                            <Upload className="h-4 w-4 mr-2" />
+                                            <span style={{ fontFamily: 'Outfit' }}>{newVersionData.file.name}</span>
+                                          </div>
+                                        )}
+                                      </>
+                                    ) : (
+                                      <>
+                                        {/* GitHub Repository Input */}
+                                        <div className="space-y-3">
+                                          <input
+                                            type="url"
+                                            placeholder="github.com/username/plugin-name"
+                                            value={newVersionData.githubUrl}
+                                            onChange={(e) => setNewVersionData(prev => ({ ...prev, githubUrl: e.target.value }))}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            style={{ fontFamily: 'Outfit' }}
+                                          />
+                                          
+                                          {/* GitHub Notes */}
+                                          <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
+                                            <p className="text-sm text-blue-800 font-medium mb-1" style={{ fontFamily: 'Outfit' }}>📌 Notes:</p>
+                                            <ul className="text-sm text-blue-700 space-y-1" style={{ fontFamily: 'Outfit' }}>
+                                              <li>• Set your repository to public</li>
+                                              <li>• Only the main branch is used</li>
+                                            </ul>
+                                          </div>
+                                        </div>
+
+                                        {/* GitHub URL Display */}
+                                        {newVersionData.githubUrl && (
+                                          <div className="flex items-center text-sm text-gray-600">
+                                            <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                              <path fillRule="evenodd" d="M10 0a10 10 0 00-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.13-1.1-1.43-1.1-1.43-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0010 0z" clipRule="evenodd" />
+                                            </svg>
+                                            <span style={{ fontFamily: 'Outfit' }}>{newVersionData.githubUrl}</span>
+                                          </div>
+                                        )}
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Version */}
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Outfit' }}>
+                                    Version
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value="Version 1.0.0"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                                    style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                                    disabled
+                                    readOnly
+                                  />
+                                  <p className="mt-1 text-sm text-gray-500" style={{ fontFamily: 'Outfit' }}>
+                                    Version numbers are automatically loaded from the plugin's YML file — see{' '}
+                                    <span className="text-blue-600 underline cursor-pointer">documentation</span> for details.
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Release Notes */}
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Outfit' }}>
-                                Tags
+                                Release Notes
+                              </label>
+                              <textarea
+                                value={version.isNewVersion ? newVersionData.releaseNotes : (version.tempContent || version.content)}
+                                onChange={(e) => {
+                                  if (version.isNewVersion) {
+                                    setNewVersionData(prev => ({ ...prev, releaseNotes: e.target.value }));
+                                  } else {
+                                    handleVersionChange(version.id, e.target.value);
+                                  }
+                                }}
+                                rows={4}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                                placeholder={version.isNewVersion ? "Type your message" : "Enter version description..."}
+                              />
+                              <p className="mt-1 text-sm text-gray-500" style={{ fontFamily: 'Outfit' }}>
+                                Describe what changed in this version for users
+                              </p>
+                            </div>
+
+                            {/* Version Labels */}
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Outfit' }}>
+                                Version Labels
                               </label>
                               <div className="flex gap-2 flex-wrap">
                                 {['Bug Fix', 'New Feature', 'Doc Update', 'UI Update'].map((tag) => {
-                                  const isSelected = (version.tempTags || version.tags).includes(tag);
+                                  const isSelected = version.isNewVersion 
+                                    ? newVersionData.versionLabels.includes(tag)
+                                    : (version.tempTags || version.tags).includes(tag);
+                                  
                                   return (
                                     <button
                                       key={tag}
-                                      onClick={() => handleTagToggle(version.id, tag)}
+                                      onClick={() => {
+                                        if (version.isNewVersion) {
+                                          handleNewVersionLabelToggle(tag);
+                                        } else {
+                                          handleTagToggle(version.id, tag);
+                                        }
+                                      }}
                                       style={{
                                         ...getTagStyle(tag),
                                         opacity: isSelected ? 1 : 0.5,
@@ -904,15 +1178,11 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                                   );
                                 })}
                               </div>
+                              <p className="mt-1 text-sm text-gray-500" style={{ fontFamily: 'Outfit' }}>
+                                Choose labels to describe this update (e.g., bug fix, new feature).
+                              </p>
                             </div>
-                            <textarea
-                              value={version.tempContent || version.content}
-                              onChange={(e) => handleVersionChange(version.id, e.target.value)}
-                              rows={4}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                              style={{ fontFamily: 'Outfit', fontSize: '14px' }}
-                              placeholder="Enter version description..."
-                            />
+
                             <div className="flex gap-2">
                               <button
                                 onClick={() => handleVersionSave(version.id)}
@@ -923,7 +1193,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                                   backgroundColor: '#00A2EA'
                                 }}
                               >
-                                Save
+                                {version.isNewVersion ? 'Save' : 'Save'}
                               </button>
                               <button
                                 onClick={() => handleVersionCancel(version.id)}
@@ -932,6 +1202,19 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                               >
                                 Cancel
                               </button>
+                              {version.isNewVersion && (
+                                <button
+                                  onClick={() => handleVersionCancel(version.id)}
+                                  className="px-4 py-2 text-white rounded-md hover:opacity-90 focus:outline-none ml-auto"
+                                  style={{ 
+                                    fontFamily: 'Outfit', 
+                                    fontSize: '14px',
+                                    backgroundColor: '#F47579'
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              )}
                             </div>
                           </div>
                         ) : (

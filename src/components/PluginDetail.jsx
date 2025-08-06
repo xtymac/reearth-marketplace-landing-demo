@@ -1108,7 +1108,16 @@ const PluginDetail = () => {
             </div>
 
             <div className="text-gray-600">
-              <p className="font-medium">{plugin.company}</p>
+              {plugin.company === '株式会社福山コンサルタント' ? (
+                <button 
+                  onClick={() => navigate('/workspace/fukuyama-consultant')}
+                  className="font-medium hover:text-blue-600 transition-colors cursor-pointer"
+                >
+                  {plugin.company}
+                </button>
+              ) : (
+                <p className="font-medium">{plugin.company}</p>
+              )}
             </div>
 
             {/* Action Buttons */}

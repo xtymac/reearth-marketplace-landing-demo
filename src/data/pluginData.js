@@ -8,7 +8,7 @@ const basePluginData = [
     image: "/images/visualizer/6e82e5cb4f3ab9225ed72467ef0e69d44c5d7ae5df84bd6fb057bd551da4bbb1.png",
     description: "3D Building Visualization provides high-precision 3D modeling tools tailored for architects, city planners, and disaster response teams. Users can visualize buildings in realistic urban environments, simulate infrastructure development, and analyze potential disaster impacts. The plugin supports integration with geospatial data and offers interactive visual outputs ideal for public presentations and stakeholder engagement.",
     fullDescription: "3D Building Visualization provides high-precision 3D modeling tools tailored for architects, city planners, and disaster response teams. Users can visualize buildings in realistic urban environments, simulate infrastructure development, and analyze potential disaster impacts. The plugin supports integration with geospatial data and offers interactive visual outputs ideal for public presentations and stakeholder engagement.",
-    company: "株式会社出山コンサルタント",
+    company: "株式会社福山コンサルタント",
     tags: ["Urban Planning", "Architecture", "Urban Planning"],
     version: "v2.1.3",
     updatedDate: "2024/08/22",

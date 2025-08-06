@@ -44,30 +44,308 @@ const Dashboard = () => {
     navigate(`/plugin/${pluginId}`);
   };
 
-  // const getBadgeInitials = (name) => {
-  //   if (name === 'Default personal workspace') return 'De';
-  //   if (name === 'My playground') return 'My';
-  //   if (name === 'UC-12地区防災計画') return 'UC';
-  //   if (name === '株式会社福山コンサルタント') return '株';
-  //   if (name === 'Plugin Team') return 'PT';
-  //   return name.substring(0, 2).toUpperCase();
-  // };
-
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FCFAF4' }}>
+    <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#FCFAF4' }}>
       {/* Header */}
       <DashboardNav />
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-6">
-          {/* Left Sidebar */}
-          <div className="w-64 flex-shrink-0">
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <h2 
-                  className="text-gray-900"
+      {/* Main Content Wrapper */}
+      <div className="flex flex-1">
+        {/* Left Sidebar */}
+        <div className="flex-shrink-0" style={{
+          display: 'flex',
+          width: '320px',
+          padding: '24px',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          gap: '32px',
+          background: '#FCFAF4',
+          boxShadow: '2px 2px 2px 0 rgba(0, 0, 0, 0.05)'
+        }}>
+          <div style={{ width: '100%' }}>
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 
+                style={{
+                  width: '90px',
+                  height: '18px',
+                  overflow: 'hidden',
+                  color: '#404040',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  fontFamily: 'Outfit',
+                  fontSize: '12.8px',
+                  fontStyle: 'normal',
+                  fontWeight: 400,
+                  lineHeight: '140%'
+                }}
+              >
+                Your workspace
+              </h2>
+              <button 
+                className="hover:text-blue-700"
+                style={{ 
+                  color: '#00A2EA',
+                  fontFamily: 'Outfit',
+                  fontSize: '14px',
+                  fontStyle: 'normal',
+                  fontWeight: 400,
+                  lineHeight: '140%'
+                }}
+              >
+                New Workspace
+              </button>
+            </div>
+
+            {/* Workspace Groups */}
+            <div className="space-y-6">
+              {Object.entries(workspaceGroups).map(([groupKey, group]) => (
+                <div key={groupKey}>
+                  {/* Group Header */}
+                  <h3 
+                    className="mb-3"
+                    style={{
+                      width: '90px',
+                      height: '18px',
+                      overflow: 'hidden',
+                      color: '#404040',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      fontFamily: 'Outfit',
+                      fontSize: '12.8px',
+                      fontStyle: 'normal',
+                      fontWeight: 400,
+                      lineHeight: '140%'
+                    }}
+                  >
+                    {group.label}
+                  </h3>
+                  
+                  {/* Group Items */}
+                  <div className="space-y-2">
+                    {group.options.map((option) => {
+                      const isJapanese = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(option.name);
+                      const isSelected = selectedWorkspace === option.name;
+                      
+                      return (
+                        <button
+                          key={option.name}
+                          onClick={() => {
+                            setSelectedWorkspace(option.name);
+                            if (option.name === '株式会社福山コンサルタント') {
+                              navigate('/workspace/fukuyama-consultant');
+                            }
+                          }}
+                          className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                            isSelected ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'
+                          }`}
+                        >
+                          {/* Badge */}
+                          <div 
+                            className={`flex items-center justify-center text-white text-xs font-medium ${
+                              option.type === 'circle' 
+                                ? 'w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500' 
+                                : 'w-6 h-6 rounded bg-gradient-to-br from-blue-500 to-indigo-600'
+                            }`}
+                          >
+                            {option.badge}
+                          </div>
+                          
+                          {/* Name */}
+                          <span 
+                            className="flex-1 truncate"
+                            style={{
+                              color: '#0A0A0A',
+                              fontFamily: isJapanese ? '"Noto Sans JP"' : 'Outfit',
+                              fontSize: '14px',
+                              fontStyle: 'normal',
+                              fontWeight: 400,
+                              lineHeight: '140%'
+                            }}
+                          >
+                            {option.name}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Area */}
+        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex gap-6">
+            {/* Center Content */}
+            <div className="flex-1">
+              <div className="">
+                {/* Header */}
+                <div className="px-6 py-4">
+                  <div className="flex items-center justify-between">
+                    <h2 
+                      className="text-gray-900"
+                      style={{
+                        fontFamily: 'Outfit',
+                        fontSize: '24px',
+                        fontWeight: 600,
+                        lineHeight: '140%'
+                      }}
+                    >
+                      Recently Edited
+                    </h2>
+                    <button 
+                      onClick={() => navigate('/plugins/new')}
+                      className="text-white hover:opacity-90 transition-opacity"
+                      style={{ 
+                        display: 'flex',
+                        padding: '12px 20px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '8px',
+                        borderRadius: '6px',
+                        background: '#00A2EA',
+                        fontFamily: 'Outfit', 
+                        fontSize: '14px', 
+                        fontWeight: 500 
+                      }}
+                    >
+                      <Plus className="w-4 h-4" />
+                      New Plugin
+                    </button>
+                  </div>
+                </div>
+
+                {/* Tabs */}
+                <div className="px-6 pb-0">
+                  <div className="flex space-x-8">
+                    {tabs.map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`pb-2 text-sm transition-colors relative ${
+                          activeTab === tab 
+                            ? 'text-blue-600 font-semibold' 
+                            : 'text-gray-500 hover:text-gray-700'
+                        }`}
+                        style={{ fontFamily: 'Outfit' }}
+                      >
+                        {tab}
+                        {activeTab === tab && (
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="px-6 py-4">
+                  {activeTab === 'Plugins' && (
+                    <div>
+                      {/* Table Headers */}
+                      <div className="hidden md:grid md:grid-cols-[2fr_120px_60px] gap-6 px-4 py-2 mb-3">
+                        <div></div> {/* Empty for title column */}
+                        <span 
+                          className="text-gray-500 text-sm"
+                          style={{ fontFamily: 'Outfit' }}
+                        >
+                          Last edit
+                        </span>
+                        <span 
+                          className="text-gray-500 text-sm text-right"
+                          style={{ fontFamily: 'Outfit' }}
+                        >
+                          Action
+                        </span>
+                      </div>
+
+                      {/* Plugin Rows */}
+                      <div className="space-y-3">
+                        {pluginsList.map((plugin) => (
+                          <div
+                            key={plugin.id}
+                            onClick={() => handlePluginClick(plugin.id)}
+                            className="flex flex-col md:grid md:grid-cols-[2fr_120px_60px] gap-3 md:gap-6 p-4 bg-white hover:bg-gray-50 rounded-lg cursor-pointer transition-colors group shadow-sm"
+                            aria-label={`Workspace ${plugin.workspace}, Plugin ${plugin.title}, Platform ${plugin.platform}`}
+                          >
+                            {/* Column 1: Title with Pills */}
+                            <div className="flex flex-wrap items-center gap-2 md:gap-3 min-w-0">
+                              <h3 
+                                className="text-blue-600 font-medium group-hover:text-blue-700 flex-shrink-0"
+                                style={{
+                                  fontFamily: 'Outfit',
+                                  fontSize: '16px',
+                                  lineHeight: '140%'
+                                }}
+                                title={`${plugin.workspace} / ${plugin.title}`}
+                              >
+                                <span style={{ fontFamily: '"Noto Sans JP"' }}>{plugin.workspace}</span>
+                                <span className="mx-2">/</span>
+                                {plugin.title}
+                              </h3>
+                              <span 
+                                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 flex-shrink-0"
+                                style={{ fontFamily: 'Outfit' }}
+                              >
+                                {plugin.platform}
+                              </span>
+                              <span 
+                                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 flex-shrink-0"
+                                style={{ fontFamily: 'Outfit' }}
+                              >
+                                {plugin.status}
+                              </span>
+                            </div>
+
+                            {/* Column 2: Last Edit Value */}
+                            <div className="flex items-center md:justify-start">
+                              <span className="text-gray-500 text-sm mr-2 md:hidden" style={{ fontFamily: 'Outfit' }}>
+                                Last edit:
+                              </span>
+                              <span 
+                                className="text-gray-900 text-sm font-medium"
+                                style={{ fontFamily: 'Outfit' }}
+                              >
+                                {plugin.lastEdit}
+                              </span>
+                            </div>
+
+                            {/* Column 3: Action Icon */}
+                            <div className="flex items-center justify-between md:justify-end">
+                              <span className="text-gray-500 text-sm md:hidden" style={{ fontFamily: 'Outfit' }}>
+                                Action:
+                              </span>
+                              <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {activeTab === 'CMS Project' && (
+                    <div className="text-center py-12 text-gray-500">
+                      <p style={{ fontFamily: 'Outfit' }}>No CMS projects found</p>
+                    </div>
+                  )}
+                  
+                  {activeTab === 'Visualizer Project' && (
+                    <div className="text-center py-12 text-gray-500">
+                      <p style={{ fontFamily: 'Outfit' }}>No Visualizer projects found</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Sidebar */}
+            <div className="w-64 flex-shrink-0 space-y-6">
+              {/* Welcome Card */}
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h3 
+                  className="text-gray-900 mb-4 flex items-center"
                   style={{
                     fontFamily: 'Outfit',
                     fontSize: '18px',
@@ -75,298 +353,61 @@ const Dashboard = () => {
                     lineHeight: '140%'
                   }}
                 >
-                  Your workspace
-                </h2>
+                  Welcome 👋
+                </h3>
+                <div className="space-y-3 text-sm text-gray-600" style={{ fontFamily: 'Outfit' }}>
+                  <p>Welcome to Re:Earth! We invite you to join our user community.</p>
+                  <p>If you have any questions, please don't hesitate to ask on <a href="https://discord.com/invite/reearth" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Discord</a>. There's a lot of valuable content and conversation to explore!</p>
+                  <p>Searching for open data with compelling topics? Looking for inspiration for your project? Visit the <a href="https://reearth.io/topics" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Topics</a> page and explore curated datasets and ideas!</p>
+                </div>
+              </div>
+
+              {/* Shortcuts */}
+              <div className="space-y-3">
                 <button 
-                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-                  style={{ fontFamily: 'Outfit' }}
+                  className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all group"
+                  onClick={() => window.open('https://reearth.io/visualizer', '_blank')}
                 >
-                  New Workspace
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                      <div className="w-4 h-4 bg-red-500 rounded" />
+                    </div>
+                    <span 
+                      className="font-medium text-gray-900"
+                      style={{ fontFamily: 'Outfit', fontSize: '16px' }}
+                    >
+                      Visualizer Editor
+                    </span>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
+                </button>
+
+                <button 
+                  className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all group"
+                  onClick={() => window.open('https://reearth.io/cms', '_blank')}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                      <div className="w-4 h-4 bg-yellow-500 rounded" />
+                    </div>
+                    <span 
+                      className="font-medium text-gray-900"
+                      style={{ fontFamily: 'Outfit', fontSize: '16px' }}
+                    >
+                      CMS Editor
+                    </span>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
                 </button>
               </div>
-
-              {/* Workspace Groups */}
-              <div className="space-y-6">
-                {Object.entries(workspaceGroups).map(([groupKey, group]) => (
-                  <div key={groupKey}>
-                    {/* Group Header */}
-                    <h3 
-                      className="text-gray-500 mb-3"
-                      style={{
-                        fontFamily: 'Outfit',
-                        fontSize: '14px',
-                        fontWeight: 500,
-                        lineHeight: '140%'
-                      }}
-                    >
-                      {group.label}
-                    </h3>
-                    
-                    {/* Group Items */}
-                    <div className="space-y-2">
-                      {group.options.map((option) => {
-                        const isJapanese = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(option.name);
-                        const isSelected = selectedWorkspace === option.name;
-                        
-                        return (
-                          <button
-                            key={option.name}
-                            onClick={() => setSelectedWorkspace(option.name)}
-                            className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                              isSelected ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'
-                            }`}
-                          >
-                            {/* Badge */}
-                            <div 
-                              className={`flex items-center justify-center text-white text-xs font-medium ${
-                                option.type === 'circle' 
-                                  ? 'w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500' 
-                                  : 'w-6 h-6 rounded bg-gradient-to-br from-blue-500 to-indigo-600'
-                              }`}
-                            >
-                              {option.badge}
-                            </div>
-                            
-                            {/* Name */}
-                            <span 
-                              className="flex-1 truncate"
-                              style={{
-                                fontFamily: isJapanese ? '"Noto Sans JP"' : 'Outfit',
-                                fontSize: '14px',
-                                fontWeight: 400,
-                                lineHeight: '140%'
-                              }}
-                            >
-                              {option.name}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
-
-          {/* Center Content */}
-          <div className="flex-1">
-            <div className="bg-white rounded-lg shadow-sm">
-              {/* Header */}
-              <div className="px-6 py-4 border-b border-gray-200">
-                <div className="flex items-center justify-between">
-                  <h2 
-                    className="text-gray-900"
-                    style={{
-                      fontFamily: 'Outfit',
-                      fontSize: '24px',
-                      fontWeight: 600,
-                      lineHeight: '140%'
-                    }}
-                  >
-                    Recently Edited
-                  </h2>
-                  <button 
-                    onClick={() => navigate('/plugins/new')}
-                    className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                    style={{ fontFamily: 'Outfit', fontSize: '14px', fontWeight: 500 }}
-                  >
-                    <Plus className="w-4 h-4" />
-                    New Project
-                  </button>
-                </div>
-              </div>
-
-              {/* Tabs */}
-              <div className="px-6 py-4 border-b border-gray-200">
-                <div className="flex space-x-8">
-                  {tabs.map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={`pb-2 text-sm transition-colors relative ${
-                        activeTab === tab 
-                          ? 'text-blue-600 font-semibold' 
-                          : 'text-gray-500 hover:text-gray-700'
-                      }`}
-                      style={{ fontFamily: 'Outfit' }}
-                    >
-                      {tab}
-                      {activeTab === tab && (
-                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                {activeTab === 'Plugins' && (
-                  <div>
-                    {/* Table Headers */}
-                    <div className="hidden md:grid md:grid-cols-[2fr_120px_60px] gap-6 px-4 py-2 mb-3">
-                      <div></div> {/* Empty for title column */}
-                      <span 
-                        className="text-gray-500 text-sm"
-                        style={{ fontFamily: 'Outfit' }}
-                      >
-                        Last edit
-                      </span>
-                      <span 
-                        className="text-gray-500 text-sm text-right"
-                        style={{ fontFamily: 'Outfit' }}
-                      >
-                        Action
-                      </span>
-                    </div>
-
-                    {/* Plugin Rows */}
-                    <div className="space-y-3">
-                      {pluginsList.map((plugin) => (
-                        <div
-                          key={plugin.id}
-                          onClick={() => handlePluginClick(plugin.id)}
-                          className="flex flex-col md:grid md:grid-cols-[2fr_120px_60px] gap-3 md:gap-6 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors group"
-                          aria-label={`Workspace ${plugin.workspace}, Plugin ${plugin.title}, Platform ${plugin.platform}`}
-                        >
-                          {/* Column 1: Title with Pills */}
-                          <div className="flex flex-wrap items-center gap-2 md:gap-3 min-w-0">
-                            <h3 
-                              className="text-blue-600 font-medium group-hover:text-blue-700 flex-shrink-0"
-                              style={{
-                                fontFamily: 'Outfit',
-                                fontSize: '16px',
-                                lineHeight: '140%'
-                              }}
-                              title={`${plugin.workspace} / ${plugin.title}`}
-                            >
-                              <span style={{ fontFamily: '"Noto Sans JP"' }}>{plugin.workspace}</span>
-                              <span className="mx-2">/</span>
-                              {plugin.title}
-                            </h3>
-                            <span 
-                              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 flex-shrink-0"
-                              style={{ fontFamily: 'Outfit' }}
-                            >
-                              {plugin.platform}
-                            </span>
-                            <span 
-                              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 flex-shrink-0"
-                              style={{ fontFamily: 'Outfit' }}
-                            >
-                              {plugin.status}
-                            </span>
-                          </div>
-
-                          {/* Column 2: Last Edit Value */}
-                          <div className="flex items-center md:justify-start">
-                            <span className="text-gray-500 text-sm mr-2 md:hidden" style={{ fontFamily: 'Outfit' }}>
-                              Last edit:
-                            </span>
-                            <span 
-                              className="text-gray-900 text-sm font-medium"
-                              style={{ fontFamily: 'Outfit' }}
-                            >
-                              {plugin.lastEdit}
-                            </span>
-                          </div>
-
-                          {/* Column 3: Action Icon */}
-                          <div className="flex items-center justify-between md:justify-end">
-                            <span className="text-gray-500 text-sm md:hidden" style={{ fontFamily: 'Outfit' }}>
-                              Action:
-                            </span>
-                            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {activeTab === 'CMS Project' && (
-                  <div className="text-center py-12 text-gray-500">
-                    <p style={{ fontFamily: 'Outfit' }}>No CMS projects found</p>
-                  </div>
-                )}
-                
-                {activeTab === 'Visualizer Project' && (
-                  <div className="text-center py-12 text-gray-500">
-                    <p style={{ fontFamily: 'Outfit' }}>No Visualizer projects found</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="w-80 flex-shrink-0 space-y-6">
-            {/* Welcome Card */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 
-                className="text-gray-900 mb-4 flex items-center"
-                style={{
-                  fontFamily: 'Outfit',
-                  fontSize: '18px',
-                  fontWeight: 600,
-                  lineHeight: '140%'
-                }}
-              >
-                Welcome 👋
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600" style={{ fontFamily: 'Outfit' }}>
-                <p>Welcome to Re:Earth! We invite you to join our user community.</p>
-                <p>If you have any questions, please don't hesitate to ask on <a href="https://discord.com/invite/reearth" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Discord</a>. There's a lot of valuable content and conversation to explore!</p>
-                <p>Searching for open data with compelling topics? Looking for inspiration for your project? Visit the <a href="https://reearth.io/topics" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Topics</a> page and explore curated datasets and ideas!</p>
-              </div>
-            </div>
-
-            {/* Shortcuts */}
-            <div className="space-y-3">
-              <button 
-                className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all group"
-                onClick={() => window.open('https://reearth.io/visualizer', '_blank')}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                    <div className="w-4 h-4 bg-red-500 rounded" />
-                  </div>
-                  <span 
-                    className="font-medium text-gray-900"
-                    style={{ fontFamily: 'Outfit', fontSize: '16px' }}
-                  >
-                    Visualizer Editor
-                  </span>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
-              </button>
-
-              <button 
-                className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all group"
-                onClick={() => window.open('https://reearth.io/cms', '_blank')}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
-                    <div className="w-4 h-4 bg-yellow-500 rounded" />
-                  </div>
-                  <span 
-                    className="font-medium text-gray-900"
-                    style={{ fontFamily: 'Outfit', fontSize: '16px' }}
-                  >
-                    CMS Editor
-                  </span>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </main>
+        </main>
+      </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200" style={{ marginTop: '24px' }}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <footer className="bg-white border-t border-gray-200">
+        <div className="px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
             <span>© 2024 Re:Earth contributors</span>
             <a href="https://reearth.io/terms" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Terms</a>
