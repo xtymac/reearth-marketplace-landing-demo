@@ -2,20 +2,36 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { X, FileText, GitBranch, AlertTriangle, Plus, Upload } from 'lucide-react';
 import DashboardNav from './DashboardNav';
+import { pluginData } from '../data/pluginData';
 
 const PluginEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('General');
-  const [pluginData, setPluginData] = useState({
-    name: '3D Building Visualization',
+
+  // Find the plugin data based on the ID from URL params
+  const currentPlugin = pluginData.find(p => p.id.toString() === id) || pluginData[0];
+  
+  // Company to workspace mapping
+  const companyToWorkspace = {
+    '株式会社福山コンサルタント': 'fukuyama-consultant',
+    '気象データ株式会社': 'weather-data',
+    'センサー技術株式会社': 'sensor-tech',
+    'GeoVision Labs': 'geovision-labs',
+    'モビリソリューション': 'mobili-solution',
+    '環境テクノロジー株式会社': 'enviro-tech',
+    'EnviroNode': 'enviro-node',
+    'ChronoMaps Studio': 'chrono-maps'
+  };
+
+  const [pluginFormData, setPluginFormData] = useState({
+    name: currentPlugin.title,
     status: 'Public',
-    description: 'Transform urban planning workflows with interactive 3D building visualization. This plugin enables real-time rendering of cityscapes, block-level simulations, and detailed building models—ideal for stakeholder presentations, zoning studies, and disaster resilience planning.',
-    functionTags: ['3D', 'Data', 'Image'],
+    description: currentPlugin.description,
+    functionTags: currentPlugin.tags.slice(0, 3),
     images: [
-      '/Image/Geospatial Data Analytics.png',
-      '/Image/Detail/e22b4d43-6527-4018-bcfd-32f1f654c69c.png',
-      '/Image/Detail/3aef1042-83fe-439e-b376-fa9aca050dd8.png'
+      currentPlugin.image,
+      ...(currentPlugin.gallery ? currentPlugin.gallery.slice(1, 3) : [])
     ],
     readme: `# 🏙️ 3D Building Visualization
 
@@ -124,7 +140,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
 
   const handleStatusToggle = () => {
-    setPluginData(prev => ({
+    setPluginFormData(prev => ({
       ...prev,
       status: prev.status === 'Public' ? 'Draft' : 'Public'
     }));
@@ -133,22 +149,22 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
     const imageUrls = files.map(file => URL.createObjectURL(file));
-    setPluginData(prev => ({
+    setPluginFormData(prev => ({
       ...prev,
       images: [...prev.images, ...imageUrls]
     }));
   };
 
   const removeImage = (index) => {
-    setPluginData(prev => ({
+    setPluginFormData(prev => ({
       ...prev,
       images: prev.images.filter((_, i) => i !== index)
     }));
   };
 
   const addTag = () => {
-    if (newTag.trim() && !pluginData.functionTags.includes(newTag.trim())) {
-      setPluginData(prev => ({
+    if (newTag.trim() && !pluginFormData.functionTags.includes(newTag.trim())) {
+      setPluginFormData(prev => ({
         ...prev,
         functionTags: [...prev.functionTags, newTag.trim()]
       }));
@@ -157,7 +173,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
   };
 
   const removeTag = (tagToRemove) => {
-    setPluginData(prev => ({
+    setPluginFormData(prev => ({
       ...prev,
       functionTags: prev.functionTags.filter(tag => tag !== tagToRemove)
     }));
@@ -182,7 +198,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
 
   const handleReadmeSave = () => {
-    setPluginData(prev => ({ ...prev, readme: tempReadme }));
+    setPluginFormData(prev => ({ ...prev, readme: tempReadme }));
     setReadmeMode('preview');
   };
 
@@ -457,16 +473,26 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
         {/* Breadcrumb */}
         <nav className="mb-8">
           <div className="text-sm" style={{ fontFamily: 'Outfit' }}>
-            <span style={{ 
-              color: 'var(--function-link, #0089D4)',
-              fontFamily: '"Noto Sans JP"',
-              fontSize: '14px',
-              fontStyle: 'normal',
-              fontWeight: 400,
-              lineHeight: '140%'
-            }}>株式会社福山コンサルタント</span>
+            <button
+              onClick={() => navigate(`/workspace/${companyToWorkspace[currentPlugin.company]}`)}
+              className="hover:underline"
+              style={{ 
+                color: 'var(--function-link, #0089D4)',
+                fontFamily: /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(currentPlugin.company) ? '"Noto Sans JP"' : 'Outfit',
+                fontSize: '14px',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                lineHeight: '140%',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer'
+              }}
+            >
+              {currentPlugin.company}
+            </button>
             <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-600">3D Building Visualization</span>
+            <span className="text-gray-600">{currentPlugin.title}</span>
           </div>
         </nav>
 
@@ -569,12 +595,12 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                     onClick={handleStatusToggle}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
                     style={{
-                      backgroundColor: pluginData.status === 'Public' ? '#2CC3FF' : '#E5E7EB'
+                      backgroundColor: pluginFormData.status === 'Public' ? '#2CC3FF' : '#E5E7EB'
                     }}
                   >
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        pluginData.status === 'Public' ? 'translate-x-6' : 'translate-x-1'
+                        pluginFormData.status === 'Public' ? 'translate-x-6' : 'translate-x-1'
                       }`}
                     />
                   </button>
@@ -582,7 +608,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                     className="ml-3 text-sm font-medium text-gray-900"
                     style={{ fontFamily: 'Outfit' }}
                   >
-                    {pluginData.status}
+                    {pluginFormData.status}
                   </span>
                 </div>
 
@@ -598,8 +624,8 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                   <input
                     type="text"
                     id="pluginName"
-                    value={pluginData.name}
-                    onChange={(e) => setPluginData(prev => ({ ...prev, name: e.target.value }))}
+                    value={pluginFormData.name}
+                    onChange={(e) => setPluginFormData(prev => ({ ...prev, name: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     style={{ fontFamily: 'Outfit', fontSize: '14px' }}
                   />
@@ -647,7 +673,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
                   {/* Image Preview */}
                   <div className="flex gap-3">
-                    {pluginData.images.map((image, index) => (
+                    {pluginFormData.images.map((image, index) => (
                       <div key={index} className="relative">
                         <img
                           src={image}
@@ -676,8 +702,8 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                   </label>
                   <textarea
                     id="description"
-                    value={pluginData.description}
-                    onChange={(e) => setPluginData(prev => ({ ...prev, description: e.target.value }))}
+                    value={pluginFormData.description}
+                    onChange={(e) => setPluginFormData(prev => ({ ...prev, description: e.target.value }))}
                     rows={4}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     style={{ fontFamily: 'Outfit', fontSize: '14px' }}
@@ -701,7 +727,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                   
                   {/* Existing Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {pluginData.functionTags.map((tag, index) => (
+                    {pluginFormData.functionTags.map((tag, index) => (
                       <span
                         key={index}
                         className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded"
@@ -758,7 +784,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                       <button
                         onClick={() => {
                           if (readmeMode === 'preview') {
-                            setTempReadme(pluginData.readme);
+                            setTempReadme(pluginFormData.readme);
                           }
                           setReadmeMode('edit');
                         }}
@@ -777,7 +803,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                       <button
                         onClick={() => {
                           if (readmeMode === 'edit' && tempReadme) {
-                            setPluginData(prev => ({ ...prev, readme: tempReadme }));
+                            setPluginFormData(prev => ({ ...prev, readme: tempReadme }));
                           }
                           setReadmeMode('preview');
                         }}
@@ -800,7 +826,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                       {/* Edit Mode */}
                       {readmeMode === 'edit' && (
                         <textarea
-                          value={tempReadme || pluginData.readme}
+                          value={tempReadme || pluginFormData.readme}
                           onChange={(e) => setTempReadme(e.target.value)}
                           className="w-full h-full p-4 border-0 resize-none focus:outline-none font-mono"
                           style={{ 
@@ -894,7 +920,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                             }
                           `}</style>
                           <div 
-                            dangerouslySetInnerHTML={{ __html: renderMarkdown(pluginData.readme) }}
+                            dangerouslySetInnerHTML={{ __html: renderMarkdown(pluginFormData.readme) }}
                           />
                         </div>
                       )}

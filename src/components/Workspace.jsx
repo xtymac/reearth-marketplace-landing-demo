@@ -1,12 +1,71 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Plus, Search, ChevronDown } from 'lucide-react';
 import DashboardNav from './DashboardNav';
+import { pluginData } from '../data/pluginData';
 
 const Workspace = () => {
   const [activeTab, setActiveTab] = useState('Plugins');
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+  const { workspaceId } = useParams();
+
+  // Map workspace IDs to company info
+  const workspaceMap = {
+    'fukuyama-consultant': {
+      name: '株式会社福山コンサルタント',
+      subtitle: 'Eukarya, Inc',
+      avatar: '/Avatar/株式会社福山コンサルタント.png',
+      badge: '株'
+    },
+    'weather-data': {
+      name: '気象データ株式会社',
+      subtitle: 'Weather Solutions Provider',
+      avatar: '/Avatar/気象データ株式会社.png',
+      badge: '気'
+    },
+    'sensor-tech': {
+      name: 'センサー技術株式会社',
+      subtitle: 'IoT Technology Solutions',
+      avatar: '/Avatar/センサー技術株式会社.png',
+      badge: 'セ'
+    },
+    'geovision-labs': {
+      name: 'GeoVision Labs',
+      subtitle: 'Geospatial Technology',
+      avatar: '/Avatar/GeoVision Labs.png',
+      badge: 'GV'
+    },
+    'mobili-solution': {
+      name: 'モビリソリューション',
+      subtitle: 'Smart Mobility Solutions',
+      avatar: '/Avatar/モビリソリューション.png',
+      badge: 'モ'
+    },
+    'enviro-tech': {
+      name: '環境テクノロジー株式会社',
+      subtitle: 'Environmental Technology',
+      avatar: '/Avatar/環境テクノロジー株式会社.png',
+      badge: '環'
+    },
+    'enviro-node': {
+      name: 'EnviroNode',
+      subtitle: 'Environmental Monitoring',
+      avatar: '/Avatar/EnviroNode.png',
+      badge: 'EN'
+    },
+    'chrono-maps': {
+      name: 'ChronoMaps Studio',
+      subtitle: 'Time-based Visualization',
+      avatar: '/Avatar/ChronoMaps Studio.png',
+      badge: 'CM'
+    }
+  };
+
+  const currentWorkspace = workspaceMap[workspaceId] || workspaceMap['fukuyama-consultant'];
+  
+  // Get plugins for this specific workspace based on company name
+  const workspacePlugins = pluginData.filter(plugin => plugin.company === currentWorkspace.name);
 
   const tabs = ['Overview', 'CMS Project', 'Visualizer Project', 'Plugins'];
 
@@ -25,8 +84,8 @@ const Workspace = () => {
           <div className="flex items-center space-x-4">
             {/* Workspace Avatar */}
             <img
-              src="/Avatar/株式会社福山コンサルタント.png"
-              alt="株式会社福山コンサルタント"
+              src={currentWorkspace.avatar}
+              alt={currentWorkspace.name}
               className="w-16 h-16 rounded-lg object-cover"
               onError={(e) => {
                 // Fallback to gradient if image fails
@@ -41,7 +100,7 @@ const Workspace = () => {
                 background: 'linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%)'
               }}
             >
-              株
+              {currentWorkspace.badge}
             </div>
 
             {/* Workspace Info */}
@@ -49,13 +108,13 @@ const Workspace = () => {
               <h1 
                 className="text-gray-900"
                 style={{
-                  fontFamily: '"Noto Sans JP", sans-serif',
+                  fontFamily: /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(currentWorkspace.name) ? '"Noto Sans JP", sans-serif' : 'Outfit',
                   fontSize: '24px',
                   fontWeight: 600,
                   lineHeight: '140%'
                 }}
               >
-                株式会社福山コンサルタント
+                {currentWorkspace.name}
               </h1>
               <p 
                 className="text-gray-500"
@@ -66,7 +125,7 @@ const Workspace = () => {
                   lineHeight: '140%'
                 }}
               >
-                Eukarya, Inc
+                {currentWorkspace.subtitle}
               </p>
             </div>
           </div>
@@ -164,88 +223,81 @@ const Workspace = () => {
         }}>
           {activeTab === 'Plugins' && (
             <>
-              {/* Plugin Card */}
-              <div 
-                className="rounded-lg shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => handlePluginClick(1)}
-                style={{
-                  display: 'flex',
-                  width: '604px',
-                  height: '244px',
-                  paddingRight: '24px',
-                  alignItems: 'center',
-                  gap: '24px',
-                  background: '#FFF'
-                }}
-              >
-                {/* Plugin Image */}
-                <div className="flex-shrink-0">
-                  <img
-                    src="/images/visualizer/6e82e5cb4f3ab9225ed72467ef0e69d44c5d7ae5df84bd6fb057bd551da4bbb1.png"
-                    alt="3D Building Visualization"
-                    className="object-cover"
-                    style={{ width: '192px', height: '244px' }}
-                  />
-                </div>
+              {workspacePlugins.map((plugin) => (
+                <div 
+                  key={plugin.id}
+                  className="rounded-lg shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => handlePluginClick(plugin.id)}
+                  style={{
+                    display: 'flex',
+                    width: '604px',
+                    height: '244px',
+                    paddingRight: '24px',
+                    alignItems: 'center',
+                    gap: '24px',
+                    background: '#FFF'
+                  }}
+                >
+                  {/* Plugin Image */}
+                  <div className="flex-shrink-0">
+                    <img
+                      src={plugin.image}
+                      alt={plugin.title}
+                      className="object-cover"
+                      style={{ width: '192px', height: '244px' }}
+                    />
+                  </div>
 
-                {/* Plugin Content */}
-                <div className="flex-1 py-6">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 
-                        className="text-blue-600 hover:text-blue-700 mb-2"
-                        style={{
-                          fontFamily: 'Outfit',
-                          fontSize: '20px',
-                          fontWeight: 600,
-                          lineHeight: '140%'
-                        }}
-                      >
-                        3D Building Visualization
-                      </h3>
-                      <span 
-                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-                        style={{ fontFamily: 'Outfit' }}
-                      >
-                        Public
-                      </span>
+                  {/* Plugin Content */}
+                  <div className="flex-1 py-6">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 
+                          className="text-blue-600 hover:text-blue-700 mb-2"
+                          style={{
+                            fontFamily: 'Outfit',
+                            fontSize: '20px',
+                            fontWeight: 600,
+                            lineHeight: '140%'
+                          }}
+                        >
+                          {plugin.title}
+                        </h3>
+                        <span 
+                          className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                          style={{ fontFamily: 'Outfit' }}
+                        >
+                          Public
+                        </span>
+                      </div>
+                    </div>
+
+                    <p 
+                      className="text-gray-600 mt-3 mb-4"
+                      style={{
+                        fontFamily: 'Outfit',
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        lineHeight: '140%'
+                      }}
+                    >
+                      {plugin.description.substring(0, 150)}...
+                    </p>
+
+                    <div className="flex items-center space-x-2 text-sm text-gray-500 flex-wrap">
+                      {plugin.tags.slice(0, 3).map((tag, index) => (
+                        <span 
+                          key={index}
+                          className="inline-flex items-center px-2 py-1 rounded bg-gray-100 mb-1"
+                          style={{ fontFamily: /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(tag) ? '"Noto Sans JP"' : 'Outfit' }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </div>
-
-                  <p 
-                    className="text-gray-600 mt-3 mb-4"
-                    style={{
-                      fontFamily: 'Outfit',
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      lineHeight: '140%'
-                    }}
-                  >
-                    Transform urban planning workflows with interactive 3D building visualization. This plugin enables real-time rendering of cityscapes, block-level simulations, and detailed building...
-                  </p>
-
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span 
-                      className="inline-flex items-center px-2 py-1 rounded bg-gray-100"
-                      style={{ fontFamily: 'Outfit' }}
-                    >
-                      Urban Planning
-                    </span>
-                    <span 
-                      className="inline-flex items-center px-2 py-1 rounded bg-gray-100"
-                      style={{ fontFamily: 'Outfit' }}
-                    >
-                      防災
-                    </span>
-                    <span 
-                      className="inline-flex items-center px-2 py-1 rounded bg-gray-100"
-                      style={{ fontFamily: 'Outfit' }}
-                    >
-                      データビジュアライザ
-                    </span>
-                  </div>
                 </div>
-              </div>
+              ))}
             </>
           )}
 

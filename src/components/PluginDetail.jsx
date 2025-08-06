@@ -1108,16 +1108,30 @@ const PluginDetail = () => {
             </div>
 
             <div className="text-gray-600">
-              {plugin.company === '株式会社福山コンサルタント' ? (
-                <button 
-                  onClick={() => navigate('/workspace/fukuyama-consultant')}
-                  className="font-medium hover:text-blue-600 transition-colors cursor-pointer"
-                >
-                  {plugin.company}
-                </button>
-              ) : (
-                <p className="font-medium">{plugin.company}</p>
-              )}
+              {(() => {
+                const companyMap = {
+                  '株式会社福山コンサルタント': 'fukuyama-consultant',
+                  '気象データ株式会社': 'weather-data',
+                  'センサー技術株式会社': 'sensor-tech',
+                  'GeoVision Labs': 'geovision-labs',
+                  'モビリソリューション': 'mobili-solution',
+                  '環境テクノロジー株式会社': 'enviro-tech',
+                  'EnviroNode': 'enviro-node',
+                  'ChronoMaps Studio': 'chrono-maps'
+                };
+                const workspaceId = companyMap[plugin.company];
+                
+                return workspaceId ? (
+                  <button 
+                    onClick={() => navigate(`/workspace/${workspaceId}`)}
+                    className="font-medium hover:text-blue-600 transition-colors cursor-pointer"
+                  >
+                    {plugin.company}
+                  </button>
+                ) : (
+                  <p className="font-medium">{plugin.company}</p>
+                );
+              })()}
             </div>
 
             {/* Action Buttons */}

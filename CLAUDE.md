@@ -14,6 +14,9 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - `plugin-detail.html` - Individual plugin detail page template with comprehensive documentation and change log sections
 - `plugin-detail.css` - Dedicated CSS file for plugin detail page styling with advanced change log functionality
 - `plugin-edit.html` - Plugin editing interface with advanced features
+- `markdown-editor.html` - Standalone markdown editor with tabbed interface
+- `markdown-editor.css` - Dedicated CSS for markdown editor styling
+- `markdown-editor.js` - JavaScript functionality for markdown editing and preview
 - `style.css` - Main CSS file with responsive design and modern styling
 - `script.js` - JavaScript functionality for interactions, search, filtering, and animations
 - Additional CSS and JS files for specific pages
@@ -64,6 +67,39 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **Plugin Management**: Edit plugin functionality with Plugin Status toggle (Draft/Public states) and GitHub repository upload support
 
 ### Latest Updates (August 6, 2025)
+- **Multi-Workspace System**: Comprehensive workspace management across multiple companies
+  - Enhanced Workspace component with support for 8 different company workspaces
+  - Dynamic workspace data loading based on URL parameters (workspaceId)
+  - Company-specific avatars with gradient fallbacks for consistent branding
+  - Individual workspace interfaces with company-specific Japanese typography support
+  - Real plugin data integration showing actual plugins filtered by company
+  - Professional workspace cards with detailed plugin information and status badges
+- **Enhanced Dashboard Integration**: Real-time data and workspace connectivity
+  - Dashboard component now integrates live plugin data from pluginData.js
+  - Dynamic plugin list generation with relative time calculations
+  - Enhanced workspace management with 8 different company workspaces
+  - Plugin cards open in new tabs for better user workflow
+  - Improved workspace navigation with dynamic workspaceId routing
+  - Consistent company-to-workspace mapping across all components
+- **Plugin Detail Enhancements**: Seamless workspace navigation integration
+  - Dynamic company-to-workspace mapping for all supported companies
+  - Clickable company names that navigate to respective workspace pages
+  - Support for Japanese companies (株式会社福山コンサルタント, 気象データ株式会社, etc.)
+  - Enhanced breadcrumb navigation with hover effects and proper styling
+  - Improved user experience with consistent navigation patterns
+- **Plugin Edit Interface**: Dynamic data loading and workspace integration
+  - Plugin editing now loads actual plugin data based on URL parameters
+  - Dynamic company-to-workspace breadcrumb navigation
+  - Enhanced form initialization with real plugin data (title, description, tags, images)
+  - Improved Japanese typography support with font family detection
+  - Clickable company breadcrumbs that navigate to workspace pages
+  - Form data management updated to use actual plugin information
+- **Standalone Markdown Editor**: Independent editing interface
+  - Created standalone HTML/CSS/JS markdown editor (markdown-editor.html/css/js)
+  - Tab-based editing interface with Edit and Preview modes
+  - Integration with marked.js library for markdown rendering
+  - Professional styling matching the main application design
+  - Reusable component for external markdown editing workflows
 - **Version Management System**: Complete version changelog editing interface
   - Implemented Version tab with professional version cards matching Plugin detail page design
   - Multi-tag selection system with four status labels: Bug Fix, New Feature, Doc Update, UI Update
@@ -114,25 +150,6 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
   - GitHub repository input with placeholder and validation
   - Notes section explaining repository requirements (public, main branch only)
   - Updated form handling to accommodate both upload methods with proper error handling
-- **Workspace Component Implementation**: Individual workspace management interface
-  - Created dedicated Workspace component for company-specific plugin management
-  - Integrated company avatar with fallback gradient design (株式会社福山コンサルタント)
-  - Multi-tab interface with Overview, CMS Project, Visualizer Project, and Plugins tabs
-  - Advanced search functionality with placeholder text and sort dropdown
-  - New Plugin button with direct navigation to upload interface
-  - Plugin cards with detailed information and status badges
-  - Company branding with proper Japanese typography (Noto Sans JP)
-- **Enhanced Dashboard Layout**: Improved navigation and workspace integration
-  - Updated Dashboard component with full-width layout and sticky footer
-  - Improved sidebar workspace management with personal/team organization
-  - Space-between navigation layout for better content distribution
-  - Plugin detail integration with workspace navigation
-  - Enhanced content area styling with consistent card layouts
-- **Routing Enhancements**: Expanded application navigation structure
-  - Added /workspace/:workspaceId route for individual workspace views
-  - Protected route implementation for workspace access
-  - Seamless navigation between dashboard, workspace, and plugin detail views
-  - Integrated breadcrumb-style navigation between components
 
 ## Development Commands
 

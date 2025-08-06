@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ExternalLink, ChevronRight, Plus } from 'lucide-react';
 import DashboardNav from './DashboardNav';
+import { pluginData } from '../data/pluginData';
 
 const Dashboard = () => {
   const [selectedWorkspace, setSelectedWorkspace] = useState('Default personal workspace');
@@ -12,36 +13,53 @@ const Dashboard = () => {
     personal: {
       label: 'Personal',
       options: [
-        { name: 'Default personal workspace', badge: 'De', type: 'circle' },
-        { name: 'My playground', badge: 'My', type: 'circle' }
+        { name: 'Default personal workspace', badge: 'De', type: 'circle', workspaceId: null },
+        { name: 'My playground', badge: 'My', type: 'circle', workspaceId: null }
       ]
     },
     team: {
       label: 'Team',
       options: [
-        { name: 'UC-12地区防災計画', badge: 'UC', type: 'square' },
-        { name: '株式会社福山コンサルタント', badge: '株', type: 'square' },
-        { name: 'Plugin Team', badge: 'PT', type: 'square' }
+        { name: '株式会社福山コンサルタント', badge: '株', type: 'square', workspaceId: 'fukuyama-consultant' },
+        { name: '気象データ株式会社', badge: '気', type: 'square', workspaceId: 'weather-data' },
+        { name: 'センサー技術株式会社', badge: 'セ', type: 'square', workspaceId: 'sensor-tech' },
+        { name: 'GeoVision Labs', badge: 'GV', type: 'square', workspaceId: 'geovision-labs' },
+        { name: 'モビリソリューション', badge: 'モ', type: 'square', workspaceId: 'mobili-solution' },
+        { name: '環境テクノロジー株式会社', badge: '環', type: 'square', workspaceId: 'enviro-tech' },
+        { name: 'EnviroNode', badge: 'EN', type: 'square', workspaceId: 'enviro-node' },
+        { name: 'ChronoMaps Studio', badge: 'CM', type: 'square', workspaceId: 'chrono-maps' }
       ]
     }
   };
 
   const tabs = ['CMS Project', 'Visualizer Project', 'Plugins'];
 
-  const pluginsList = [
-    {
-      id: 1,
-      workspace: '株式会社福山コンサルタント',
-      title: '3D Building Visualization',
-      lastEdit: '3 month ago',
-      status: 'Public',
-      platform: 'Visualizer'
-    }
-  ];
+  // Transform plugin data for dashboard display
+  const pluginsList = pluginData.map(plugin => ({
+    id: plugin.id,
+    workspace: plugin.company,
+    title: plugin.title,
+    lastEdit: getRelativeTime(plugin.updatedDate),
+    status: 'Public',
+    platform: 'Visualizer'
+  }));
+
+  // Helper function to convert date to relative time
+  function getRelativeTime(dateStr) {
+    const date = new Date(dateStr.replace(/\//g, '-'));
+    const now = new Date();
+    const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+    
+    if (diffInDays === 0) return 'Today';
+    if (diffInDays === 1) return '1 day ago';
+    if (diffInDays < 30) return `${diffInDays} days ago`;
+    if (diffInDays < 60) return '1 month ago';
+    return `${Math.floor(diffInDays / 30)} months ago`;
+  }
 
 
   const handlePluginClick = (pluginId) => {
-    navigate(`/plugin/${pluginId}`);
+    window.open(`/plugin/${pluginId}`, '_blank');
   };
 
   return (
@@ -132,8 +150,8 @@ const Dashboard = () => {
                           key={option.name}
                           onClick={() => {
                             setSelectedWorkspace(option.name);
-                            if (option.name === '株式会社福山コンサルタント') {
-                              navigate('/workspace/fukuyama-consultant');
+                            if (option.workspaceId) {
+                              navigate(`/workspace/${option.workspaceId}`);
                             }
                           }}
                           className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
