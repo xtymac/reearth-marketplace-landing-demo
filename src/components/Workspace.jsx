@@ -158,34 +158,44 @@ const Workspace = () => {
             </div>
 
             {/* Actions */}
-            {activeTab === 'Plugins' && (
-              <div className="flex items-center space-x-4">
-                {/* Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search by title, function and description"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    style={{
-                      width: '320px',
-                      fontFamily: 'Outfit',
-                      fontSize: '14px'
-                    }}
-                  />
-                </div>
+            <div className="flex items-center space-x-4">
+              {/* Search - only show for Plugins tab */}
+              {activeTab === 'Plugins' && (
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search by title, function and description"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                      style={{
+                        width: '320px',
+                        fontFamily: 'Outfit',
+                        fontSize: '14px'
+                      }}
+                    />
+                  </div>
+                )}
 
-                {/* Sort Dropdown */}
-                <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                  <span style={{ fontFamily: 'Outfit', fontSize: '14px' }}>Sort by date uploaded</span>
-                  <ChevronDown className="w-4 h-4" />
-                </button>
+                {/* Sort Dropdown - only show for Plugins tab */}
+                {activeTab === 'Plugins' && (
+                  <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    <span style={{ fontFamily: 'Outfit', fontSize: '14px' }}>Sort by date uploaded</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                )}
 
-                {/* New Plugin Button */}
+                {/* New Plugin/Project Button */}
                 <button 
-                  onClick={() => navigate('/plugins/new')}
+                  onClick={() => {
+                    if (activeTab === 'Plugins') {
+                      navigate('/plugins/new');
+                    } else {
+                      // Placeholder for New Project - no functionality yet
+                      console.log('New Project functionality not implemented yet');
+                    }
+                  }}
                   className="text-white hover:opacity-90 transition-opacity"
                   style={{ 
                     display: 'flex',
@@ -201,10 +211,9 @@ const Workspace = () => {
                   }}
                 >
                   <Plus className="w-4 h-4" />
-                  New Plugin
+                  {activeTab === 'Plugins' ? 'New Plugin' : 'New Project'}
                 </button>
               </div>
-            )}
           </div>
         </div>
       </div>

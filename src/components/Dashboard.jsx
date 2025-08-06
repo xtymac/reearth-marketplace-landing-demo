@@ -214,7 +214,14 @@ const Dashboard = () => {
                       Recently Edited
                     </h2>
                     <button 
-                      onClick={() => navigate('/plugins/new')}
+                      onClick={() => {
+                        if (activeTab === 'Plugins') {
+                          navigate('/plugins/new');
+                        } else {
+                          // Placeholder for New Project - no functionality yet
+                          console.log('New Project functionality not implemented yet');
+                        }
+                      }}
                       className="text-white hover:opacity-90 transition-opacity"
                       style={{ 
                         display: 'flex',
@@ -230,7 +237,7 @@ const Dashboard = () => {
                       }}
                     >
                       <Plus className="w-4 h-4" />
-                      New Plugin
+                      {activeTab === 'Plugins' ? 'New Plugin' : 'New Project'}
                     </button>
                   </div>
                 </div>
@@ -424,7 +431,7 @@ const Dashboard = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200">
+      <footer className="border-t border-gray-200">
         <div className="px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
             <span>© 2024 Re:Earth contributors</span>
