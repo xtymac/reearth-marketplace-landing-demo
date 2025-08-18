@@ -51,7 +51,10 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **Dashboard Navigation**: Specialized DashboardNav component for dashboard-specific pages with dashboard logo and simplified layout
 - **Dashboard System**: Full-width layout with sidebar workspace management, project tabs, and user-friendly interface
 - **Workspace Management**: Individual workspace views with company-specific branding, tabbed interfaces, and plugin organization
-- **Developer Portal System**: Comprehensive developer interface with workspace selection, plugin management, and developer-specific tools
+- **Developer Portal System**: Comprehensive developer interface with embedded plugin editing, workspace selection, plugin management, and developer-specific tools
+  - In-place plugin editing with single-column layout
+  - Direct card-click navigation to editing interface
+  - Full plugin management capabilities within portal context
 - **Authentication System**: Login functionality with protected routes, user session management, and avatar dropdown
 - **Search & Filter**: Real-time search functionality with comprehensive plugin filtering
 - **Plugin Grid**: CSS Grid layout with uniform card heights across all breakpoints
@@ -70,9 +73,28 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **Dashboard Interface**: Comprehensive user dashboard with workspace selection, project tabs, and activity tracking
 - **Developer Portal Interface**: Dedicated developer workspace with plugin management, visibility controls, and multi-workspace support
 - **Plugin Upload**: Complete plugin submission workflow with form validation, file handling, and integrated UI
-- **Plugin Management**: Edit plugin functionality with Plugin Status toggle (Draft/Public states) and GitHub repository upload support
+- **Plugin Management**: Advanced plugin editing with multiple management modes
+  - In-portal editing across Developer Portal and workspace interfaces
+  - Plugin Status toggle (Draft/Public states)
+  - Single-column embedded editing workflow
+  - GitHub repository upload support
+  - Markdown-based README editing
+  - Comprehensive version and tag management
 
 ### Latest Updates (August 18, 2025)
+- **Developer Portal Plugin Editing**: Enhanced In-Place Plugin Management
+  - Implemented embedded plugin editing directly within the Developer Portal interface
+  - Clickable plugin cards open single-column edit interface
+  - Seamless navigation between plugin list and edit views
+  - Integrated comprehensive editing capabilities including:
+    - General plugin information editing
+    - README markdown editor with Edit/Preview modes
+    - Version management with tag selection
+    - Plugin Status toggle (Draft/Public)
+    - Danger Zone for plugin deletion
+  - State management for smooth view transitions
+  - Maintained existing Developer Portal design and interaction patterns
+  - Reused components from PluginEdit.jsx for consistent editing experience
 - **Developer Portal Implementation**: Comprehensive developer workspace with multi-workspace support
   - Added Developer Portal link to avatar dropdown menus across all components (DashboardNav, Marketplace, PluginDetail)
   - Created DeveloperPortalEntry component for workspace selection with modal interface
@@ -91,7 +113,10 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
   - Multiple sorting options (Recently Updated, Name, Downloads) with dynamic plugin lists
   - Workspace selector dropdown with 8 different company workspaces
   - Plugin cards with visibility badges, download/like statistics, and update timestamps
-  - Direct navigation to plugin editing and viewing with proper link management
+  - Embedded plugin editing functionality with single-column layout
+  - Direct, in-place plugin editing triggered by card clicks
+  - Contextual edit mode with full plugin management capabilities
+  - Enhanced user workflow with minimal navigation overhead
   - Empty state handling with "Create your first plugin" call-to-action
 - **Enhanced Avatar Dropdown Navigation**: Universal Developer Portal access
   - Added Developer Portal menu item to avatar dropdowns in DashboardNav, Marketplace, and PluginDetail
