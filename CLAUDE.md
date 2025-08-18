@@ -81,6 +81,10 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
   - Professional workspace selection interface with Japanese typography support for company names
   - Integrated workspace selection modal with close functionality and "Enter portal" button
   - Enhanced user experience with workspace context passing to Developer Portal
+  - Improved workspace selection modal design
+    - Increased gap between header text and workspace cards with 24px margin-top
+    - Fixed workspace card selection visual inconsistency by changing unselected card background to #FFFFFF
+    - Updated page background to use var(--tailwind-neutra-900, #171717) for better visual hierarchy
 - **Developer Portal Main Interface**: Full-featured plugin management dashboard
   - Comprehensive plugin management with visibility filtering (All, Public, Private, Draft)
   - Real-time search functionality across plugin titles and descriptions
