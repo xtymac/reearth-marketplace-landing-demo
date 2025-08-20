@@ -213,6 +213,29 @@ Supports all modern browsers:
 
 ## 🚀 Recent Updates (August 20, 2025)
 
+### Developer Portal Interface Enhancements
+- **Avatar Dropdown Menu**: Added clickable avatar in Developer Portal with dropdown menu containing Marketplace, Dashboard, Setting, and Logout options
+  - Consistent styling with 36px height and proper highlight states
+  - Smooth hover animations with background color transitions
+  - Proper click-outside handling for improved user experience
+- **Workspace Selection Dropdown**: Converted workspace selector from basic select element to custom dropdown
+  - Matching styling with main interface design patterns
+  - ChevronDown icon with smooth rotation animation on open/close
+  - Enhanced visual hierarchy and accessibility
+- **Sidebar Navigation Improvements**:
+  - Made logo and title clickable to navigate to /developer-portal/manage
+  - Removed border/separator line below logo for cleaner design
+  - Extended sidebar to full viewport height with fixed positioning
+  - Enhanced Documentation menu item with NewTab icon linking to external visualizer.developer.reearth.io
+- **Search Interface Optimization**:
+  - Expanded search bar width range (500px-900px) for better usability
+  - Repositioned sort dropdown directly next to search bar for logical grouping
+  - Ensured search input maintains readable minimum width across all screen sizes
+- **Table Layout Refinements**:
+  - Fixed Action column alignment with header text for perfect visual consistency
+  - Standardized all dropdown menu items to 36px height
+  - Achieved perfect vertical and horizontal alignment of icons and text elements
+
 ### Developer Portal Standalone Login Page
 - **New Authentication Interface**: Created `developer-portal-login.html` as a dedicated Developer Portal login page
 - **Modern Card Design**: Professional card-based layout with rounded corners (16px), shadow effects, and clean visual hierarchy
