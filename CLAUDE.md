@@ -14,6 +14,7 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - `plugin-detail.html` - Individual plugin detail page template with comprehensive documentation and change log sections
 - `plugin-detail.css` - Dedicated CSS file for plugin detail page styling with advanced change log functionality
 - `plugin-edit.html` - Plugin editing interface with advanced features
+- `developer-portal-login.html` - Standalone Developer Portal login page with tabbed interface (Login/Sign Up)
 - `markdown-editor.html` - Standalone markdown editor with tabbed interface
 - `markdown-editor.css` - Dedicated CSS for markdown editor styling
 - `markdown-editor.js` - JavaScript functionality for markdown editing and preview
@@ -81,7 +82,22 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
   - Markdown-based README editing
   - Comprehensive version and tag management
 
-### Latest Updates (August 18, 2025)
+### Latest Updates (August 20, 2025)
+- **Developer Portal Login Page**: Standalone authentication interface for developer access
+  - Created `developer-portal-login.html` with modern card-based design
+  - Tabbed interface supporting both Login and Sign Up modes
+  - Professional styling with grey input fields (#F5F5F5) and focus states (#EBEBEB)
+  - Teal login button (#4A9B9B) with hover and active states for enhanced user feedback
+  - Responsive design that adapts to mobile devices (max-width: 480px)
+  - Form validation and password confirmation for sign-up workflow
+  - JavaScript functionality for seamless tab switching between Login and Sign Up forms
+  - Integration with Developer Portal workflow through form submission handling
+  - Consistent typography using Outfit font family matching the project design system
+  - Card layout with rounded corners (16px), shadow effects, and proper visual hierarchy
+  - Interactive elements including "Don't remember your password?" and "Already have an account?" links
+  - Loading state management for both login and signup processes with user feedback
+
+### Previous Updates (August 18, 2025)
 - **Developer Portal Plugin Editing**: Enhanced In-Place Plugin Management
   - Implemented embedded plugin editing directly within the Developer Portal interface
   - Clickable plugin cards open single-column edit interface
@@ -254,14 +270,19 @@ serve -s build
   - Blue accent: #0089D4 (general links and accents)
   - Light blue: #2CC3FF (active states, toggles)
   - Dark blue: #00A2EA (primary actions, Save buttons)
-  - Background: #FEFAF0
+  - Teal accent: #4A9B9B (Developer Portal login button)
+  - Background: #FEFAF0 (main), #8B8B92 (Developer Portal login)
 - **Typography**: 
   - English text: Outfit font family (16px, 400 weight, 140% line-height for navigation)
   - Japanese text: "Noto Sans JP" font family
   - Headings: Outfit font with various sizes (56px for main title, 24px for subtitles)
   - Code/Markdown editor: SF Mono, Monaco, Cascadia Code, Roboto Mono, Consolas, Courier New (monospace)
+- **Form Elements**:
+  - Input fields: Grey background (#F5F5F5) with focus state (#EBEBEB)
+  - Input padding: 16px with 8px border radius
+  - Placeholder text: #9CA3AF with 400 font weight
 - **Layout**: CSS Grid with responsive breakpoints (1/2/3 columns)
-- **Card Design**: Consistent heights using flexbox with 16:9 aspect ratio images
+- **Card Design**: Consistent heights using flexbox with 16:9 aspect ratio images, rounded corners (16px)
 - **Responsive Design**: Mobile-first approach with desktop enhancements
 - **Assets**: Local logo files and plugin images in public directory
 
