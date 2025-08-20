@@ -9,7 +9,7 @@ A comprehensive marketplace implementation for the Re:Earth geospatial platform,
 - **User Authentication**: Secure login system with protected routes and session management
 - **Plugin Management**: Upload, edit, and manage plugins with status controls (Draft/Public)
 - **Dashboard Interface**: Professional user dashboard with workspace management and project organization
-- **Developer Portal**: Dedicated developer workspace with multi-workspace support and comprehensive plugin management
+- **Developer Portal**: Dedicated developer workspace with embedded plugin editing, multi-workspace support, and comprehensive plugin management
 - **Responsive Design**: Seamless experience across desktop, tablet, and mobile devices
 
 ### Advanced Functionality
@@ -21,6 +21,8 @@ A comprehensive marketplace implementation for the Re:Earth geospatial platform,
 - **Multi-Workspace Support**: Switch between personal and team workspaces with member count display
 - **Plugin Visibility Controls**: Comprehensive filtering by visibility status (All, Public, Private, Draft)
 - **Company Branding**: Individual workspace interfaces with company-specific avatars and branding
+- **Plugin Installation Flow**: Modal-based plugin installation with user-friendly interfaces
+- **Submission Success Feedback**: Comprehensive success confirmation for plugin submissions
 - **Professional UI**: Consistent design system with Re:Earth branding and typography
 
 ## 🏗️ Architecture
@@ -56,10 +58,12 @@ Re:Earth Marketplace/
 │   │   ├── PluginEdit.jsx           # Plugin editing with status toggle
 │   │   ├── PluginUpload.jsx         # Plugin upload with GitHub integration
 │   │   ├── Workspace.jsx            # Individual workspace interface with company branding
-│   │   ├── DeveloperPortal.jsx      # Developer Portal main interface with plugin management
+│   │   ├── DeveloperPortal.jsx      # Developer Portal main interface with embedded plugin editing
 │   │   ├── DeveloperPortalEntry.jsx # Workspace selection modal for Developer Portal entry
 │   │   ├── DeveloperPluginEdit.jsx  # Developer-specific plugin editing interface
 │   │   ├── DeveloperPluginUpload.jsx# Developer-specific plugin upload interface
+│   │   ├── PluginInstallModal.jsx   # Plugin installation modal interface
+│   │   ├── PluginSubmissionSuccess.jsx # Plugin submission success confirmation
 │   │   └── ProtectedRoute.jsx       # Route protection wrapper
 │   ├── data/
 │   │   └── pluginData.js            # Plugin catalog data
@@ -68,6 +72,10 @@ Re:Earth Marketplace/
 │   │   └── pluginService.js         # Plugin data services
 │   ├── utils/
 │   │   └── randomGenerator.js       # Utility functions
+│   ├── Dashboard.css                # Dashboard-specific styling
+│   ├── DeveloperPortal.css          # Developer Portal styling
+│   ├── PluginEdit.css              # Plugin editing interface styling
+│   ├── PluginUpload.css            # Plugin upload interface styling
 │   └── App.js                       # Main application component
 ├── markdown-editor.html             # Standalone markdown editor interface
 ├── markdown-editor.css              # Markdown editor styling
@@ -162,6 +170,9 @@ The project is optimized for Netlify deployment with:
 - **Search & Sort**: Real-time search with multiple sorting options (Recently Updated, Name, Downloads)
 - **Plugin Statistics**: Display download counts, like counts, and update timestamps
 - **Navigation Integration**: Direct access from avatar dropdown menus across all components
+- **Embedded Plugin Editing**: In-place editing triggered by plugin card clicks with full management capabilities
+- **Single-Column Edit Interface**: Streamlined editing experience within Developer Portal context
+- **State-Driven Navigation**: Seamless transitions between list and edit views without route changes
 
 ### Plugin Management
 - **Upload**: Support for local files and GitHub repositories
@@ -197,9 +208,22 @@ Supports all modern browsers:
 - Safari (latest versions)
 - Edge (latest versions)
 
-## 🚀 Recent Updates (August 18, 2025)
+## 🚀 Recent Updates (August 20, 2025)
 
-### Developer Portal Implementation
+### Developer Portal Enhanced Plugin Editing
+- **Embedded Plugin Editing**: Implemented in-place plugin editing directly within the Developer Portal interface
+- **Single-Click Edit Access**: Plugin cards in Developer Portal now open comprehensive editing interface with single click
+- **Seamless Navigation**: Smooth transitions between plugin list and edit views without leaving Developer Portal context
+- **Integrated Editing Capabilities**: Full plugin management including:
+  - General plugin information editing
+  - README markdown editor with Edit/Preview modes
+  - Version management with tag selection
+  - Plugin Status toggle (Draft/Public)
+  - Danger Zone for plugin deletion
+- **State Management**: Sophisticated view state handling for smooth user experience
+- **Consistent UI**: Maintains existing Developer Portal design patterns and interaction flows
+
+### Developer Portal Implementation (August 18, 2025)
 - **Comprehensive Developer Workspace**: Full-featured Developer Portal with multi-workspace support and advanced plugin management
 - **Workspace Selection Interface**: Modal workspace selector with 5 workspace options including personal and team types with member counts
 - **Universal Portal Access**: Developer Portal links added to avatar dropdown menus across all components (DashboardNav, Marketplace, PluginDetail)
