@@ -82,7 +82,56 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
   - Markdown-based README editing
   - Comprehensive version and tag management
 
-### Latest Updates (August 20, 2025)
+### Latest Updates (August 21, 2025)
+- **Plugin Editor Scrollspy Enhancement**: Implemented robust scroll behavior for reliable section navigation
+  - **IntersectionObserver Implementation**: Enhanced scrollspy with proper thresholds (0.3 for first, 0.7 for others)
+    - Reliable section detection in both scroll directions (General → README → Version → Danger Zone)
+    - No sections are skipped when changing direction or scrolling quickly
+    - Smooth active state transitions with consistent visual feedback
+  - **Bidirectional Navigation**: Optimized for seamless scrolling experience
+    - Proper threshold configuration prevents jumping between sections
+    - Reliable detection whether scrolling up or down through content
+    - Maintains active section accuracy across all scroll speeds
+- **New Version Inline Editor**: Advanced version management with expandable interface
+  - **Version Upload Interface**: Expandable form under Version section for new version creation
+    - Toggle between local file upload and GitHub repository options
+    - Version input field with auto-loading from YML file parsing
+    - Release notes textarea for detailed change descriptions
+    - Clickable version labels (Bug Fix, New Feature, Doc Update, UI Update) with visual selection feedback
+  - **Form Management**: Comprehensive validation and state handling
+    - Save, Cancel, and Delete actions with proper error handling
+    - Form validation for all required fields (version, file/URL, release notes)
+    - Auto-population of version numbers from uploaded YML files
+    - Visual feedback for selected tags with opacity and border styling
+  - **User Experience**: Seamless integration with existing plugin editing workflow
+    - Expandable interface maintains clean UI when not in use
+    - Consistent styling with existing version cards and plugin edit interface
+    - Real-time tag selection with immediate visual feedback
+    - Proper form reset on cancel and successful submission
+- **Navigation System Improvements**: Enhanced breadcrumb and routing reliability
+  - **Developer Portal Navigation**: Fixed breadcrumb links for consistent navigation
+    - Updated "Developer Portal" breadcrumb links to properly navigate to `/developer-portal/manage`
+    - Consistent navigation experience from any plugin editor subpage
+    - Reliable routing back to plugin list after save/delete operations
+  - **Cross-Component Routing**: Improved navigation flow throughout application
+    - Fixed save and delete actions to return to correct plugin list page
+    - Enhanced user workflow with predictable navigation patterns
+    - Maintained existing routing structure while fixing broken links
+- **Layout and Spacing Optimizations**: Refined visual hierarchy and spacing consistency
+  - **Header Spacing**: Reduced header-to-content spacing from 32px to 24px in plugin edit interface
+    - Improved visual balance between navigation and content areas
+    - More compact layout while maintaining proper visual hierarchy
+    - Consistent with other interface sections throughout the application
+  - **Developer Portal Container**: Optimized dev-portal-main container top padding from 24px to 16px
+    - Better space utilization for plugin management interface
+    - Enhanced content density without sacrificing readability
+    - Maintained responsive design principles for mobile breakpoints
+  - **Visual Consistency**: Standardized spacing patterns across all Developer Portal pages
+    - Consistent spacing implementation reduces visual noise
+    - Improved user focus on content rather than excessive whitespace
+    - Enhanced professional appearance with refined layout proportions
+
+### Previous Updates (August 20, 2025)
 - **Developer Portal UI/UX Enhancements**: Comprehensive interface improvements for better user experience
   - **Avatar Dropdown System**: Implemented clickable avatar with comprehensive dropdown menu
     - Menu options: Marketplace, Dashboard, Setting, and Logout with proper navigation

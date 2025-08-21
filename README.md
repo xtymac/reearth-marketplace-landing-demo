@@ -211,7 +211,29 @@ Supports all modern browsers:
 - Safari (latest versions)
 - Edge (latest versions)
 
-## 🚀 Recent Updates (August 20, 2025)
+## 🚀 Recent Updates (August 21, 2025)
+
+### Plugin Editor Enhancements
+- **Advanced Scrollspy Navigation**: Implemented robust IntersectionObserver for reliable section navigation
+  - Enhanced scroll detection with proper thresholds (0.3 for first section, 0.7 for others)
+  - Seamless bidirectional navigation between General → README → Version → Danger Zone sections
+  - No section skipping during fast scrolling or direction changes
+- **New Version Inline Editor**: Expandable version management interface
+  - Toggle between local file upload and GitHub repository options
+  - Auto-loading version numbers from YML file parsing
+  - Release notes textarea with comprehensive change descriptions
+  - Clickable version labels (Bug Fix, New Feature, Doc Update, UI Update) with visual feedback
+  - Complete form validation with save, cancel, and delete operations
+- **Navigation System Improvements**: Fixed breadcrumb links and routing reliability
+  - Updated "Developer Portal" breadcrumbs to navigate properly to `/developer-portal/manage`
+  - Reliable save and delete actions returning to correct plugin list pages
+  - Enhanced cross-component routing consistency
+- **Layout Optimizations**: Refined spacing and visual hierarchy
+  - Reduced header-to-content spacing from 32px to 24px for better visual balance
+  - Optimized Developer Portal container padding from 24px to 16px for improved content density
+  - Consistent spacing patterns across all Developer Portal interfaces
+
+### Previous Updates (August 20, 2025)
 
 ### Developer Portal Interface Enhancements
 - **Avatar Dropdown Menu**: Added clickable avatar in Developer Portal with dropdown menu containing Marketplace, Dashboard, Setting, and Logout options
