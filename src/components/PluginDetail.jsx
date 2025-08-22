@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard } from 'lucide-react';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard, Building2, ArrowLeft, Edit } from 'lucide-react';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
+import { PluginService } from '../services/pluginService';
+import PluginInstallModal from './PluginInstallModal';
 
 // Plugin documentation content generator
 const getDocumentationContent = (pluginId, pluginTitle) => {
@@ -741,12 +743,17 @@ const getChangeLogEntries = (pluginId) => {
 const PluginDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const plugin = pluginData.find(p => p.id === parseInt(id));
   const [selectedImage, setSelectedImage] = useState(0);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [installModalOpen, setInstallModalOpen] = useState(false);
   const isAuthenticated = authService.isAuthenticated();
   const userData = authService.getUserData();
   const userDropdownRef = useRef(null);
+  
+  // Always show preview mode on plugin detail pages
+  const isPreviewMode = true;
   
   // Like functionality state
   const [likeState, setLikeState] = useState(() => {
@@ -798,24 +805,58 @@ const PluginDetail = () => {
   const handleLogout = () => {
     authService.logout();
     setUserDropdownOpen(false);
-    navigate('/');
+    navigateWithoutPreview('/');
   };
 
   const handleDashboard = () => {
     setUserDropdownOpen(false);
-    navigate('/dashboard');
+    navigateWithoutPreview('/dashboard');
   };
 
   const handleSettings = () => {
     setUserDropdownOpen(false);
-    navigate('/settings');
+    navigateWithoutPreview('/settings');
+  };
+
+  const handleDeveloperPortal = () => {
+    setUserDropdownOpen(false);
+    navigateWithoutPreview('/developer-portal');
+  };
+
+  // Helper function to navigate without preview parameter
+  const navigateWithoutPreview = (path) => {
+    navigate(path);
+  };
+
+  // Helper function to handle Link clicks that should exit preview mode
+  const handleLinkClick = (path) => {
+    navigateWithoutPreview(path);
   };
 
   const handleStartClick = () => {
     if (isAuthenticated) {
-      navigate('/plugins/new');
+      navigateWithoutPreview('/plugins/new');
+    } else {
+      navigateWithoutPreview('/login');
+    }
+  };
+
+  const handleInstallClick = () => {
+    if (isAuthenticated) {
+      setInstallModalOpen(true);
     } else {
       navigate('/login');
+    }
+  };
+
+  const handleInstallPlugin = async (workspaceId, projectId) => {
+    try {
+      await PluginService.installPlugin(plugin.id, workspaceId, projectId);
+      // You could show a success message here
+      console.log('Plugin installed successfully');
+    } catch (error) {
+      console.error('Installation failed:', error);
+      // You could show an error message here
     }
   };
 
@@ -846,9 +887,9 @@ const PluginDetail = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Plugin not found</h1>
-          <Link to="/" className="text-blue-600 hover:underline">
+          <button onClick={() => handleLinkClick('/')} className="text-blue-600 hover:underline bg-transparent border-none cursor-pointer">
             Return to Marketplace
-          </Link>
+          </button>
         </div>
       </div>
     );
@@ -856,8 +897,89 @@ const PluginDetail = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FEFAF0' }}>
+      {/* CSS Animation for Pulse Effect */}
+      <style>
+        {`
+          @keyframes pulse {
+            0%, 100% {
+              opacity: 1;
+            }
+            50% {
+              opacity: 0.5;
+            }
+          }
+        `}
+      </style>
+      
+      {/* Preview Mode Bar */}
+      <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '60px',
+          backgroundColor: '#6B7280',
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          <div style={{
+            width: '100%',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 24px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <img 
+                src="/Image/Icon/Green.svg" 
+                alt="Preview icon"
+                style={{ width: '28px', height: '28px' }}
+              />
+              <span style={{
+                color: '#FFF',
+                fontFamily: 'Outfit',
+                fontSize: '16px',
+                fontStyle: 'normal',
+                fontWeight: 500,
+                lineHeight: '140%'
+              }}>
+                Preview mode
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                navigateWithoutPreview(`/developer-portal/workspace/${id}`);
+              }}
+              style={{
+                borderRadius: '6px',
+                border: '1px solid #E5E7EB',
+                background: '#FFF',
+                color: '#374151',
+                padding: '6px 12px',
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '14px',
+                fontWeight: 400,
+                cursor: 'pointer',
+                transition: 'background-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#F3F4F6'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = 'white'}
+            >
+              Return to Edit
+            </button>
+          </div>
+        </div>
+      
+      
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white shadow-sm" style={{ marginTop: '60px' }}>
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo and Navigation */}
@@ -888,7 +1010,7 @@ const PluginDetail = () => {
                 <a href="https://reearth.io/pricing" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Pricing</a>
                 <a href="https://reearth.io/community" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Community</a>
                 <a href="https://reearth.io/learn" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Learn</a>
-                <Link to="/" className="text-blue-600" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Marketplace</Link>
+                <button onClick={() => handleLinkClick('/')} className="text-blue-600 bg-transparent border-none cursor-pointer" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Marketplace</button>
               </nav>
             </div>
 
@@ -980,6 +1102,23 @@ const PluginDetail = () => {
                         Dashboard
                       </button>
                       <button
+                        onClick={handleDeveloperPortal}
+                        role="menuitem"
+                        className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
+                        style={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '14px',
+                          lineHeight: '140%',
+                          fontWeight: 400,
+                          color: 'var(--text-default, #0A0A0A)',
+                          padding: '8px 12px',
+                          borderRadius: '8px'
+                        }}
+                      >
+                        <Building2 className="w-4 h-4 mr-3" />
+                        Developer Portal
+                      </button>
+                      <button
                         onClick={handleSettings}
                         role="menuitem"
                         className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
@@ -1047,7 +1186,7 @@ const PluginDetail = () => {
         <div>
           {/* Breadcrumbs */}
           <nav className="flex items-center space-x-2 text-sm" style={{ margin: 0 }}>
-            <Link to="/" className="text-blue-600 hover:underline">Marketplace</Link>
+            <button onClick={() => handleLinkClick('/')} className="text-blue-600 hover:underline bg-transparent border-none cursor-pointer">Marketplace</button>
             <span className="text-gray-400">/</span>
             <span className="text-gray-700">{plugin.title}</span>
           </nav>
@@ -1123,7 +1262,7 @@ const PluginDetail = () => {
                 
                 return workspaceId ? (
                   <button 
-                    onClick={() => navigate(`/workspace/${workspaceId}`)}
+                    onClick={() => navigateWithoutPreview(`/workspace/${workspaceId}`)}
                     className="font-medium hover:text-blue-600 transition-colors cursor-pointer"
                   >
                     {plugin.company}
@@ -1137,6 +1276,7 @@ const PluginDetail = () => {
             {/* Action Buttons */}
             <div className="flex items-center gap-3">
               <button 
+                onClick={handleInstallClick}
                 className="text-white font-semibold transition-colors"
                 style={{ 
                   display: 'flex',
@@ -1184,7 +1324,7 @@ const PluginDetail = () => {
                     border: 'none',
                     cursor: 'pointer'
                   }}
-                  onClick={() => navigate(`/plugin/${plugin.id}/edit`)}
+                  onClick={() => navigateWithoutPreview(`/developer-portal/workspace/${id}`)}
                   aria-label="Edit plugin"
                 >
                   Edit plugin
@@ -1301,7 +1441,11 @@ const PluginDetail = () => {
             />
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', margin: 0 }}>
-              {getChangeLogEntries(plugin.id).map((entry, index) => (
+              {(plugin.changelog ? plugin.changelog.map(entry => ({
+                ...entry,
+                description: entry.content, // Map content to description for compatibility
+                version: entry.version.replace(/^v/, 'Version ') // Ensure version has "Version" prefix
+              })) : getChangeLogEntries(plugin.id)).map((entry, index) => (
                 <ChangeLogEntry key={index} entry={entry} />
               ))}
             </div>
@@ -1371,6 +1515,14 @@ const PluginDetail = () => {
           </div>
         </div>
       </footer>
+
+      {/* Plugin Install Modal */}
+      <PluginInstallModal
+        isOpen={installModalOpen}
+        onClose={() => setInstallModalOpen(false)}
+        plugin={plugin}
+        onInstall={handleInstallPlugin}
+      />
     </div>
   );
 };

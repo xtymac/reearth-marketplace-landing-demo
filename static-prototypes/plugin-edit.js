@@ -622,6 +622,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const submitBtn = form.querySelector('.submit-button');
         const saveDraftBtn = document.getElementById('saveDraftBtn');
         const cancelBtn = document.getElementById('cancelBtn');
+        const previewBtn = document.getElementById('previewBtn');
         
         if (form) {
             form.addEventListener('submit', function(e) {
@@ -641,6 +642,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
                     window.location.href = 'workspace-plugins.html';
                 }
+            });
+        }
+        
+        if (previewBtn) {
+            previewBtn.addEventListener('click', function() {
+                // Navigate to plugin detail page with preview parameter
+                window.location.href = 'plugin-detail.html?preview=1';
             });
         }
     }

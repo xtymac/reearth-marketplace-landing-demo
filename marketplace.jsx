@@ -154,9 +154,7 @@ const Marketplace = () => {
             <p className="text-lg text-gray-600">
               Discover community-made Plugin for visualizer
             </p>
-            <p className="text-gray-600">
-              Have something to share? <a href="#" className="text-blue-600 hover:underline">Submit your plugin</a>
-            </p>
+          
           </div>
         </div>
 

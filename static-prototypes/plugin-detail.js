@@ -1,6 +1,9 @@
 // Plugin Detail Page JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Preview mode functionality
+  initializePreviewMode();
+  
   // Image gallery functionality
   initializeImageGallery();
   
@@ -19,6 +22,69 @@ document.addEventListener('DOMContentLoaded', function() {
   // Change log toggle functionality
   initializeChangeLogToggle();
 });
+
+// Preview Mode
+function initializePreviewMode() {
+  // Always show the preview status bar on plugin detail pages
+  const previewStatusBar = document.getElementById('previewStatusBar');
+  if (previewStatusBar) {
+    previewStatusBar.style.display = 'flex';
+  }
+  
+  // Add preview-mode class to body to adjust main content margin
+  document.body.classList.add('preview-mode');
+  
+  // Set up return to edit button
+  const returnToEditBtn = document.getElementById('returnToEditBtn');
+  if (returnToEditBtn) {
+    returnToEditBtn.addEventListener('click', function() {
+      // Navigate back to developer portal with specific plugin ID for editing
+      // The static HTML represents plugin ID 1 (3D Building Visualization)
+      window.location.href = 'developer-portal.html?edit=1';
+    });
+  }
+  
+  // Intercept all navigation links to exit preview mode
+  interceptNavigationLinks();
+}
+
+// Function to intercept all navigation links and strip preview parameter
+function interceptNavigationLinks() {
+  // Get all links in the document
+  const links = document.querySelectorAll('a[href]');
+  
+  links.forEach(link => {
+    // Only intercept internal links (relative URLs or same origin)
+    const href = link.getAttribute('href');
+    if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove preview parameter and navigate
+        const url = new URL(href, window.location.origin);
+        url.searchParams.delete('preview');
+        
+        // Navigate without preview parameter
+        window.location.href = url.pathname + url.search;
+      });
+    }
+  });
+  
+  // Also intercept any navigation buttons or elements with data-href
+  const navButtons = document.querySelectorAll('[data-href]');
+  navButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = button.getAttribute('data-href');
+      if (href) {
+        // Navigate without preview parameter
+        const url = new URL(href, window.location.origin);
+        url.searchParams.delete('preview');
+        window.location.href = url.pathname + url.search;
+      }
+    });
+  });
+}
 
 // Image Gallery
 function initializeImageGallery() {

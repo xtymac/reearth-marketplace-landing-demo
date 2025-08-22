@@ -33,93 +33,23 @@ const PluginEdit = () => {
       currentPlugin.image,
       ...(currentPlugin.gallery ? currentPlugin.gallery.slice(1, 3) : [])
     ],
-    readme: `# 🏙️ 3D Building Visualization
-
-**3D Building Visualization** is a powerful plugin designed to enhance urban planning workflows through immersive 3D representations of buildings and cityscapes. Perfect for architects, city planners, and disaster management teams, it provides real-time visualization of infrastructure within your Visualizer project.
-
----
-
-## ✨ Features
-
-- 🏗️ Render realistic 3D building models from geospatial data  
-- 📊 Integrate zoning, demographic, or utility data overlays  
-- 🔄 Real-time updates for planning simulations and stakeholder presentations  
-- 🚧 Use in conjunction with disaster planning or development analysis tools  
-
----
-
-## 📦 Use Cases
-
-- City development and zoning meetings  
-- Urban resilience planning and simulation  
-- Architectural concept visualization  
-- Interactive presentations for public and governmental review  
-
----
-
-## 🏷️ Tags
-
-\`Urban Planning\` \`防災\` \`データビジュアライザー\`
-
----
-
-## 🚀 Getting Started
-
-1. Add the plugin to your Visualizer workspace  
-2. Upload or connect to your 3D building dataset (e.g., CityGML, GeoJSON)  
-3. Configure layers and styling from the plugin settings  
-4. Start exploring your city in 3D!
-
----
-
-## 📄 License
-
-MIT License © 2025 YourCompanyName
-
----
-
-## 📬 Support
-
-Have questions or feature requests?  
-Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
+    readme: currentPlugin.readme || `# ${currentPlugin.title}\n\nNo README available for this plugin.`
   });
   const [newTag, setNewTag] = useState('');
   const [readmeMode, setReadmeMode] = useState('preview'); // 'edit' or 'preview'
   const [tempReadme, setTempReadme] = useState('');
-  const [versions, setVersions] = useState([
-    {
-      id: 1,
-      version: '2.1.3',
-      content: 'Performance improvements and bug fixes to enhance user experience. Fixed memory leaks, improved rendering performance by 25%, and resolved browser compatibility issues for smoother visualization workflows. Updated documentation with new API examples and enhanced user interface with better accessibility features.',
-      tags: ['Bug Fix', 'Doc Update', 'UI Update'],
+  const [versions, setVersions] = useState(() => {
+    // Convert plugin changelog to versions format
+    const changelog = currentPlugin.changelog || [];
+    return changelog.map((entry, index) => ({
+      id: index + 1,
+      version: entry.version,
+      content: entry.content,
+      tags: entry.tags,
       isEditing: false,
-      isExpanded: false
-    },
-    {
-      id: 2,
-      version: '2.1.0',
-      content: 'Major update introducing comprehensive material library with 50+ realistic building materials and dynamic lighting system. Features include sun position simulation, shadow casting, and real-time atmospheric effects for enhanced realism.',
-      tags: ['New Feature'],
-      isEditing: false,
-      isExpanded: false
-    },
-    {
-      id: 3,
-      version: '1.9.2',
-      content: 'Comprehensive user interface improvements focusing on usability and accessibility. Redesigned control panels, added keyboard shortcuts, enhanced mobile responsiveness, and improved screen reader support for better inclusive design.',
-      tags: ['UI Update'],
-      isEditing: false,
-      isExpanded: false
-    },
-    {
-      id: 4,
-      version: '1.9.0',
-      content: 'Enhanced data handling capabilities with support for BIM file formats (IFC, RVT), automatic Level of Detail generation, improved GeoJSON parsing, and batch processing capabilities for handling large-scale architectural datasets efficiently.',
-      tags: ['New Feature', 'Doc Update'],
-      isEditing: false,
-      isExpanded: false
-    }
-  ]);
+      isExpanded: entry.expanded || false
+    }));
+  });
   const fileInputRef = useRef(null);
   const newVersionFileInputRef = useRef(null);
   const [newVersionData, setNewVersionData] = useState({
@@ -130,6 +60,11 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
     versionLabels: []
   });
   const [dragActive, setDragActive] = useState(false);
+  
+  // Refs for scroll navigation
+  const sectionRefs = useRef({});
+  const observerRef = useRef(null);
+  const contentContainerRef = useRef(null);
 
   const sidebarItems = [
     { id: 'General', label: 'General', icon: FileText, active: true },
@@ -194,6 +129,10 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
   const handleCancel = () => {
     navigate(`/plugin/${id}`);
+  };
+
+  const handlePreview = () => {
+    navigate(`/plugin/${id}?preview=1`);
   };
 
 
@@ -421,6 +360,35 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
   const [markedLoaded, setMarkedLoaded] = useState(false);
 
+  // Smooth scroll to section within content container
+  const scrollToSection = (sectionId) => {
+    const section = sectionRefs.current[sectionId];
+    const container = contentContainerRef.current;
+    
+    if (section && container) {
+      // Calculate offset for header (approximately 100px for header + some buffer)
+      const headerOffset = 120;
+      const sectionTop = section.offsetTop - headerOffset;
+      
+      // Smooth scroll within the content container
+      container.scrollTo({
+        top: sectionTop,
+        behavior: 'smooth'
+      });
+      
+      // Update active section immediately for responsive feedback
+      setActiveSection(sectionId);
+      
+      // Focus on section heading for accessibility after scroll completes
+      setTimeout(() => {
+        const heading = section.querySelector('h1, h2, h3, [role="heading"]');
+        if (heading) {
+          heading.focus();
+        }
+      }, 300); // Wait for smooth scroll to complete
+    }
+  };
+
   useEffect(() => {
     // Load marked library dynamically
     const script = document.createElement('script');
@@ -433,6 +401,76 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
       document.body.removeChild(script);
     };
   }, []);
+
+  // Setup scrollspy with IntersectionObserver
+  useEffect(() => {
+    const sections = ['General', 'README', 'Version', 'Danger Zone'];
+    const container = contentContainerRef.current;
+    
+    if (!container) return;
+    
+    // Create observer with content container as root
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        // Find the most visible section based on intersection ratio
+        let mostVisible = null;
+        let maxRatio = 0;
+        
+        // Check each entry to find the most visible one
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+            maxRatio = entry.intersectionRatio;
+            mostVisible = entry;
+          }
+        });
+        
+        // If no section is intersecting significantly, find the closest to top
+        if (!mostVisible || maxRatio < 0.1) {
+          let closestEntry = null;
+          let minDistance = Infinity;
+          
+          entries.forEach(entry => {
+            const rect = entry.boundingClientRect;
+            const containerRect = container.getBoundingClientRect();
+            const distance = Math.abs(rect.top - containerRect.top);
+            
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestEntry = entry;
+            }
+          });
+          
+          mostVisible = closestEntry;
+        }
+        
+        if (mostVisible && mostVisible.target.dataset.section) {
+          const sectionId = mostVisible.target.dataset.section;
+          if (sections.includes(sectionId)) {
+            setActiveSection(sectionId);
+          }
+        }
+      },
+      {
+        root: container, // Use content container as root
+        rootMargin: '-120px 0px -60% 0px', // Account for header and prioritize top sections
+        threshold: [0, 0.1, 0.3, 0.7] // Multiple thresholds for reliable detection
+      }
+    );
+
+    // Observe all sections
+    sections.forEach(section => {
+      const element = sectionRefs.current[section];
+      if (element && observerRef.current) {
+        observerRef.current.observe(element);
+      }
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [currentPlugin]); // Re-run when plugin loads
 
   const renderMarkdown = (text) => {
     // If marked is loaded, use it for better rendering
@@ -507,7 +545,8 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setActiveSection(item.id)}
+                    onClick={() => scrollToSection(item.id)}
+                    aria-current={isActive ? 'page' : undefined}
                     className={`w-full flex items-center space-x-3 px-4 py-3 text-left transition-colors ${
                       isActive 
                         ? 'text-white' 
@@ -529,7 +568,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1">
+          <div className="flex-1" ref={contentContainerRef} style={{ overflowY: 'auto', height: 'calc(100vh - 120px)', scrollBehavior: 'smooth' }}>
             <div className="bg-white rounded-lg shadow-sm p-8">
               {/* Header */}
               <div className="mb-6">
@@ -537,6 +576,9 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                   <h1 
                     className="text-2xl font-semibold text-gray-900"
                     style={{ fontFamily: 'Outfit' }}
+                    tabIndex="-1"
+                    role="heading"
+                    aria-level="1"
                   >
                     {activeSection}
                   </h1>
@@ -582,7 +624,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
               {/* Content based on active section */}
               {activeSection === 'General' && (
-                <div className="space-y-8">
+                <div className="space-y-8" ref={el => sectionRefs.current['General'] = el} data-section="General">
                 {/* Plugin Status */}
                 <div>
                   <label 
@@ -776,7 +818,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
               {/* README Section */}
               {activeSection === 'README' && (
-                <div>
+                <div ref={el => sectionRefs.current['README'] = el} data-section="README">
                   {/* Markdown Editor Container */}
                   <div className="border border-gray-300 rounded-lg overflow-hidden">
                     {/* Edit/Preview Tabs */}
@@ -949,7 +991,7 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
               {/* Version Section */}
               {activeSection === 'Version' && (
-                <div className="space-y-4">
+                <div className="space-y-4" ref={el => sectionRefs.current['Version'] = el} data-section="Version">
                     {versions.map((version) => (
                       <div 
                         key={version.id} 
@@ -1275,12 +1317,15 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
 
               {/* Danger Zone Section */}
               {activeSection === 'Danger Zone' && (
-                <div className="space-y-6">
+                <div className="space-y-6" ref={el => sectionRefs.current['Danger Zone'] = el} data-section="Danger Zone">
                   {/* Delete Plugin Section */}
                   <div>
                     <h2 
                       className="text-lg font-semibold text-gray-900 mb-4"
                       style={{ fontFamily: 'Outfit' }}
+                      tabIndex="-1"
+                      role="heading"
+                      aria-level="2"
                     >
                       Delete Plugin
                     </h2>
@@ -1358,6 +1403,13 @@ Contact us at: [support@yourdomain.com](mailto:support@yourdomain.com)`
                   style={{ fontFamily: 'Outfit', backgroundColor: '#00A2EA' }}
                 >
                   Save
+                </button>
+                <button
+                  onClick={handlePreview}
+                  className="bg-gray-100 text-gray-700 px-6 py-2 rounded-md font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                  style={{ fontFamily: 'Outfit' }}
+                >
+                  Preview
                 </button>
                 <button
                   onClick={handleCancel}
