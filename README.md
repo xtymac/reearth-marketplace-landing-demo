@@ -63,7 +63,7 @@ Re:Earth Marketplace/
 │   │   ├── DeveloperPluginEdit.jsx  # Developer-specific plugin editing interface
 │   │   ├── DeveloperPluginUpload.jsx# Developer-specific plugin upload interface
 │   │   ├── PluginInstallModal.jsx   # Plugin installation modal interface
-│   │   ├── PluginSubmissionSuccess.jsx # Plugin submission success confirmation
+│   │   ├── PluginSubmissionSuccess.jsx # Plugin submission success confirmation with detailed workflow
 │   │   └── ProtectedRoute.jsx       # Route protection wrapper
 │   ├── data/
 │   │   └── pluginData.js            # Plugin catalog data
@@ -178,10 +178,12 @@ The project is optimized for Netlify deployment with:
 - **State-Driven Navigation**: Seamless transitions between list and edit views without route changes
 
 ### Plugin Management
-- **Upload**: Support for local files and GitHub repositories
-- **Edit**: Comprehensive editing interface with status controls
-- **Status Toggle**: Draft/Public visibility states
-- **Validation**: Form validation for both upload methods
+- **Upload**: Support for local files and GitHub repositories with modern tab-style interface
+- **Edit**: Comprehensive editing interface with status controls and embedded editing capabilities
+- **Status Toggle**: Draft/Public visibility states with visual feedback
+- **Notification System**: Real-time feedback for plugin submissions with auto-dismissing notifications
+- **Validation**: Form validation for both upload methods with user-friendly error handling
+- **Success Workflow**: Comprehensive submission success page with detailed review process information
 
 ### Navigation System
 - **Main Navigation**: Full marketplace header with user authentication
@@ -211,7 +213,39 @@ Supports all modern browsers:
 - Safari (latest versions)
 - Edge (latest versions)
 
-## 🚀 Recent Updates (August 21, 2025)
+## 🚀 Recent Updates (August 22, 2025)
+
+### Latest Plugin Upload & Notification Enhancements
+- **Modern Tab-Style Upload Interface**: Complete redesign of plugin upload source selection
+  - Replaced button-style interface with modern tab selection design
+  - Blue background container (#EFF6FF) with 6px border radius for professional appearance
+  - Active tabs display white background with subtle shadow and smooth transitions
+  - Consistent typography using Outfit font family throughout the interface
+- **Comprehensive Notification System**: Implemented real-time user feedback for plugin submissions
+  - Bottom-right notification display that appears when "Submit Plugin" is clicked
+  - Professional dark design (#2D3748) with green success icon (#48BB78)
+  - Notification shows "New submission" title with "[Plugin Name] submitted successfully" message
+  - Includes View button (navigates to plugin detail page) and Close button for dismissal
+  - Auto-dismisses after 5 seconds with proper cleanup using setTimeout
+  - Shows notification regardless of form validation status for immediate user feedback
+- **Developer Portal Routing Optimization**: Streamlined navigation structure
+  - Removed redundant welcome page at `/developer-portal/manage` for cleaner user flow
+  - Consolidated to single welcome page at `/developer-portal` (DeveloperPortalEntry)
+  - Updated routing: `/developer-portal/workspace` → DeveloperPortal main interface
+  - Enhanced routing: `/developer-portal/workspace/:pluginId` → DeveloperPortal plugin editing
+  - Updated all navigation links across components to use new streamlined routing structure
+- **Sidebar Navigation Consistency**: Unified layout across Developer Portal pages
+  - Updated PluginUpload.jsx to match Developer Portal sidebar layout standards
+  - Integrated consistent workspace selector with dropdown functionality
+  - Added proper navigation links with active state highlighting (#116993)
+  - Implemented avatar dropdown in top-right corner for consistent user experience
+- **Enhanced User Experience Improvements**:
+  - Submit Plugin button is always clickable regardless of form validation for better UX
+  - Removed default selection for Version Labels (no pre-selected "bug-fix" label)
+  - Updated both Developer Portal and regular upload contexts with consistent behavior
+  - Professional notification system provides immediate feedback for all submission attempts
+
+### Previous Updates (August 21, 2025)
 
 ### Plugin Editor Enhancements
 - **Advanced Scrollspy Navigation**: Implemented robust IntersectionObserver for reliable section navigation

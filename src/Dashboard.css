@@ -1,0 +1,47 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 40px;
+  margin-left: 0;
+}
+
+.dashboard-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+.dashboard-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 32px 0;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #666;
+}
+
+.breadcrumb a {
+  color: #0089D4;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb .separator {
+  color: #999;
+}
