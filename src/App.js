@@ -4,7 +4,6 @@ import Marketplace from './components/Marketplace';
 import PluginDetail from './components/PluginDetail';
 import Login from './components/Login';
 import PluginUpload from './components/PluginUpload';
-import DeveloperPluginUpload from './components/DeveloperPluginUpload';
 import PluginSubmissionSuccess from './components/PluginSubmissionSuccess';
 import Dashboard from './components/Dashboard';
 import Workspace from './components/Workspace';
@@ -41,7 +40,7 @@ function App() {
             path="/plugin/new" 
             element={
               <ProtectedRoute>
-                <DeveloperPluginUpload />
+                <PluginUpload />
               </ProtectedRoute>
             } 
           />
