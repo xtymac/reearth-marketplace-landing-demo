@@ -190,7 +190,7 @@ const Workspace = () => {
                 <button 
                   onClick={() => {
                     if (activeTab === 'Plugins') {
-                      navigate('/plugins/new');
+                      navigate('/developer-portal/new');
                     } else {
                       // Placeholder for New Project - no functionality yet
                       console.log('New Project functionality not implemented yet');

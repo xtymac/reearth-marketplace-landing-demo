@@ -6,7 +6,7 @@ import { pluginData } from '../data/pluginData';
 
 const Dashboard = () => {
   const [selectedWorkspace, setSelectedWorkspace] = useState('Default personal workspace');
-  const [activeTab, setActiveTab] = useState('Plugins');
+  const [activeTab, setActiveTab] = useState('CMS Project');
   const navigate = useNavigate();
 
   const workspaceGroups = {
@@ -32,7 +32,7 @@ const Dashboard = () => {
     }
   };
 
-  const tabs = ['CMS Project', 'Visualizer Project', 'Plugins'];
+  const tabs = ['CMS Project', 'Visualizer Project'];
 
   // Transform plugin data for dashboard display
   const pluginsList = pluginData.map(plugin => ({
@@ -215,12 +215,8 @@ const Dashboard = () => {
                     </h2>
                     <button 
                       onClick={() => {
-                        if (activeTab === 'Plugins') {
-                          navigate('/plugins/new');
-                        } else {
-                          // Placeholder for New Project - no functionality yet
-                          console.log('New Project functionality not implemented yet');
-                        }
+                        // Placeholder for New Project - no functionality yet
+                        console.log('New Project functionality not implemented yet');
                       }}
                       className="text-white hover:opacity-90 transition-opacity"
                       style={{ 
@@ -237,7 +233,7 @@ const Dashboard = () => {
                       }}
                     >
                       <Plus className="w-4 h-4" />
-                      {activeTab === 'Plugins' ? 'New Plugin' : 'New Project'}
+                      New Project
                     </button>
                   </div>
                 </div>
@@ -267,89 +263,6 @@ const Dashboard = () => {
 
                 {/* Content */}
                 <div className="px-6 py-4">
-                  {activeTab === 'Plugins' && (
-                    <div>
-                      {/* Table Headers */}
-                      <div className="hidden md:grid md:grid-cols-[2fr_120px_60px] gap-6 px-4 py-2 mb-3">
-                        <div></div> {/* Empty for title column */}
-                        <span 
-                          className="text-gray-500 text-sm"
-                          style={{ fontFamily: 'Outfit' }}
-                        >
-                          Last edit
-                        </span>
-                        <span 
-                          className="text-gray-500 text-sm text-right"
-                          style={{ fontFamily: 'Outfit' }}
-                        >
-                          Action
-                        </span>
-                      </div>
-
-                      {/* Plugin Rows */}
-                      <div className="space-y-3">
-                        {pluginsList.map((plugin) => (
-                          <div
-                            key={plugin.id}
-                            onClick={() => handlePluginClick(plugin.id)}
-                            className="flex flex-col md:grid md:grid-cols-[2fr_120px_60px] gap-3 md:gap-6 p-4 bg-white hover:bg-gray-50 rounded-lg cursor-pointer transition-colors group shadow-sm"
-                            aria-label={`Workspace ${plugin.workspace}, Plugin ${plugin.title}, Platform ${plugin.platform}`}
-                          >
-                            {/* Column 1: Title with Pills */}
-                            <div className="flex flex-wrap items-center gap-2 md:gap-3 min-w-0">
-                              <h3 
-                                className="text-blue-600 font-medium group-hover:text-blue-700 flex-shrink-0"
-                                style={{
-                                  fontFamily: 'Outfit',
-                                  fontSize: '16px',
-                                  lineHeight: '140%'
-                                }}
-                                title={`${plugin.workspace} / ${plugin.title}`}
-                              >
-                                <span style={{ fontFamily: '"Noto Sans JP"' }}>{plugin.workspace}</span>
-                                <span className="mx-2">/</span>
-                                {plugin.title}
-                              </h3>
-                              <span 
-                                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 flex-shrink-0"
-                                style={{ fontFamily: 'Outfit' }}
-                              >
-                                {plugin.platform}
-                              </span>
-                              <span 
-                                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 flex-shrink-0"
-                                style={{ fontFamily: 'Outfit' }}
-                              >
-                                {plugin.status}
-                              </span>
-                            </div>
-
-                            {/* Column 2: Last Edit Value */}
-                            <div className="flex items-center md:justify-start">
-                              <span className="text-gray-500 text-sm mr-2 md:hidden" style={{ fontFamily: 'Outfit' }}>
-                                Last edit:
-                              </span>
-                              <span 
-                                className="text-gray-900 text-sm font-medium"
-                                style={{ fontFamily: 'Outfit' }}
-                              >
-                                {plugin.lastEdit}
-                              </span>
-                            </div>
-
-                            {/* Column 3: Action Icon */}
-                            <div className="flex items-center justify-between md:justify-end">
-                              <span className="text-gray-500 text-sm md:hidden" style={{ fontFamily: 'Outfit' }}>
-                                Action:
-                              </span>
-                              <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
                   {activeTab === 'CMS Project' && (
                     <div className="text-center py-12 text-gray-500">
                       <p style={{ fontFamily: 'Outfit' }}>No CMS projects found</p>
@@ -420,6 +333,24 @@ const Dashboard = () => {
                       style={{ fontFamily: 'Outfit', fontSize: '16px' }}
                     >
                       CMS Editor
+                    </span>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
+                </button>
+
+                <button 
+                  className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all group"
+                  onClick={() => navigate('/developer-portal')}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                      <div className="w-4 h-4 bg-gray-500 rounded" />
+                    </div>
+                    <span 
+                      className="font-medium text-gray-900"
+                      style={{ fontFamily: 'Outfit', fontSize: '16px' }}
+                    >
+                      Developer Portal
                     </span>
                   </div>
                   <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />

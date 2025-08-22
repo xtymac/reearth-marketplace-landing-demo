@@ -265,7 +265,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background-color: #004F61;
+  background-color: #116993;
   color: white;
   text-decoration: none;
   border-radius: 8px;
@@ -278,7 +278,7 @@
 }
 
 .new-plugin-button:hover {
-  background-color: #003A47;
+  background-color: #0D5573;
 }
 
 /* Tabs */

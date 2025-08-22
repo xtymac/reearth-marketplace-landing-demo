@@ -835,7 +835,7 @@ const PluginDetail = () => {
 
   const handleStartClick = () => {
     if (isAuthenticated) {
-      navigateWithoutPreview('/plugins/new');
+      navigateWithoutPreview('/developer-portal/new');
     } else {
       navigateWithoutPreview('/login');
     }
@@ -1462,41 +1462,136 @@ const PluginDetail = () => {
           padding: '0'
         }}
       >
-        <div className="text-left relative overflow-hidden" style={{ paddingTop: '80px', paddingBottom: '0', paddingLeft: '24px', paddingRight: '24px' }}>
-          {/* Background image on the right */}
-          <div className="absolute right-0 top-0 bottom-0 w-1/2 flex items-center justify-end opacity-30 z-0">
-            <img
-              src="/images/submission.png"
-              alt="Submit Plugin"
-              className="h-full w-auto object-contain"
-            />
-          </div>
-          
-          <div className="relative z-10 max-w-2xl">
-            <div className="mb-8">
-              <h2 className="text-4xl font-bold text-gray-900 mb-2">
-                Build something great? Share
+        <div className="relative overflow-hidden" style={{ marginTop: '80px', backgroundColor: '#F8F9FA', borderRadius: '16px', padding: '80px 0' }}>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
+            {/* Left side - Text Content */}
+            <div className="flex-1 max-w-lg">
+              <h2 
+                className="mb-6"
+                style={{
+                  color: '#000',
+                  fontFamily: 'Outfit',
+                  fontSize: '36px',
+                  fontStyle: 'normal',
+                  fontWeight: 400,
+                  lineHeight: '140%',
+                  marginBottom: '24px'
+                }}
+              >
+                Build something great? Share<br />
+                your <span style={{ fontWeight: 700 }}>plugin</span> with the community
               </h2>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                your plugin with the community
-              </h2>
-            </div>
-            
-            <div className="space-y-4" style={{ marginBottom: '0' }}>
-              <button 
-                onClick={() => navigate('/plugins/new')}
-                className="text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors shadow-lg"
-                style={{ backgroundColor: '#0089D4' }}
+              
+              <a 
+                href="/developer-portal"
+                className="inline-flex items-center space-x-2 text-white px-6 py-3 rounded-lg font-semibold transition-colors no-underline"
+                style={{ 
+                  backgroundColor: '#0089D4', 
+                  textDecoration: 'none',
+                  fontFamily: 'Outfit',
+                  fontSize: '16px',
+                  fontWeight: 500
+                }}
                 onMouseEnter={(e) => e.target.style.backgroundColor = '#007BB8'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = '#0089D4'}
+                aria-label="Go to Developer Portal"
               >
-                Submit Plugin
-              </button>
-              <div style={{ marginBottom: '0' }}>
-                <a href="https://reearth.io/docs" className="text-blue-600 hover:underline font-semibold" target="_blank" rel="noopener noreferrer">
-                  View documentation
-                </a>
-              </div>
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="mr-2"
+                >
+                  <path 
+                    d="M21.4274 2.5783C20.9274 2.0673 20.1874 1.8783 19.4974 2.0783L3.40742 6.7273C2.67142 6.9383 2.53742 7.9483 3.19342 8.3283L8.49742 11.2073L15.0974 5.0083C15.5864 4.5593 16.3654 4.5853 16.8244 5.0633C17.2734 5.5313 17.2484 6.2993 16.7694 6.7483L10.1694 12.9473L13.0484 18.2513C13.4384 18.9073 14.4274 18.7683 14.6484 18.0323L19.2974 1.9423C19.4874 1.2623 19.2874 0.5123 18.7674 0.0123C18.2574 -0.4877 17.5074 -0.6877 16.8274 -0.4977L21.4274 2.5783Z" 
+                    fill="currentColor"
+                  />
+                </svg>
+                Go to Develop Portal
+              </a>
+            </div>
+            
+            {/* Right side - Rocket Illustration */}
+            <div className="flex-1 flex justify-center items-center">
+              <svg 
+                width="400" 
+                height="300" 
+                viewBox="0 0 400 300" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                className="opacity-80"
+              >
+                {/* Background stars */}
+                <circle cx="50" cy="40" r="2" fill="#E2E8F0" />
+                <circle cx="350" cy="60" r="1.5" fill="#E2E8F0" />
+                <circle cx="80" cy="80" r="1" fill="#E2E8F0" />
+                <circle cx="320" cy="100" r="2" fill="#E2E8F0" />
+                <circle cx="30" cy="120" r="1.5" fill="#E2E8F0" />
+                <circle cx="370" cy="140" r="1" fill="#E2E8F0" />
+                
+                {/* Large background circles/planets */}
+                <circle cx="70" cy="50" r="25" fill="none" stroke="#E2E8F0" strokeWidth="2" opacity="0.5" />
+                <circle cx="330" cy="70" r="15" fill="#F1F5F9" opacity="0.6" />
+                <circle cx="350" cy="200" r="20" fill="none" stroke="#E2E8F0" strokeWidth="1.5" opacity="0.4" />
+                
+                {/* Clouds */}
+                <ellipse cx="60" cy="220" rx="25" ry="8" fill="#F1F5F9" opacity="0.7" />
+                <ellipse cx="45" cy="215" rx="18" ry="6" fill="#F1F5F9" opacity="0.7" />
+                <ellipse cx="320" cy="240" rx="30" ry="10" fill="#F1F5F9" opacity="0.6" />
+                <ellipse cx="300" cy="235" rx="20" ry="7" fill="#F1F5F9" opacity="0.6" />
+                
+                {/* Launch clouds at bottom */}
+                <ellipse cx="200" cy="280" rx="40" ry="12" fill="#F1F5F9" opacity="0.8" />
+                <ellipse cx="180" cy="275" rx="25" ry="8" fill="#E2E8F0" opacity="0.6" />
+                <ellipse cx="220" cy="275" rx="30" ry="10" fill="#E2E8F0" opacity="0.6" />
+                
+                {/* Rocket body */}
+                <path 
+                  d="M185 250 L215 250 L215 150 L205 130 L195 130 Z" 
+                  fill="#E2E8F0" 
+                  stroke="#94A3B8" 
+                  strokeWidth="2"
+                />
+                
+                {/* Rocket nose cone */}
+                <path 
+                  d="M195 130 L205 130 L200 110 Z" 
+                  fill="#CBD5E1" 
+                  stroke="#94A3B8" 
+                  strokeWidth="2"
+                />
+                
+                {/* Rocket window */}
+                <circle cx="200" cy="160" r="12" fill="#3B82F6" opacity="0.3" stroke="#2563EB" strokeWidth="2" />
+                <circle cx="200" cy="160" r="6" fill="#1D4ED8" opacity="0.5" />
+                
+                {/* Rocket fins */}
+                <path d="M185 250 L175 270 L185 270 Z" fill="#94A3B8" stroke="#64748B" strokeWidth="1.5" />
+                <path d="M215 250 L225 270 L215 270 Z" fill="#94A3B8" stroke="#64748B" strokeWidth="1.5" />
+                
+                {/* Rocket flames */}
+                <path 
+                  d="M190 250 L190 290 L195 285 L200 295 L205 285 L210 290 L210 250" 
+                  fill="#F59E0B" 
+                  opacity="0.7"
+                />
+                <path 
+                  d="M195 250 L195 285 L200 280 L205 285 L205 250" 
+                  fill="#EF4444" 
+                  opacity="0.6"
+                />
+                
+                {/* Motion lines */}
+                <line x1="150" y1="180" x2="170" y2="180" stroke="#CBD5E1" strokeWidth="2" opacity="0.5" />
+                <line x1="155" y1="200" x2="175" y2="200" stroke="#CBD5E1" strokeWidth="2" opacity="0.5" />
+                <line x1="145" y1="220" x2="170" y2="220" stroke="#CBD5E1" strokeWidth="2" opacity="0.5" />
+                
+                <line x1="230" y1="185" x2="250" y2="185" stroke="#CBD5E1" strokeWidth="2" opacity="0.5" />
+                <line x1="225" y1="205" x2="245" y2="205" stroke="#CBD5E1" strokeWidth="2" opacity="0.5" />
+                <line x1="235" y1="225" x2="260" y2="225" stroke="#CBD5E1" strokeWidth="2" opacity="0.5" />
+              </svg>
             </div>
           </div>
         </div>

@@ -72,7 +72,7 @@ function PluginSubmissionSuccess() {
           <div className="nav-section">
             <div className="nav-title">Get Started</div>
             <a href="#" className="nav-item">Documentation</a>
-            <Link to="/plugin/new" className="nav-item">Submit plugin</Link>
+            <Link to="/developer-portal/new" className="nav-item">Submit plugin</Link>
             <Link to="/edit" className="nav-item">Manage plugin</Link>
           </div>
         </div>
@@ -410,7 +410,7 @@ function PluginSubmissionSuccess() {
             </Link>
 
             <Link
-              to="/plugin/new"
+              to="/developer-portal/new"
               style={{
                 display: 'flex',
                 alignItems: 'center',

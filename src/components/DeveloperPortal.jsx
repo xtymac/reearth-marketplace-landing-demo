@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { Search, ExternalLink, Plus, X, FileText, GitBranch, AlertTriangle, Upload, ChevronDown } from 'lucide-react';
+import { Search, ExternalLink, Plus, X, FileText, GitBranch, AlertTriangle, Upload } from 'lucide-react';
 import { authService } from '../services/authService';
 import { PluginService } from '../services/pluginService';
 import { pluginData } from '../data/pluginData';
+import DeveloperPortalSidebar from './DeveloperPortalSidebar';
 import '../DeveloperPortal.css';
 
 function DeveloperPortal() {
@@ -47,6 +48,19 @@ function DeveloperPortal() {
   const [tempReadme, setTempReadme] = useState('');
   const [readmeMode, setReadmeMode] = useState('edit');
   const [versions, setVersions] = useState([]);
+  
+  // Image editing state
+  const [showImageEditor, setShowImageEditor] = useState(false);
+  const [editingImage, setEditingImage] = useState(null);
+  const [editingImageIndex, setEditingImageIndex] = useState(null);
+  const [imageEditorData, setImageEditorData] = useState({
+    src: '',
+    crop: { x: 0, y: 0, width: 100, height: 62.5 },
+    rotation: 0,
+    scale: 1
+  });
+  const canvasRef = useRef(null);
+  const imageRef = useRef(null);
 
   const workspaces = [
     { id: 'workspace-1', name: 'Eukarya Inc.', company: 'Eukarya' },
@@ -117,8 +131,7 @@ function DeveloperPortal() {
       const workspace = location.state.selectedWorkspace;
       // Map the portal entry workspace to our internal workspace IDs
       const workspaceMapping = {
-        'default-personal': 'workspace-1',
-        'my-playground': 'workspace-1',
+        'personal-workspace': 'workspace-1',
         'fukuyama-consultant': 'workspace-2',
         'weather-data': 'workspace-7',
         'sensor-tech': 'workspace-3',
@@ -130,6 +143,30 @@ function DeveloperPortal() {
       };
       const mappedWorkspace = workspaceMapping[workspace.id] || 'workspace-1';
       setSelectedWorkspace(mappedWorkspace);
+    } else {
+      // Try to load from localStorage if no location state
+      const savedWorkspace = localStorage.getItem('developerPortal_selectedWorkspace');
+      if (savedWorkspace) {
+        try {
+          const workspaceData = JSON.parse(savedWorkspace);
+          const workspaceMapping = {
+            'personal-workspace': 'workspace-1',
+            'fukuyama-consultant': 'workspace-2',
+            'weather-data': 'workspace-7',
+            'sensor-tech': 'workspace-3',
+            'geovision-labs': 'workspace-4',
+            'mobili-solution': 'workspace-5',
+            'enviro-tech': 'workspace-6',
+            'enviro-node': 'workspace-6',
+            'chrono-maps': 'workspace-8'
+          };
+          const mappedWorkspace = workspaceMapping[workspaceData.id] || 'workspace-1';
+          setSelectedWorkspace(mappedWorkspace);
+        } catch (error) {
+          // Clear invalid saved data
+          localStorage.removeItem('developerPortal_selectedWorkspace');
+        }
+      }
     }
 
     // Use pluginData directly since it's synchronous
@@ -172,7 +209,6 @@ function DeveloperPortal() {
   // Plugin edit state and handlers
   const [newTag, setNewTag] = useState('');
   const [showAvatarDropdown, setShowAvatarDropdown] = useState(false);
-  const [showWorkspaceDropdown, setShowWorkspaceDropdown] = useState(false);
   
   // Version editing state
   const [editingVersionIndex, setEditingVersionIndex] = useState(null);
@@ -216,16 +252,13 @@ function DeveloperPortal() {
       if (showAvatarDropdown && !event.target.closest('.avatar-dropdown-container')) {
         setShowAvatarDropdown(false);
       }
-      if (showWorkspaceDropdown && !event.target.closest('.workspace-dropdown-container')) {
-        setShowWorkspaceDropdown(false);
-      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showAvatarDropdown, showWorkspaceDropdown]);
+  }, [showAvatarDropdown]);
 
   // Improved Scrollspy functionality using Intersection Observer
   useEffect(() => {
@@ -416,6 +449,54 @@ function DeveloperPortal() {
     }
   }, [pluginFormData, tempReadme, readmeMode, activeSection, versions, selectedPlugin, isEditMode]);
 
+  // Update canvas when image editor data changes
+  useEffect(() => {
+    if (showImageEditor && imageRef.current && canvasRef.current) {
+      const img = imageRef.current;
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+
+      const updateCanvas = () => {
+        // Set canvas size to 640x400 for preview (16:10 aspect ratio)
+        canvas.width = 640;
+        canvas.height = 400;
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Save context
+        ctx.save();
+
+        // Apply transformations
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((imageEditorData.rotation * Math.PI) / 180);
+        ctx.scale(imageEditorData.scale, imageEditorData.scale);
+
+        // Calculate crop dimensions
+        const cropX = (imageEditorData.crop.x / 100) * img.naturalWidth;
+        const cropY = (imageEditorData.crop.y / 100) * img.naturalHeight;
+        const cropWidth = (imageEditorData.crop.width / 100) * img.naturalWidth;
+        const cropHeight = (imageEditorData.crop.height / 100) * img.naturalHeight;
+
+        // Draw the cropped image
+        ctx.drawImage(
+          img,
+          cropX, cropY, cropWidth, cropHeight,
+          -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height
+        );
+
+        // Restore context
+        ctx.restore();
+      };
+
+      if (img.complete) {
+        updateCanvas();
+      } else {
+        img.onload = updateCanvas;
+      }
+    }
+  }, [showImageEditor, imageEditorData, editingImage]);
+
   const handlePluginClick = (plugin) => {
     setSelectedPlugin(plugin);
     setIsEditMode(true);
@@ -535,6 +616,87 @@ function DeveloperPortal() {
       ...prev,
       images: prev.images.filter((_, i) => i !== index)
     }));
+  };
+
+  // Image editing functions
+  const openImageEditor = (imageSrc, index) => {
+    setEditingImage(imageSrc);
+    setEditingImageIndex(index);
+    setImageEditorData({
+      src: imageSrc,
+      crop: { x: 0, y: 0, width: 100, height: 62.5 },
+      rotation: 0,
+      scale: 1
+    });
+    setShowImageEditor(true);
+  };
+
+  const closeImageEditor = () => {
+    setShowImageEditor(false);
+    setEditingImage(null);
+    setEditingImageIndex(null);
+  };
+
+  const handleCropChange = (newCrop) => {
+    setImageEditorData(prev => ({ ...prev, crop: newCrop }));
+  };
+
+  const handleRotationChange = (rotation) => {
+    setImageEditorData(prev => ({ ...prev, rotation }));
+  };
+
+  const handleScaleChange = (scale) => {
+    setImageEditorData(prev => ({ ...prev, scale }));
+  };
+
+  const applyImageEdit = () => {
+    if (!canvasRef.current || !imageRef.current) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const img = imageRef.current;
+
+    // Set canvas size to 1280x800 (16:10 aspect ratio)
+    canvas.width = 1280;
+    canvas.height = 800;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Save context
+    ctx.save();
+
+    // Apply transformations
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((imageEditorData.rotation * Math.PI) / 180);
+    ctx.scale(imageEditorData.scale, imageEditorData.scale);
+
+    // Calculate crop dimensions
+    const cropX = (imageEditorData.crop.x / 100) * img.naturalWidth;
+    const cropY = (imageEditorData.crop.y / 100) * img.naturalHeight;
+    const cropWidth = (imageEditorData.crop.width / 100) * img.naturalWidth;
+    const cropHeight = (imageEditorData.crop.height / 100) * img.naturalHeight;
+
+    // Draw the cropped image
+    ctx.drawImage(
+      img,
+      cropX, cropY, cropWidth, cropHeight,
+      -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height
+    );
+
+    // Restore context
+    ctx.restore();
+
+    // Convert canvas to blob and update the image
+    canvas.toBlob((blob) => {
+      const editedImageUrl = URL.createObjectURL(blob);
+      setPluginFormData(prev => {
+        const newImages = [...prev.images];
+        newImages[editingImageIndex] = editedImageUrl;
+        return { ...prev, images: newImages };
+      });
+      closeImageEditor();
+    }, 'image/png');
   };
 
   const addTag = () => {
@@ -708,13 +870,26 @@ function DeveloperPortal() {
     setShowAvatarDropdown(!showAvatarDropdown);
   };
 
-  const handleWorkspaceClick = () => {
-    setShowWorkspaceDropdown(!showWorkspaceDropdown);
-  };
-
-  const handleWorkspaceSelect = (workspaceId) => {
+  const handleWorkspaceChange = (workspaceId) => {
     setSelectedWorkspace(workspaceId);
-    setShowWorkspaceDropdown(false);
+
+    // Save the workspace selection to localStorage
+    // Create reverse mapping from internal workspace IDs to external format
+    const reverseWorkspaceMapping = {
+      'workspace-1': { id: 'personal-workspace', name: 'Personal Workspace', type: 'Personal', members: null, workspaceId: null },
+      'workspace-2': { id: 'fukuyama-consultant', name: '株式会社福山コンサルタント', type: 'Team', members: 8, workspaceId: 'fukuyama-consultant' },
+      'workspace-7': { id: 'weather-data', name: '気象データ株式会社', type: 'Team', members: 12, workspaceId: 'weather-data' },
+      'workspace-3': { id: 'sensor-tech', name: 'センサー技術株式会社', type: 'Team', members: 15, workspaceId: 'sensor-tech' },
+      'workspace-4': { id: 'geovision-labs', name: 'GeoVision Labs', type: 'Team', members: 6, workspaceId: 'geovision-labs' },
+      'workspace-5': { id: 'mobili-solution', name: 'モビリソリューション', type: 'Team', members: 9, workspaceId: 'mobili-solution' },
+      'workspace-6': { id: 'enviro-tech', name: '環境テクノロジー株式会社', type: 'Team', members: 11, workspaceId: 'enviro-tech' },
+      'workspace-8': { id: 'chrono-maps', name: 'ChronoMaps Studio', type: 'Team', members: 7, workspaceId: 'chrono-maps' }
+    };
+    
+    const externalWorkspace = reverseWorkspaceMapping[workspaceId];
+    if (externalWorkspace) {
+      localStorage.setItem('developerPortal_selectedWorkspace', JSON.stringify(externalWorkspace));
+    }
   };
 
   const handleLogoClick = () => {
@@ -1056,133 +1231,13 @@ function DeveloperPortal() {
   return (
     <div className="dev-portal-container">
       {/* Sidebar */}
-      <div className="dev-portal-sidebar">
-        <div className="sidebar-header">
-          <div 
-            className="logo"
-            onClick={handleLogoClick}
-            style={{
-              cursor: 'pointer',
-              transition: 'opacity 0.2s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
-            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-          >
-            <img 
-              src="/Image/Logo/Developer_Portal_w.svg" 
-              alt="Developer Portal"
-              className="logo-image"
-            />
-            <span className="logo-text">Developer Portal</span>
-          </div>
-        </div>
-        
-        <div className="workspace-section">
-          <div className="workspace-label">Workspace</div>
-          <div 
-            className="workspace-dropdown-container"
-            style={{ position: 'relative' }}
-          >
-            <button
-              onClick={handleWorkspaceClick}
-              className="workspace-select"
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}
-            >
-              <span>{workspaces.find(w => w.id === selectedWorkspace)?.name || 'Select Workspace'}</span>
-              <ChevronDown 
-                size={16} 
-                style={{ 
-                  transform: showWorkspaceDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.2s ease'
-                }} 
-              />
-            </button>
-            
-            {/* Workspace Dropdown */}
-            {showWorkspaceDropdown && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: '0',
-                  right: '0',
-                  marginTop: '4px',
-                  borderRadius: '6px',
-                  border: '1px solid var(--slate-300, #CBD5E1)',
-                  background: '#FFF',
-                  boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.09)',
-                  overflow: 'hidden',
-                  zIndex: 1000
-                }}
-              >
-                {workspaces.map(workspace => (
-                  <button
-                    key={workspace.id}
-                    onClick={() => handleWorkspaceSelect(workspace.id)}
-                    style={{
-                      width: '100%',
-                      height: '36px',
-                      display: 'flex',
-                      padding: '6px 8px 6px 32px',
-                      alignItems: 'center',
-                      gap: '8px',
-                      alignSelf: 'stretch',
-                      borderRadius: '6px',
-                      border: 'none',
-                      background: selectedWorkspace === workspace.id ? 'var(--slate-100, #F1F5F9)' : 'none',
-                      fontSize: '14px',
-                      fontFamily: 'Outfit',
-                      color: '#111827',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.2s ease',
-                      textAlign: 'left',
-                      boxSizing: 'border-box'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (selectedWorkspace !== workspace.id) {
-                        e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (selectedWorkspace !== workspace.id) {
-                        e.target.style.backgroundColor = 'transparent';
-                      }
-                    }}
-                  >
-                    {workspace.name}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-        
-        <div className="sidebar-nav">
-          <div className="nav-section">
-            <div className="nav-title">Get Started</div>
-            <a 
-              href="https://visualizer.developer.reearth.io" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="nav-item"
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-            >
-              <span>Documentation</span>
-              <img 
-                src="/Image/Icon/NewTab.svg" 
-                alt="Open in new tab"
-                style={{ width: '16px', height: '16px' }}
-              />
-            </a>
-            <Link to="/developer-portal/new" className="nav-item">Submit plugin</Link>
-            <a href="#" className="nav-item active">Manage plugin</a>
-          </div>
-        </div>
-      </div>
+      <DeveloperPortalSidebar
+        activeItem="manage"
+        selectedWorkspace={selectedWorkspace}
+        workspaces={workspaces}
+        onWorkspaceChange={handleWorkspaceChange}
+        onLogoClick={handleLogoClick}
+      />
 
       {/* Main Content */}
       <div className="dev-portal-main">
@@ -1366,7 +1421,7 @@ function DeveloperPortal() {
                 </div>
                 
                 {/* New Plugin button - stays on the far right */}
-                <Link to="/plugin/new" className="new-plugin-button">
+                <Link to="/developer-portal/new" className="new-plugin-button">
                   <Plus size={16} />
                   New Plugin
                 </Link>
@@ -1943,6 +1998,156 @@ function DeveloperPortal() {
                             Add function tags to help users discover your plugin. Separate multiple tags with commas.
                           </p>
                         </div>
+                      </div>
+
+                      {/* Plugin Gallery */}
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: '14px',
+                          fontWeight: 500,
+                          fontFamily: 'Outfit',
+                          color: '#111827',
+                          marginBottom: '12px'
+                        }}>
+                          Plugin Gallery
+                        </label>
+                        
+                        {/* Image Grid */}
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                          gap: '16px',
+                          marginBottom: '16px'
+                        }}>
+                          {pluginFormData.images.map((image, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                position: 'relative',
+                                borderRadius: '8px',
+                                overflow: 'hidden',
+                                backgroundColor: '#F9FAFB',
+                                aspectRatio: '16/10',
+                                border: '1px solid #E5E7EB',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease'
+                              }}
+                              onMouseEnter={(e) => {
+                                const editBtn = e.currentTarget.querySelector('.edit-btn');
+                                if (editBtn) editBtn.style.opacity = '1';
+                              }}
+                              onMouseLeave={(e) => {
+                                const editBtn = e.currentTarget.querySelector('.edit-btn');
+                                if (editBtn) editBtn.style.opacity = '0';
+                              }}
+                            >
+                              <img
+                                src={image}
+                                alt={`Plugin image ${index + 1}`}
+                                style={{
+                                  width: '100%',
+                                  height: '100%',
+                                  objectFit: 'cover'
+                                }}
+                              />
+                              
+                              {/* Edit Button */}
+                              <button
+                                className="edit-btn"
+                                onClick={() => openImageEditor(image, index)}
+                                style={{
+                                  position: 'absolute',
+                                  top: '8px',
+                                  right: '8px',
+                                  background: 'rgba(0, 0, 0, 0.7)',
+                                  color: 'white',
+                                  border: 'none',
+                                  borderRadius: '4px',
+                                  padding: '6px',
+                                  cursor: 'pointer',
+                                  opacity: '0',
+                                  transition: 'opacity 0.2s ease',
+                                  fontSize: '12px',
+                                  fontFamily: 'Outfit'
+                                }}
+                              >
+                                Edit
+                              </button>
+                              
+                              {/* Remove Button */}
+                              <button
+                                onClick={() => removeImage(index)}
+                                style={{
+                                  position: 'absolute',
+                                  top: '8px',
+                                  left: '8px',
+                                  background: 'rgba(255, 0, 0, 0.7)',
+                                  color: 'white',
+                                  border: 'none',
+                                  borderRadius: '50%',
+                                  width: '24px',
+                                  height: '24px',
+                                  cursor: 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '16px',
+                                  lineHeight: '1'
+                                }}
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                          
+                          {/* Add Image Button */}
+                          <label
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              aspectRatio: '16/10',
+                              border: '2px dashed #D1D5DB',
+                              borderRadius: '8px',
+                              backgroundColor: '#F9FAFB',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease',
+                              fontFamily: 'Outfit',
+                              fontSize: '14px',
+                              color: '#6B7280'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.borderColor = '#9CA3AF';
+                              e.currentTarget.style.backgroundColor = '#F3F4F6';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.borderColor = '#D1D5DB';
+                              e.currentTarget.style.backgroundColor = '#F9FAFB';
+                            }}
+                          >
+                            <Plus size={24} style={{ marginBottom: '8px' }} />
+                            Add Image
+                            <input
+                              type="file"
+                              ref={fileInputRef}
+                              onChange={handleImageUpload}
+                              accept="image/*"
+                              multiple
+                              style={{ display: 'none' }}
+                            />
+                          </label>
+                        </div>
+                        
+                        <p style={{
+                          fontSize: '12px',
+                          color: '#6B7280',
+                          fontFamily: 'Outfit',
+                          margin: 0
+                        }}>
+                          Add high-quality images to showcase your plugin. Images will be optimized to 1280×800px (16:10 aspect ratio).
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -2982,6 +3187,272 @@ function DeveloperPortal() {
           </div>
         )}
       </div>
+
+      {/* Image Editor Modal */}
+      {showImageEditor && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000
+          }}
+          onClick={closeImageEditor}
+        >
+          <div
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '12px',
+              padding: '24px',
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              overflow: 'auto',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '24px',
+              paddingBottom: '16px',
+              borderBottom: '1px solid #E5E7EB'
+            }}>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 600,
+                fontFamily: 'Outfit',
+                color: '#111827',
+                margin: 0
+              }}>
+                Edit Image
+              </h3>
+              <button
+                onClick={closeImageEditor}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '24px',
+                  cursor: 'pointer',
+                  color: '#6B7280',
+                  padding: '4px',
+                  borderRadius: '4px'
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Image Preview and Canvas */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '24px'
+            }}>
+              {/* Hidden original image for reference */}
+              <img
+                ref={imageRef}
+                src={editingImage}
+                alt="Original"
+                style={{ display: 'none' }}
+                crossOrigin="anonymous"
+              />
+
+              {/* Canvas for preview */}
+              <canvas
+                ref={canvasRef}
+                style={{
+                  maxWidth: '640px',
+                  maxHeight: '400px',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '8px'
+                }}
+              />
+
+              {/* Controls */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+                width: '100%',
+                maxWidth: '400px'
+              }}>
+                {/* Crop Controls */}
+                <div>
+                  <label style={{
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    fontFamily: 'Outfit',
+                    color: '#111827',
+                    marginBottom: '8px'
+                  }}>
+                    Crop Area (16:10 aspect ratio)
+                  </label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    <div>
+                      <label style={{ fontSize: '12px', color: '#6B7280', fontFamily: 'Outfit' }}>X Position (%)</label>
+                      <input
+                        type="range"
+                        min="0"
+                        max={100 - imageEditorData.crop.width}
+                        value={imageEditorData.crop.x}
+                        onChange={(e) => handleCropChange({
+                          ...imageEditorData.crop,
+                          x: parseFloat(e.target.value)
+                        })}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '12px', color: '#6B7280', fontFamily: 'Outfit' }}>Y Position (%)</label>
+                      <input
+                        type="range"
+                        min="0"
+                        max={100 - imageEditorData.crop.height}
+                        value={imageEditorData.crop.y}
+                        onChange={(e) => handleCropChange({
+                          ...imageEditorData.crop,
+                          y: parseFloat(e.target.value)
+                        })}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '12px', color: '#6B7280', fontFamily: 'Outfit' }}>Width (%)</label>
+                      <input
+                        type="range"
+                        min="10"
+                        max={100 - imageEditorData.crop.x}
+                        value={imageEditorData.crop.width}
+                        onChange={(e) => {
+                          const width = parseFloat(e.target.value);
+                          handleCropChange({
+                            ...imageEditorData.crop,
+                            width,
+                            height: width * 0.625 // Maintain 16:10 aspect ratio
+                          });
+                        }}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '12px', color: '#6B7280', fontFamily: 'Outfit' }}>Height (%)</label>
+                      <input
+                        type="range"
+                        min="6.25"
+                        max={100 - imageEditorData.crop.y}
+                        value={imageEditorData.crop.height}
+                        onChange={(e) => {
+                          const height = parseFloat(e.target.value);
+                          handleCropChange({
+                            ...imageEditorData.crop,
+                            height,
+                            width: height * 1.6 // Maintain 16:10 aspect ratio
+                          });
+                        }}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rotation Control */}
+                <div>
+                  <label style={{
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    fontFamily: 'Outfit',
+                    color: '#111827',
+                    marginBottom: '8px'
+                  }}>
+                    Rotation: {imageEditorData.rotation}°
+                  </label>
+                  <input
+                    type="range"
+                    min="-180"
+                    max="180"
+                    value={imageEditorData.rotation}
+                    onChange={(e) => handleRotationChange(parseFloat(e.target.value))}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+
+                {/* Scale Control */}
+                <div>
+                  <label style={{
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    fontFamily: 'Outfit',
+                    color: '#111827',
+                    marginBottom: '8px'
+                  }}>
+                    Scale: {Math.round(imageEditorData.scale * 100)}%
+                  </label>
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="3"
+                    step="0.1"
+                    value={imageEditorData.scale}
+                    onChange={(e) => handleScaleChange(parseFloat(e.target.value))}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                justifyContent: 'center'
+              }}>
+                <button
+                  onClick={closeImageEditor}
+                  style={{
+                    padding: '8px 16px',
+                    border: '1px solid #D1D5DB',
+                    borderRadius: '6px',
+                    backgroundColor: 'white',
+                    color: '#374151',
+                    fontSize: '14px',
+                    fontFamily: 'Outfit',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={applyImageEdit}
+                  style={{
+                    padding: '8px 16px',
+                    border: 'none',
+                    borderRadius: '6px',
+                    backgroundColor: '#00A2EA',
+                    color: 'white',
+                    fontSize: '14px',
+                    fontFamily: 'Outfit',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Apply Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

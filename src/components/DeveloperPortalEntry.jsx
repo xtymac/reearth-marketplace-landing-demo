@@ -7,11 +7,7 @@ const DeveloperPortalEntry = () => {
   const navigate = useNavigate();
   const [selectedWorkspace, setSelectedWorkspace] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const authenticated = authService.isAuthenticated();
-    setIsAuthenticated(authenticated);
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Workspace data - simplified to one Personal Workspace
   const workspaces = [
@@ -82,6 +78,39 @@ const DeveloperPortalEntry = () => {
     }
   ];
 
+  useEffect(() => {
+    const authenticated = authService.isAuthenticated();
+    setIsAuthenticated(authenticated);
+
+    // Check for saved workspace and auto-redirect if found
+    if (authenticated) {
+      const savedWorkspace = localStorage.getItem('developerPortal_selectedWorkspace');
+      if (savedWorkspace) {
+        try {
+          const workspaceData = JSON.parse(savedWorkspace);
+          // Find the workspace in our workspaces array
+          const workspace = workspaces.find(w => w.id === workspaceData.id);
+          if (workspace) {
+            // Auto-redirect to the saved workspace
+            navigate('/developer-portal/workspace', { 
+              state: { 
+                selectedWorkspace: workspace,
+                workspaceId: workspace.id 
+              } 
+            });
+            return;
+          }
+        } catch (error) {
+          // Clear invalid saved data
+          localStorage.removeItem('developerPortal_selectedWorkspace');
+        }
+      }
+    }
+    
+    // Set loading to false after checking for auto-redirect
+    setIsLoading(false);
+  }, [navigate, workspaces]);
+
   const handleClose = () => {
     navigate(-1); // Go back to previous page
   };
@@ -94,6 +123,15 @@ const DeveloperPortalEntry = () => {
     if (selectedWorkspace) {
       const workspace = workspaces.find(w => w.id === selectedWorkspace);
       if (workspace) {
+        // Save workspace to localStorage for future visits
+        localStorage.setItem('developerPortal_selectedWorkspace', JSON.stringify({
+          id: workspace.id,
+          name: workspace.name,
+          type: workspace.type,
+          members: workspace.members,
+          workspaceId: workspace.workspaceId
+        }));
+
         // Navigate to the Developer Portal with the selected workspace context
         // Pass the workspace information via state so the Developer Portal can use it
         navigate('/developer-portal/workspace', { 
@@ -331,6 +369,38 @@ const DeveloperPortalEntry = () => {
   // Show welcome page for non-authenticated users
   if (!isAuthenticated) {
     return <WelcomePage />;
+  }
+
+  // Show loading state while checking for auto-redirect
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--tailwind-neutra-900, #171717)' }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          color: '#FFF',
+          fontFamily: 'Outfit',
+          fontSize: '16px'
+        }}>
+          <div style={{
+            width: '20px',
+            height: '20px',
+            border: '2px solid #374151',
+            borderTop: '2px solid #FFF',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }} />
+          Loading...
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
+      </div>
+    );
   }
 
   return (

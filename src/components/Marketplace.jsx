@@ -18,7 +18,7 @@ const Marketplace = () => {
 
   const handleStartClick = () => {
     if (isAuthenticated) {
-      navigate('/plugins/new');
+      navigate('/developer-portal/new');
     } else {
       navigate('/login');
     }

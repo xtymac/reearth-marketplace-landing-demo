@@ -61,6 +61,19 @@ const PluginEdit = () => {
   });
   const [dragActive, setDragActive] = useState(false);
   
+  // Image editing state
+  const [showImageEditor, setShowImageEditor] = useState(false);
+  const [editingImage, setEditingImage] = useState(null);
+  const [editingImageIndex, setEditingImageIndex] = useState(-1);
+  const [imageEditorData, setImageEditorData] = useState({
+    src: '',
+    crop: { x: 0, y: 0, width: 100, height: 62.5 }, // 1280x800 aspect ratio (16:10)
+    rotation: 0,
+    scale: 1
+  });
+  const imageEditorRef = useRef(null);
+  const canvasRef = useRef(null);
+  
   // Refs for scroll navigation
   const sectionRefs = useRef({});
   const observerRef = useRef(null);
@@ -95,6 +108,89 @@ const PluginEdit = () => {
       ...prev,
       images: prev.images.filter((_, i) => i !== index)
     }));
+  };
+
+  // Image editing functions
+  const openImageEditor = (imageSrc, index) => {
+    setEditingImage(imageSrc);
+    setEditingImageIndex(index);
+    setImageEditorData({
+      src: imageSrc,
+      crop: { x: 0, y: 0, width: 100, height: 62.5 }, // 16:10 aspect ratio for 1280x800
+      rotation: 0,
+      scale: 1
+    });
+    setShowImageEditor(true);
+  };
+
+  const closeImageEditor = () => {
+    setShowImageEditor(false);
+    setEditingImage(null);
+    setEditingImageIndex(-1);
+  };
+
+  const applyImageEdits = () => {
+    if (!canvasRef.current || !editingImage) return;
+    
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    
+    img.onload = () => {
+      // Set canvas size to 1280x800 (recommended size)
+      canvas.width = 1280;
+      canvas.height = 800;
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Calculate crop dimensions
+      const cropX = (imageEditorData.crop.x / 100) * img.width;
+      const cropY = (imageEditorData.crop.y / 100) * img.height;
+      const cropWidth = (imageEditorData.crop.width / 100) * img.width;
+      const cropHeight = (imageEditorData.crop.height / 100) * img.height;
+      
+      // Apply transformations
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate((imageEditorData.rotation * Math.PI) / 180);
+      ctx.scale(imageEditorData.scale, imageEditorData.scale);
+      
+      // Draw the cropped image
+      ctx.drawImage(
+        img,
+        cropX, cropY, cropWidth, cropHeight,
+        -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height
+      );
+      
+      ctx.restore();
+      
+      // Convert canvas to blob and update image
+      canvas.toBlob((blob) => {
+        const editedImageUrl = URL.createObjectURL(blob);
+        setPluginFormData(prev => ({
+          ...prev,
+          images: prev.images.map((img, idx) => 
+            idx === editingImageIndex ? editedImageUrl : img
+          )
+        }));
+        closeImageEditor();
+      }, 'image/jpeg', 0.9);
+    };
+    
+    img.src = editingImage;
+  };
+
+  const updateCrop = (newCrop) => {
+    setImageEditorData(prev => ({ ...prev, crop: newCrop }));
+  };
+
+  const updateRotation = (rotation) => {
+    setImageEditorData(prev => ({ ...prev, rotation }));
+  };
+
+  const updateScale = (scale) => {
+    setImageEditorData(prev => ({ ...prev, scale }));
   };
 
   const addTag = () => {
@@ -716,18 +812,30 @@ const PluginEdit = () => {
                   {/* Image Preview */}
                   <div className="flex gap-3">
                     {pluginFormData.images.map((image, index) => (
-                      <div key={index} className="relative">
+                      <div key={index} className="relative group">
                         <img
                           src={image}
                           alt={`Plugin ${index + 1}`}
                           className="w-16 h-16 object-cover rounded-md border"
                         />
-                        <button
-                          onClick={() => removeImage(index)}
-                          className="absolute -top-2 -right-2 bg-gray-800 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-gray-900"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 rounded-md transition-all flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 flex gap-1 transition-all">
+                            <button
+                              onClick={() => openImageEditor(image, index)}
+                              className="w-5 h-5 bg-blue-500 text-white rounded-full text-xs hover:bg-blue-600 focus:outline-none flex items-center justify-center"
+                              title="Edit"
+                            >
+                              ✎
+                            </button>
+                            <button
+                              onClick={() => removeImage(index)}
+                              className="w-5 h-5 bg-gray-800 text-white rounded-full hover:bg-gray-900 flex items-center justify-center"
+                              title="Delete"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -1424,6 +1532,191 @@ const PluginEdit = () => {
           </div>
         </div>
       </div>
+
+      {/* Image Editor Modal */}
+      {showImageEditor && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900" style={{ fontFamily: 'Outfit' }}>
+                Edit Image
+              </h3>
+              <button
+                onClick={closeImageEditor}
+                className="text-gray-400 hover:text-gray-600 focus:outline-none"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 max-h-[calc(90vh-140px)] overflow-y-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Image Preview */}
+                <div className="space-y-4">
+                  <div className="text-sm text-gray-600 mb-2" style={{ fontFamily: 'Outfit' }}>
+                    Preview (1280×800 pixels)
+                  </div>
+                  <div 
+                    className="relative border-2 border-dashed border-gray-300 rounded-lg overflow-hidden bg-gray-50"
+                    style={{ aspectRatio: '16/10' }}
+                  >
+                    <div 
+                      ref={imageEditorRef}
+                      className="absolute inset-0 flex items-center justify-center"
+                      style={{
+                        backgroundImage: `url(${editingImage})`,
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        transform: `rotate(${imageEditorData.rotation}deg) scale(${imageEditorData.scale})`,
+                        transformOrigin: 'center'
+                      }}
+                    >
+                      {/* Crop overlay */}
+                      <div 
+                        className="absolute border-2 border-blue-500 bg-blue-500 bg-opacity-20"
+                        style={{
+                          left: `${imageEditorData.crop.x}%`,
+                          top: `${imageEditorData.crop.y}%`,
+                          width: `${imageEditorData.crop.width}%`,
+                          height: `${imageEditorData.crop.height}%`,
+                          minWidth: '100px',
+                          minHeight: '62.5px'
+                        }}
+                      >
+                        <div className="absolute -top-1 -left-1 w-3 h-3 bg-blue-500 cursor-nw-resize"></div>
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 cursor-ne-resize"></div>
+                        <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-500 cursor-sw-resize"></div>
+                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-blue-500 cursor-se-resize"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Controls */}
+                <div className="space-y-6">
+                  {/* Crop Controls */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 mb-3" style={{ fontFamily: 'Outfit' }}>
+                      Crop Area (Locked to 16:10 ratio)
+                    </h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1" style={{ fontFamily: 'Outfit' }}>X Position</label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="50"
+                          value={imageEditorData.crop.x}
+                          onChange={(e) => updateCrop({
+                            ...imageEditorData.crop,
+                            x: parseFloat(e.target.value)
+                          })}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1" style={{ fontFamily: 'Outfit' }}>Y Position</label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="37.5"
+                          value={imageEditorData.crop.y}
+                          onChange={(e) => updateCrop({
+                            ...imageEditorData.crop,
+                            y: parseFloat(e.target.value)
+                          })}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Rotation Control */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 mb-3" style={{ fontFamily: 'Outfit' }}>
+                      Rotation: {imageEditorData.rotation}°
+                    </h4>
+                    <input
+                      type="range"
+                      min="-180"
+                      max="180"
+                      value={imageEditorData.rotation}
+                      onChange={(e) => updateRotation(parseFloat(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    />
+                    <div className="flex justify-between mt-2">
+                      <button
+                        onClick={() => updateRotation(imageEditorData.rotation - 90)}
+                        className="px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200"
+                        style={{ fontFamily: 'Outfit' }}
+                      >
+                        -90°
+                      </button>
+                      <button
+                        onClick={() => updateRotation(0)}
+                        className="px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200"
+                        style={{ fontFamily: 'Outfit' }}
+                      >
+                        Reset
+                      </button>
+                      <button
+                        onClick={() => updateRotation(imageEditorData.rotation + 90)}
+                        className="px-3 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200"
+                        style={{ fontFamily: 'Outfit' }}
+                      >
+                        +90°
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Scale Control */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 mb-3" style={{ fontFamily: 'Outfit' }}>
+                      Scale: {Math.round(imageEditorData.scale * 100)}%
+                    </h4>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="3"
+                      step="0.1"
+                      value={imageEditorData.scale}
+                      onChange={(e) => updateScale(parseFloat(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    />
+                  </div>
+
+                  {/* Live Preview Canvas (hidden) */}
+                  <canvas ref={canvasRef} style={{ display: 'none' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-end space-x-3">
+              <button
+                onClick={closeImageEditor}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                style={{ fontFamily: 'Outfit' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={applyImageEdits}
+                className="px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                style={{ 
+                  fontFamily: 'Outfit',
+                  backgroundColor: 'var(--reearth-sky-700, #116993)'
+                }}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="border-t border-gray-200" style={{ marginTop: '24px' }}>
