@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Editor</title>
+    <link rel="stylesheet" href="markdown-editor.css">
+</head>
+<body>
+    <div class="markdown-editor">
+        <div class="tabs">
+            <button class="tab active" data-tab="edit">Edit</button>
+            <button class="tab" data-tab="preview">Preview</button>
+        </div>
+        <div class="content-container">
+            <div class="tab-content active" id="edit">
+                <textarea class="editor-textarea" placeholder="Type your markdown here..."># 🏢 3D Building Visualization
+
+**3D Building Visualization** is a powerful plugin designed to enhance urban planning workflows through immersive 3D representations of buildings and cityscapes. Perfect for architects, city planners, and disaster management teams, it provides real-time visualization of infrastructure within your Visualizer project.
+
+---
+
+## ✨ Features
+
+- 🏛️ Render realistic 3D building models from geospatial data
+- 📊 Integrate zoning, demographic, or utility data overlays
+- 🔄 Real-time updates for planning simulations and stakeholder presentations
+- 🌍 Use in conjunction with disaster planning or development analysis tools
+
+---
+
+## 📦 Use Cases
+
+- City development and zoning meetings
+- Urban resilience planning and simulation ...</textarea>
+            </div>
+            <div class="tab-content" id="preview">
+                <div class="preview-content"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="markdown-editor.js"></script>
+</body>
+</html>

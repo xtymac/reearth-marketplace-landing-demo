@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Building Visualization Plugin - Re:Earth Marketplace</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="plugin-detail.css" />
+  </head>
+  <body>
+    <!-- Preview Mode Status Bar -->
+    <div id="previewStatusBar" class="preview-status-bar">
+      <div class="preview-status-content">
+        <div class="preview-status-left">
+          <img src="/Image/Icon/Green.svg" alt="Preview icon" class="preview-icon">
+          <span class="preview-status-text">Preview mode</span>
+        </div>
+        <button id="returnToEditBtn" class="return-to-edit-btn">Return to Edit</button>
+      </div>
+    </div>
+
+    <header>
+      <nav class="navbar">
+        <div class="nav-left">
+          <div class="logo">
+            <img
+              src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Logo.svg"
+              alt="Re:Earth Logo"
+            />
+          </div>
+          <ul class="nav-menu">
+            <li><a href="#about">About Re:Earth</a></li>
+            <li class="dropdown">
+              <a href="#product"
+                >Product <span class="dropdown-arrow">▼</span></a
+              >
+              <div class="dropdown-content">
+                <a href="#">Feature 1</a>
+                <a href="#">Feature 2</a>
+                <a href="#">Feature 3</a>
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#use-cases"
+                >Use Cases <span class="dropdown-arrow">▼</span></a
+              >
+              <div class="dropdown-content">
+                <a href="#">Case 1</a>
+                <a href="#">Case 2</a>
+                <a href="#">Case 3</a>
+              </div>
+            </li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#community">Community</a></li>
+            <li><a href="#learn">Learn</a></li>
+            <li><a href="index.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div class="nav-right">
+          <div class="header-search-container">
+            <input
+              type="text"
+              class="header-search-input"
+              placeholder="Search plugins..."
+            />
+            <button class="header-search-button">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="language-toggle">
+            <span class="lang-option active">EN</span>
+            <span class="lang-separator">|</span>
+            <span class="lang-option">日本語</span>
+          </div>
+          <button class="start-button">Start</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="mx-auto bg-white rounded-lg" style="max-width: 1280px; padding: 24px; margin-top: 24px; margin-bottom: 24px; gap: 24px; display: flex; flex-direction: column;">
+      <!-- Breadcrumb Navigation -->
+      <section class="breadcrumb-section">
+        <div class="container">
+          <nav class="breadcrumb">
+            <a href="index.html">Marketplace</a>
+            <span class="breadcrumb-separator">></span>
+            <a href="#">Plugins</a>
+            <span class="breadcrumb-separator">></span>
+            <span class="breadcrumb-current">3D Building Visualization Plugin</span>
+          </nav>
+        </div>
+      </section>
+
+      <!-- Plugin Overview Section -->
+      <section class="plugin-overview">
+        <div class="container">
+          <div class="plugin-overview-content">
+            <div class="plugin-media">
+              <div class="plugin-main-image">
+                <img
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/6e82e5cb4f3ab9225ed72467ef0e69d44c5d7ae5df84bd6fb057bd551da4bbb1.png"
+                  alt="3D Building Visualization Plugin"
+                />
+              </div>
+              <div class="plugin-thumbnails">
+                <img
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/6e82e5cb4f3ab9225ed72467ef0e69d44c5d7ae5df84bd6fb057bd551da4bbb1.png"
+                  alt="Screenshot 1"
+                  class="thumbnail active"
+                />
+                <img
+                  src="Image/VISUALIZER/9cf6efff-9011-4b92-a874-2f0dedea4050.png"
+                  alt="Screenshot 2"
+                  class="thumbnail"
+                />
+                <img
+                  src="Image/VISUALIZER/Advanced GIS Mapping.png"
+                  alt="Screenshot 3"
+                  class="thumbnail"
+                />
+                <img
+                  src="Image/VISUALIZER/Real-Time Sensor Overlay.png"
+                  alt="Screenshot 4"
+                  class="thumbnail"
+                />
+              </div>
+            </div>
+
+            <div class="plugin-info">
+              <div class="plugin-header">
+                <h1 class="plugin-title">3D Building Visualization Plugin</h1>
+                <p class="plugin-subtitle">Advanced 3D visualization tools for building and urban planning projects</p>
+                
+                <div class="plugin-developer">
+                  <span class="developer-label">Developer:</span>
+                  <span class="developer-name">株式会社福山コンサルタント</span>
+                </div>
+
+                <div class="plugin-stats">
+                  <!-- Stats section simplified, download count moved to metadata -->
+                </div>
+              </div>
+
+              <div class="plugin-actions">
+                <button class="install-button primary">
+                  <span class="install-icon">↓</span>
+                  Install Plugin
+                </button>
+                <button class="download-button secondary">
+                  <span class="download-icon">📦</span>
+                  Download ZIP
+                </button>
+                <button class="like-button">
+                  <span class="heart-icon">♡</span>
+                  <span class="like-count">956</span>
+                </button>
+              </div>
+
+              <div class="plugin-metadata">
+                <div class="metadata-item">
+                  <span class="metadata-label">Version:</span>
+                  <span class="metadata-value">2.1.3</span>
+                </div>
+                <div class="metadata-item">
+                  <span class="metadata-label">Downloads:</span>
+                  <span class="metadata-value">1,234</span>
+                </div>
+                <div class="metadata-item">
+                  <span class="metadata-label">Last Updated:</span>
+                  <span class="metadata-value">2024年12月15日</span>
+                </div>
+                <div class="metadata-item">
+                  <span class="metadata-label">Size:</span>
+                  <span class="metadata-value">4.2 MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Plugin Details Content -->
+      <section class="plugin-content">
+        <div class="container">
+          <div class="plugin-content-layout">
+            <div class="plugin-main-content">
+              <!-- Description Section -->
+              <div class="content-section">
+                <h2>Description</h2>
+                <p>
+                  The 3D Building Visualization Plugin transforms how you interact with architectural and urban planning data in Re:Earth. 
+                  Create stunning three-dimensional representations of buildings, infrastructure, and urban environments with advanced 
+                  rendering capabilities and interactive features.
+                </p>
+                <p>
+                  Perfect for architects, urban planners, real estate developers, and city officials who need to visualize complex 
+                  building data in an intuitive and compelling way. The plugin supports multiple data formats and provides extensive 
+                  customization options for materials, lighting, and environmental effects.
+                </p>
+              </div>
+
+              <!-- Features Section -->
+              <div class="content-section">
+                <h2>Key Features</h2>
+                <ul class="feature-list">
+                  <li>
+                    <strong>Advanced 3D Rendering:</strong> High-quality building visualization with realistic materials, shadows, and lighting effects
+                  </li>
+                  <li>
+                    <strong>Multi-format Support:</strong> Import from CAD, BIM, GeoJSON, and other popular architectural data formats
+                  </li>
+                  <li>
+                    <strong>Interactive Navigation:</strong> Smooth camera controls with fly-through capabilities and predefined viewpoints
+                  </li>
+                  <li>
+                    <strong>Height Extrusion:</strong> Automatically generate 3D buildings from 2D footprints with height data
+                  </li>
+                  <li>
+                    <strong>Material Library:</strong> Extensive collection of realistic building materials and textures
+                  </li>
+                  <li>
+                    <strong>Performance Optimized:</strong> Efficient rendering for large-scale urban environments with thousands of buildings
+                  </li>
+                  <li>
+                    <strong>Team Collaboration:</strong> Share 3D scenes and collaborate on urban planning projects
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Use Cases Section -->
+              <div class="content-section">
+                <h2>Use Cases</h2>
+                <div class="use-cases-grid" style="background: var(--background-1, #F5F5F5);">
+                  <div class="use-case-item">
+                    <h3>Urban Planning</h3>
+                    <p>Visualize proposed developments and analyze their impact on existing urban landscapes.</p>
+                  </div>
+                  <div class="use-case-item">
+                    <h3>Real Estate Development</h3>
+                    <p>Present architectural projects to stakeholders with immersive 3D presentations.</p>
+                  </div>
+                  <div class="use-case-item">
+                    <h3>City Administration</h3>
+                    <p>Create digital twins of city districts for planning and public engagement.</p>
+                  </div>
+                  <div class="use-case-item">
+                    <h3>Environmental Impact</h3>
+                    <p>Analyze shadow patterns, wind flow, and environmental effects of new constructions.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Installation & Usage -->
+              <div class="content-section">
+                <h2>Installation & Usage</h2>
+                <div class="installation-steps">
+                  <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                      <h3>Install the Plugin</h3>
+                      <p>Click the "Install Plugin" button above to add it to your Re:Earth workspace.</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                      <h3>Prepare Your Data</h3>
+                      <p>Ensure your building data includes height information and proper geographical coordinates.</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                      <h3>Configure Visualization</h3>
+                      <p>Use the plugin settings to customize materials, lighting, and rendering options.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Change Log -->
+              <div class="content-section">
+                <h2>Change Log</h2>
+                <div class="changelog-list">
+                  <div class="changelog-item">
+                    <h3 class="changelog-title">Performance Improvements & Bug Fixes</h3>
+                    <div class="changelog-meta">
+                      <div class="changelog-version">Version 2.1.3</div>
+                      <div class="changelog-date">December 15, 2024</div>
+                    </div>
+                    <p class="changelog-description">
+                      Performance improvements and bug fixes to enhance user experience. Fixed memory leaks, improved rendering performance by 25%, and resolved browser compatibility issues for smoother visualization workflows.
+                    </p>
+                    <div class="changelog-tags">
+                      <span class="changelog-tag bug-fix">Bug Fix</span>
+                      <span class="changelog-tag performance">Performance</span>
+                      <span class="changelog-tag compatibility">Compatibility</span>
+                    </div>
+                  </div>
+
+                  <div class="changelog-item">
+                    <h3 class="changelog-title">Material Library & Advanced Lighting</h3>
+                    <div class="changelog-meta">
+                      <div class="changelog-version">Version 2.1.0</div>
+                      <div class="changelog-date">November 20, 2024</div>
+                    </div>
+                    <p class="changelog-description">
+                      Major update introducing comprehensive material library with 50+ realistic building materials and dynamic lighting system. Features include sun position simulation, shadow casting, and real-time atmospheric effects for enhanced realism.
+                    </p>
+                    <div class="changelog-tags">
+                      <span class="changelog-tag feature">New Feature</span>
+                      <span class="changelog-tag materials">Materials</span>
+                      <span class="changelog-tag lighting">Lighting</span>
+                    </div>
+                  </div>
+
+                  <div class="changelog-item">
+                    <h3 class="changelog-title">Team Collaboration & Multi-User Support</h3>
+                    <div class="changelog-meta">
+                      <div class="changelog-version">Version 2.0.0</div>
+                      <div class="changelog-date">October 15, 2024</div>
+                    </div>
+                    <p class="changelog-description">
+                      Revolutionary update enabling real-time collaborative editing for distributed teams. Includes user permission systems, cloud synchronization, version control with branch management, and enhanced export capabilities for seamless workflow integration.
+                    </p>
+                    <div class="changelog-tags">
+                      <span class="changelog-tag major">Major Release</span>
+                      <span class="changelog-tag collaboration">Collaboration</span>
+                      <span class="changelog-tag cloud">Cloud Sync</span>
+                    </div>
+                  </div>
+
+                  <div class="changelog-item">
+                    <h3 class="changelog-title">UI/UX Enhancements</h3>
+                    <div class="changelog-meta">
+                      <div class="changelog-version">Version 1.9.2</div>
+                      <div class="changelog-date">September 8, 2024</div>
+                    </div>
+                    <p class="changelog-description">
+                      Comprehensive user interface improvements focusing on usability and accessibility. Redesigned control panels, added keyboard shortcuts, enhanced mobile responsiveness, and improved screen reader support for better inclusive design.
+                    </p>
+                    <div class="changelog-tags">
+                      <span class="changelog-tag improvement">UI Update</span>
+                      <span class="changelog-tag ui-ux">UX</span>
+                      <span class="changelog-tag accessibility">Accessibility</span>
+                    </div>
+                  </div>
+
+                  <div class="changelog-item">
+                    <h3 class="changelog-title">Advanced Data Import & Processing</h3>
+                    <div class="changelog-meta">
+                      <div class="changelog-version">Version 1.9.0</div>
+                      <div class="changelog-date">August 12, 2024</div>
+                    </div>
+                    <p class="changelog-description">
+                      Enhanced data handling capabilities with support for BIM file formats (IFC, RVT), automatic Level of Detail generation, improved GeoJSON parsing, and batch processing capabilities for handling large-scale architectural datasets efficiently.
+                    </p>
+                    <div class="changelog-tags">
+                      <span class="changelog-tag feature">New Feature</span>
+                      <span class="changelog-tag data-import">Data Import</span>
+                      <span class="changelog-tag doc-update">Doc Update</span>
+                    </div>
+                  </div>
+
+                  <div class="changelog-item">
+                    <h3 class="changelog-title">Initial Release - 3D Building Visualization Plugin</h3>
+                    <div class="changelog-meta">
+                      <div class="changelog-version">Version 1.0.0</div>
+                      <div class="changelog-date">January 15, 2024</div>
+                    </div>
+                    <p class="changelog-description">
+                      First public release of the 3D Building Visualization Plugin for Re:Earth. Introducing core functionality for rendering complex building models with basic material support, camera controls, and seamless integration with Re:Earth's visualization platform. Perfect foundation for architectural and urban planning projects.
+                    </p>
+                    <div class="changelog-tags">
+                      <span class="changelog-tag initial">Initial Release</span>
+                      <span class="changelog-tag feature">Core Features</span>
+                      <span class="changelog-tag visualization">3D Rendering</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="changelog-footer">
+                  <button class="changelog-toggle" data-expanded="false">
+                    <span class="toggle-text">Show More Versions</span>
+                    <span class="toggle-icon">▼</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- User Comments -->
+              <div class="content-section">
+                <h2>User Comments</h2>
+                <div class="comments-list">
+                  <div class="comment-item">
+                    <div class="comment-header">
+                      <div class="commenter-info">
+                        <span class="commenter-name">田中建築事務所</span>
+                      </div>
+                      <span class="comment-date">2024年12月10日</span>
+                    </div>
+                    <p class="comment-text">
+                      This plugin has revolutionized our architectural presentations. The 3D rendering quality is exceptional, 
+                      and clients can now truly understand our designs before construction begins. Highly recommended!
+                    </p>
+                  </div>
+
+                  <div class="comment-item">
+                    <div class="comment-header">
+                      <div class="commenter-info">
+                        <span class="commenter-name">都市計画コンサルタント</span>
+                      </div>
+                      <span class="comment-date">2024年12月5日</span>
+                    </div>
+                    <p class="comment-text">
+                      Great for urban planning projects. The performance with large datasets could be better, but overall 
+                      it's a valuable tool for our team collaboration needs.
+                    </p>
+                  </div>
+
+                  <div class="comment-item">
+                    <div class="comment-header">
+                      <div class="commenter-info">
+                        <span class="commenter-name">スマートシティ研究所</span>
+                      </div>
+                      <span class="comment-date">2024年11月28日</span>
+                    </div>
+                    <p class="comment-text">
+                      Perfect for creating digital city twins. The material library is extensive and the export options 
+                      are exactly what we needed for our smart city initiatives.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="plugin-sidebar">
+              <!-- Technical Information -->
+              <div class="sidebar-section">
+                <h3>Technical Information</h3>
+                <div class="tech-info">
+                  <div class="tech-item">
+                    <span class="tech-label">Compatibility:</span>
+                    <span class="tech-value">Re:Earth Visualizer 2.0+</span>
+                  </div>
+                  <div class="tech-item">
+                    <span class="tech-label">Supported Formats:</span>
+                    <span class="tech-value">GeoJSON, CAD, BIM, OBJ</span>
+                  </div>
+                  <div class="tech-item">
+                    <span class="tech-label">Browser Support:</span>
+                    <span class="tech-value">Chrome, Firefox, Safari, Edge</span>
+                  </div>
+                  <div class="tech-item">
+                    <span class="tech-label">WebGL:</span>
+                    <span class="tech-value">Required</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Version History -->
+              <div class="sidebar-section">
+                <h3>Version History</h3>
+                <div class="version-history">
+                  <div class="version-item">
+                    <div class="version-number">v2.1.3</div>
+                    <div class="version-date">2024年12月15日</div>
+                    <div class="version-changes">Performance improvements and bug fixes</div>
+                  </div>
+                  <div class="version-item">
+                    <div class="version-number">v2.1.0</div>
+                    <div class="version-date">2024年11月20日</div>
+                    <div class="version-changes">Added material library and lighting effects</div>
+                  </div>
+                  <div class="version-item">
+                    <div class="version-number">v2.0.0</div>
+                    <div class="version-date">2024年10月15日</div>
+                    <div class="version-changes">Major release with team collaboration features</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Support & Documentation -->
+              <div class="sidebar-section">
+                <h3>Support & Documentation</h3>
+                <div class="support-links">
+                  <a href="#" class="support-link">
+                    <span class="link-icon">📖</span>
+                    Documentation
+                  </a>
+                  <a href="#" class="support-link">
+                    <span class="link-icon">🎥</span>
+                    Video Tutorials
+                  </a>
+                  <a href="#" class="support-link">
+                    <span class="link-icon">💬</span>
+                    Community Forum
+                  </a>
+                  <a href="#" class="support-link">
+                    <span class="link-icon">🐛</span>
+                    Report Issues
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Plugins Section -->
+      <section class="related-plugins">
+        <div class="container">
+          <h2>Related Plugins</h2>
+          <div class="related-plugins-grid">
+            <div class="plugin-card">
+              <div class="card-image">
+                <img
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Advanced%20GIS%20Mapping.png"
+                  alt="Advanced GIS Mapping Plugin"
+                />
+                <div class="card-category visualizer">VISUALIZER</div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Advanced GIS Mapping</h3>
+                <p class="card-author">by 地理情報システム株式会社</p>
+                <div class="card-stats">
+                  <div class="card-likes">
+                    <span class="heart-icon">♡</span>
+                    <span class="likes-count">2.1k</span>
+                  </div>
+                  <div class="card-downloads">
+                    <span class="download-icon">⬇</span>
+                    <span class="download-count">3.2k</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="plugin-card">
+              <div class="card-image">
+                <img
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/IoT%20Sensor%20Network.png"
+                  alt="IoT Sensor Network Plugin"
+                />
+                <div class="card-category visualizer">VISUALIZER</div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">IoT Sensor Network</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">CMS</span>
+                </div>
+                <p class="card-author">by センサーテック株式会社</p>
+                <div class="card-stats">
+                  <div class="card-likes">
+                    <span class="heart-icon">♡</span>
+                    <span class="likes-count">1.5k</span>
+                  </div>
+                  <div class="card-downloads">
+                    <span class="download-icon">⬇</span>
+                    <span class="download-count">2.3k</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="plugin-card">
+              <div class="card-image">
+                <img
+                  src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Smart%20Mobility%20Hub.png"
+                  alt="Smart Mobility Hub Plugin"
+                />
+                <div class="card-category visualizer">VISUALIZER</div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Smart Mobility Hub</h3>
+                <div class="card-function-tags">
+                  <span class="function-tag">Flow</span>
+                </div>
+                <p class="card-author">by モビリティソリューション株式会社</p>
+                <div class="card-stats">
+                  <div class="card-likes">
+                    <span class="heart-icon">♡</span>
+                    <span class="likes-count">1.8k</span>
+                  </div>
+                  <div class="card-downloads">
+                    <span class="download-icon">⬇</span>
+                    <span class="download-count">2.7k</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Call to Action Section -->
+      <section class="submission-section">
+        <div class="container">
+          <div class="submission-content">
+            <div class="submission-text">
+              <h2>
+                Build something great?<br />
+                Share your <b>plugin</b> with the community
+              </h2>
+              <a href="developer-portal-login.html" class="submit-plugin-main-button">Go to Developer Portal</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-left">
+            <div class="footer-logo">
+              <img
+                src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Logo.svg"
+                alt="Re:Earth Logo"
+              />
+            </div>
+            <p class="footer-description">
+              Re:Earth is a web-based platform for visualizing and analyzing
+              geospatial data. Create interactive maps, stories, and experiences
+              with our powerful tools.
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-earth">
+          <img
+            src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Earth.png"
+            alt="Earth"
+            class="earth-image"
+          />
+        </div>
+
+        <div class="footer-bottom">
+          <div class="footer-bottom-content">
+            <p>&copy; 2024 Re:Earth. All rights reserved.</p>
+            <div class="footer-bottom-links">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#">Cookie Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="plugin-detail.js"></script>
+  </body>
+</html>

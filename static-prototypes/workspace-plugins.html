@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plugin Management - 株式会社福山コンサルタント | Re:Earth</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="workspace-plugins.css" />
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="logo">
+          <img
+            src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Logo.svg"
+            alt="Re:Earth Logo"
+          />
+        </div>
+        <ul class="nav-menu">
+          <li><a href="#about">Re:Earthについて学ぶ</a></li>
+          <li class="dropdown">
+            <a href="#product"
+              >プロダクト <span class="dropdown-arrow">▼</span></a
+            >
+            <div class="dropdown-content">
+              <a href="#">Feature 1</a>
+              <a href="#">Feature 2</a>
+              <a href="#">Feature 3</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#use-cases"
+              >ユースケース <span class="dropdown-arrow">▼</span></a
+            >
+            <div class="dropdown-content">
+              <a href="#">Case 1</a>
+              <a href="#">Case 2</a>
+              <a href="#">Case 3</a>
+            </div>
+          </li>
+          <li><a href="#pricing">料金</a></li>
+          <li><a href="#community">コミュニティ</a></li>
+          <li><a href="#learn">学ぶ</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <div class="language-toggle">
+          <span class="lang-option">EN</span>
+          <span class="lang-separator">|</span>
+          <span class="lang-option active">日本語</span>
+        </div>
+        <button class="start-button">Start</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="workspace-main">
+    <!-- Workspace Header -->
+    <div class="workspace-header">
+      <div class="container">
+        <div class="workspace-info">
+          <div class="workspace-logo">
+            <img src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Logo.svg" alt="Eukarya Logo" />
+          </div>
+          <div class="workspace-details">
+            <h1 class="workspace-name">株式会社福山コンサルタント</h1>
+            <p class="workspace-subtitle">Eukarya, Inc</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="workspace-nav">
+      <div class="container">
+        <nav class="workspace-tabs">
+          <a href="#" class="workspace-tab">Overview</a>
+          <a href="#" class="workspace-tab">Open Data</a>
+          <a href="#" class="workspace-tab">Open Visualizer</a>
+          <a href="#" class="workspace-tab active">Plugins</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Plugin Management Content -->
+    <div class="workspace-content">
+      <div class="container">
+        <!-- Search and Filter Section -->
+        <div class="plugins-controls">
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <input
+                type="text"
+                class="search-input"
+                placeholder="Search by title, function and description"
+              />
+              <button class="search-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="sort-container">
+            <select class="sort-select">
+              <option value="date-uploaded">Sort by date uploaded</option>
+              <option value="name">Sort by name A-Z</option>
+              <option value="status">Sort by status</option>
+              <option value="last-modified">Sort by last modified</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Plugin Cards Grid -->
+        <div class="plugins-grid">
+          <!-- Plugin Card 1 -->
+          <div class="plugin-card">
+            <div class="plugin-image">
+              <img
+                src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/6e82e5cb4f3ab9225ed72467ef0e69d44c5d7ae5df84bd6fb057bd551da4bbb1.png"
+                alt="3D Building Visualization Plugin"
+              />
+            </div>
+            <div class="plugin-content">
+              <div class="plugin-header">
+                <h3 class="plugin-title">Visualizer Project Name</h3>
+                <span class="public-badge">Public</span>
+              </div>
+              <div class="plugin-description">
+                <p>
+                  HorizonLink is a next-generation collaboration platform designed to streamline communication and task management for distributed teams. By combining real-time m...
+                </p>
+              </div>
+              <div class="plugin-tags">
+                <span class="tag">Urban Planning</span>
+                <span class="tag">防災</span>
+                <span class="tag">データビジュアライザー</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plugin Card 2 -->
+          <div class="plugin-card">
+            <div class="plugin-image">
+              <img
+                src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Weather%20API%20Integration.png"
+                alt="Weather Integration Plugin"
+              />
+            </div>
+            <div class="plugin-content">
+              <div class="plugin-header">
+                <h3 class="plugin-title">Weather API Integration</h3>
+                <span class="public-badge">Public</span>
+              </div>
+              <div class="plugin-description">
+                <p>
+                  HorizonLink is a next-generation collaboration platform designed to streamline communication and task management for distributed teams. By combining real-time m...
+                </p>
+              </div>
+              <div class="plugin-tags">
+                <span class="tag">Urban Planning</span>
+                <span class="tag">防災</span>
+                <span class="tag">データビジュアライザー</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plugin Card 3 -->
+          <div class="plugin-card">
+            <div class="plugin-image">
+              <img
+                src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/IoT%20Sensor%20Network.png"
+                alt="IoT Sensor Network Plugin"
+              />
+            </div>
+            <div class="plugin-content">
+              <div class="plugin-header">
+                <h3 class="plugin-title">IoT Sensor Network</h3>
+                <span class="draft-badge">Draft</span>
+              </div>
+              <div class="plugin-description">
+                <p>
+                  HorizonLink is a next-generation collaboration platform designed to streamline communication and task management for distributed teams. By combining real-time m...
+                </p>
+              </div>
+              <div class="plugin-tags">
+                <span class="tag">Urban Planning</span>
+                <span class="tag">防災</span>
+                <span class="tag">データビジュアライザー</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plugin Card 4 -->
+          <div class="plugin-card">
+            <div class="plugin-image">
+              <img
+                src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Advanced%20GIS%20Mapping.png"
+                alt="Advanced GIS Mapping Plugin"
+              />
+            </div>
+            <div class="plugin-content">
+              <div class="plugin-header">
+                <h3 class="plugin-title">Advanced GIS Mapping</h3>
+                <span class="public-badge">Public</span>
+              </div>
+              <div class="plugin-description">
+                <p>
+                  HorizonLink is a next-generation collaboration platform designed to streamline communication and task management for distributed teams. By combining real-time m...
+                </p>
+              </div>
+              <div class="plugin-tags">
+                <span class="tag">Urban Planning</span>
+                <span class="tag">防災</span>
+                <span class="tag">データビジュアライザー</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plugin Card 5 -->
+          <div class="plugin-card">
+            <div class="plugin-image">
+              <img
+                src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Smart%20Mobility%20Hub.png"
+                alt="Smart Mobility Hub Plugin"
+              />
+            </div>
+            <div class="plugin-content">
+              <div class="plugin-header">
+                <h3 class="plugin-title">Smart Mobility Hub</h3>
+                <span class="draft-badge">Draft</span>
+              </div>
+              <div class="plugin-description">
+                <p>
+                  HorizonLink is a next-generation collaboration platform designed to streamline communication and task management for distributed teams. By combining real-time m...
+                </p>
+              </div>
+              <div class="plugin-tags">
+                <span class="tag">Urban Planning</span>
+                <span class="tag">防災</span>
+                <span class="tag">データビジュアライザー</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plugin Card 6 -->
+          <div class="plugin-card">
+            <div class="plugin-image">
+              <img
+                src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Green%20Energy%20Monitor.png"
+                alt="Green Energy Monitor Plugin"
+              />
+            </div>
+            <div class="plugin-content">
+              <div class="plugin-header">
+                <h3 class="plugin-title">Green Energy Monitor</h3>
+                <span class="public-badge">Public</span>
+              </div>
+              <div class="plugin-description">
+                <p>
+                  HorizonLink is a next-generation collaboration platform designed to streamline communication and task management for distributed teams. By combining real-time m...
+                </p>
+              </div>
+              <div class="plugin-tags">
+                <span class="tag">Urban Planning</span>
+                <span class="tag">防災</span>
+                <span class="tag">データビジュアライザー</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <div class="footer-logo">
+            <img
+              src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Logo.svg"
+              alt="Re:Earth Logo"
+            />
+          </div>
+          <p class="footer-description">
+            Re:Earth is a web-based platform for visualizing and analyzing
+            geospatial data. Create interactive maps, stories, and experiences
+            with our powerful tools.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-earth">
+        <img
+          src="https://pub-07161d4651ef432c8a297e634cc3ee97.r2.dev/Earth.png"
+          alt="Earth"
+          class="earth-image"
+        />
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <p>&copy; 2024 Re:Earth. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="workspace-plugins.js"></script>
+</body>
+</html>

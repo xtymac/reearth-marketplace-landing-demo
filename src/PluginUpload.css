@@ -1,0 +1,168 @@
+.plugin-upload-header {
+  margin-bottom: 32px;
+}
+
+.plugin-upload-form {
+  max-width: 800px;
+}
+
+.form-section {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e5e5;
+}
+
+.form-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group input[type="email"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #0089D4;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.help-text {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.upload-type-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.toggle-btn {
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn:hover {
+  border-color: #0089D4;
+  background: #f0f8ff;
+}
+
+.toggle-btn.active {
+  background: #0089D4;
+  color: white;
+  border-color: #0089D4;
+}
+
+.visibility-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.visibility-option {
+  display: flex;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.visibility-option:hover {
+  border-color: #0089D4;
+  background: #f9f9f9;
+}
+
+.visibility-option input[type="radio"] {
+  margin-right: 12px;
+  margin-top: 2px;
+}
+
+.visibility-option .option-content strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.visibility-option .option-content p {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background: #00A2EA;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #0089D4;
+}
+
+.btn-secondary {
+  background: white;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+  border-color: #999;
+  color: #333;
+}
