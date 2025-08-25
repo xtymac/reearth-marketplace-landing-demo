@@ -76,6 +76,7 @@ function DeveloperPortal() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Storage functions for state persistence
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const saveFormDataToStorage = (pluginId) => {
     if (!pluginId) return;
     
@@ -268,7 +269,6 @@ function DeveloperPortal() {
     const scrollContainer = document.querySelector('.plugin-edit-container .scrollable-content');
     if (!scrollContainer) return;
 
-    let isUserScrolling = true;
     let scrollTimeout;
     let isInitialized = false;
 
@@ -276,10 +276,9 @@ function DeveloperPortal() {
     const handleScroll = () => {
       const isProgrammaticScroll = scrollContainer.getAttribute('data-programmatic-scroll') === 'true';
       if (!isProgrammaticScroll) {
-        isUserScrolling = true;
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
-          isUserScrolling = false;
+          // User stopped scrolling
         }, 150);
       }
     };
@@ -447,7 +446,8 @@ function DeveloperPortal() {
 
       return () => clearTimeout(timeoutId);
     }
-  }, [pluginFormData, tempReadme, readmeMode, activeSection, versions, selectedPlugin, isEditMode]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pluginFormData, tempReadme, readmeMode, activeSection, versions, selectedPlugin, isEditMode, saveFormDataToStorage]);
 
   // Update canvas when image editor data changes
   useEffect(() => {
@@ -824,7 +824,7 @@ function DeveloperPortal() {
       return;
     }
     
-    if (uploadMethod === 'github' && !newVersionData.githubUrl.match(/^https:\/\/github\.com\/[\w\-\.]+\/[\w\-\.]+\/?$/)) {
+    if (uploadMethod === 'github' && !newVersionData.githubUrl.match(/^https:\/\/github\.com\/[\w\-.]+\/[\w\-.]+\/?$/)) {
       alert('Please enter a valid GitHub repository URL.');
       return;
     }
@@ -1207,15 +1207,19 @@ function DeveloperPortal() {
             margin: 0
           }}>
             New to Re:Earth? Learn more about building plugins in our{' '}
-            <a 
-              href="#" 
+            <button 
+              onClick={() => window.open('https://docs.reearth.io/developer/plugins', '_blank')} 
               style={{ 
                 color: '#00A2EA', 
-                textDecoration: 'none' 
+                textDecoration: 'none',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer' 
               }}
             >
               documentation
-            </a>
+            </button>
             .
           </p>
         </div>
@@ -2044,7 +2048,7 @@ function DeveloperPortal() {
                             >
                               <img
                                 src={image}
-                                alt={`Plugin image ${index + 1}`}
+                                alt={`Plugin gallery item ${index + 1}`}
                                 style={{
                                   width: '100%',
                                   height: '100%',
@@ -2863,7 +2867,7 @@ function DeveloperPortal() {
                                     fontFamily: 'Outfit',
                                     margin: '8px 0 0 0'
                                   }}>
-                                    Version numbers are automatically loaded from the plugin's YML file — see <a href="#" style={{ color: '#0089D4', textDecoration: 'none' }}>documentation</a> for details.
+                                    Version numbers are automatically loaded from the plugin's YML file — see <button onClick={() => window.open('https://docs.reearth.io/developer/plugins', '_blank')} style={{ color: '#0089D4', textDecoration: 'none', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>documentation</button> for details.
                                   </p>
                                 </div>
 

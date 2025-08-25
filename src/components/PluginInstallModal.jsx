@@ -78,7 +78,8 @@ const PluginInstallModal = ({ isOpen, onClose, plugin, onInstall }) => {
         ...project,
         hasPlugin: PluginService.isPluginInstalled(plugin.id, selectedWorkspace, project.id)
       })) : [];
-  }, [selectedWorkspace, plugin, refreshProjects]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedWorkspace, plugin, refreshProjects, baseProjectsByWorkspace]);
   
   const selectedProjectData = currentProjects.find(p => p.id === selectedProject);
 

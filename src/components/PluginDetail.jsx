@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard, Building2, ArrowLeft, Edit } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard, Building2 } from 'lucide-react';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
 import { PluginService } from '../services/pluginService';
