@@ -448,7 +448,6 @@ function PluginSubmissionSuccess() {
                 transition: 'all 0.2s'
               }}
             >
-              <ExternalLink size={16} />
               View Marketplace
             </Link>
           </div>
