@@ -107,7 +107,7 @@ function PluginSubmissionSuccess() {
           maxWidth: '600px',
           margin: '0 auto',
           textAlign: 'center',
-          padding: '48px 24px'
+          padding: '24px 24px'
         }}>
           {/* Success Icon */}
           <div style={{
@@ -396,10 +396,10 @@ function PluginSubmissionSuccess() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '12px 24px',
-                backgroundColor: '#0EA5E9',
+                backgroundColor: '#116993',
                 color: 'white',
                 textDecoration: 'none',
-                borderRadius: '8px',
+                borderRadius: '6px',
                 fontSize: '14px',
                 fontWeight: 500,
                 fontFamily: 'Outfit',
