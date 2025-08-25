@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ExternalLink, ChevronRight, Plus } from 'lucide-react';
+import { ChevronRight, Plus } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 import { pluginData } from '../data/pluginData';
 
@@ -35,14 +35,14 @@ const Dashboard = () => {
   const tabs = ['CMS Project', 'Visualizer Project'];
 
   // Transform plugin data for dashboard display
-  const pluginsList = pluginData.map(plugin => ({
-    id: plugin.id,
-    workspace: plugin.company,
-    title: plugin.title,
-    lastEdit: getRelativeTime(plugin.updatedDate),
-    status: 'Public',
-    platform: 'Visualizer'
-  }));
+  // const pluginsList = pluginData.map(plugin => ({
+  //   id: plugin.id,
+  //   workspace: plugin.company,
+  //   title: plugin.title,
+  //   lastEdit: getRelativeTime(plugin.updatedDate),
+  //   status: 'Public',
+  //   platform: 'Visualizer'
+  // }));
 
   // Helper function to convert date to relative time
   function getRelativeTime(dateStr) {
@@ -58,9 +58,9 @@ const Dashboard = () => {
   }
 
 
-  const handlePluginClick = (pluginId) => {
-    window.open(`/plugin/${pluginId}`, '_blank');
-  };
+  // const handlePluginClick = (pluginId) => {
+  //   window.open(`/plugin/${pluginId}`, '_blank');
+  // };
 
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#FCFAF4' }}>

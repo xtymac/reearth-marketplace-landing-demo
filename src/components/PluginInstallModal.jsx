@@ -8,7 +8,7 @@ const PluginInstallModal = ({ isOpen, onClose, plugin, onInstall }) => {
   const [workspaceDropdownOpen, setWorkspaceDropdownOpen] = useState(false);
   const [projectDropdownOpen, setProjectDropdownOpen] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
-  const [refreshProjects, setRefreshProjects] = useState(0);
+  // const [refreshProjects, setRefreshProjects] = useState(0);
 
   // Mock workspace data based on the existing workspace structure
   const workspaces = [

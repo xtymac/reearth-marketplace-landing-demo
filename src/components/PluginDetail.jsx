@@ -743,7 +743,7 @@ const getChangeLogEntries = (pluginId) => {
 const PluginDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const plugin = pluginData.find(p => p.id === parseInt(id));
   const [selectedImage, setSelectedImage] = useState(0);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -753,7 +753,7 @@ const PluginDetail = () => {
   const userDropdownRef = useRef(null);
   
   // Always show preview mode on plugin detail pages
-  const isPreviewMode = true;
+  // const isPreviewMode = true;
   
   // Like functionality state
   const [likeState, setLikeState] = useState(() => {

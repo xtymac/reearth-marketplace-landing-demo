@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { CheckCircle, ExternalLink, ArrowLeft } from 'lucide-react';
+import { CheckCircle, ArrowLeft } from 'lucide-react';
 import { authService } from '../services/authService';
 import '../DeveloperPortal.css';
 
@@ -71,7 +71,7 @@ function PluginSubmissionSuccess() {
         <div className="sidebar-nav">
           <div className="nav-section">
             <div className="nav-title">Get Started</div>
-            <a href="#" className="nav-item">Documentation</a>
+            <a href="/documentation" className="nav-item">Documentation</a>
             <Link to="/developer-portal/new" className="nav-item">Submit plugin</Link>
             <Link to="/edit" className="nav-item">Manage plugin</Link>
           </div>

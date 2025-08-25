@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { Search, ExternalLink, Plus, X, FileText, GitBranch, AlertTriangle, Upload } from 'lucide-react';
+import { Search, ExternalLink, Plus, X, FileText, GitBranch, AlertTriangle } from 'lucide-react';
 import { authService } from '../services/authService';
-import { PluginService } from '../services/pluginService';
+// import { PluginService } from '../services/pluginService';
 import { pluginData } from '../data/pluginData';
 import DeveloperPortalSidebar from './DeveloperPortalSidebar';
 import '../DeveloperPortal.css';
@@ -23,7 +23,7 @@ function DeveloperPortal() {
   const [activeSection, setActiveSection] = useState('General');
   const [markedLoaded, setMarkedLoaded] = useState(false);
   const fileInputRef = useRef(null);
-  const [dragActive, setDragActive] = useState(false);
+  // const [dragActive, setDragActive] = useState(false);
   
   // New version state
   const [showNewVersionEditor, setShowNewVersionEditor] = useState(false);
