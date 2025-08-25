@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { X, Check, ChevronDown } from 'lucide-react';
 import { PluginService } from '../services/pluginService';
 
@@ -8,7 +8,7 @@ const PluginInstallModal = ({ isOpen, onClose, plugin, onInstall }) => {
   const [workspaceDropdownOpen, setWorkspaceDropdownOpen] = useState(false);
   const [projectDropdownOpen, setProjectDropdownOpen] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
-  // const [refreshProjects, setRefreshProjects] = useState(0);
+  const [refreshProjects, setRefreshProjects] = useState(0);
 
   // Mock workspace data based on the existing workspace structure
   const workspaces = [
@@ -72,11 +72,13 @@ const PluginInstallModal = ({ isOpen, onClose, plugin, onInstall }) => {
   };
 
   // Get projects with real installation status (refreshProjects forces re-evaluation)
-  const currentProjects = selectedWorkspace && plugin ? 
-    (baseProjectsByWorkspace[selectedWorkspace] || []).map(project => ({
-      ...project,
-      hasPlugin: PluginService.isPluginInstalled(plugin.id, selectedWorkspace, project.id)
-    })) : [];
+  const currentProjects = useMemo(() => {
+    return selectedWorkspace && plugin ? 
+      (baseProjectsByWorkspace[selectedWorkspace] || []).map(project => ({
+        ...project,
+        hasPlugin: PluginService.isPluginInstalled(plugin.id, selectedWorkspace, project.id)
+      })) : [];
+  }, [selectedWorkspace, plugin, refreshProjects]);
   
   const selectedProjectData = currentProjects.find(p => p.id === selectedProject);
 
