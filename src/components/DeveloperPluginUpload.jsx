@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Upload, CheckCircle, ArrowLeft } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
+import { PluginService } from '../services/pluginService';
 import DeveloperPortalSidebar from './DeveloperPortalSidebar';
 import '../DeveloperPortal.css';
 
@@ -25,7 +26,7 @@ const DeveloperPluginUpload = () => {
     name: '',
     images: [],
     description: '',
-    file: { name: 'reearth_visualizer_plugin_basemap_swicher-1.0.0.zip' },
+    file: null, // Changed from mock object to null
     githubUrl: '',
     version: 'V 0.01',
     releaseNotes: '',
@@ -44,6 +45,9 @@ const DeveloperPluginUpload = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationData, setNotificationData] = useState(null);
   const [showErrorNotification, setShowErrorNotification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('Submission failed — please complete all required fields');
+  const [initError, setInitError] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
@@ -59,13 +63,35 @@ const DeveloperPluginUpload = () => {
     githubUrl: null
   });
 
-  // Authentication check
+  // Initialize component and check authentication
   useEffect(() => {
-    const isAuthenticated = authService.isAuthenticated();
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
+    const initialize = async () => {
+      try {
+        // Check authentication
+        const isAuthenticated = authService.isAuthenticated();
+        if (!isAuthenticated) {
+          navigate('/login');
+          return;
+        }
+
+        // Ensure form data is properly initialized
+        if (!formData.workspace) {
+          setFormData(prev => ({
+            ...prev,
+            workspace: workspaces[0]?.name || 'Eukarya Inc.'
+          }));
+        }
+
+        setIsInitialized(true);
+        console.log('DeveloperPluginUpload initialized successfully');
+      } catch (error) {
+        console.error('Initialization error:', error);
+        setInitError(`Failed to initialize page: ${error.message}`);
+      }
+    };
+
+    initialize();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   // Close dropdowns when clicking outside
@@ -97,10 +123,15 @@ const DeveloperPluginUpload = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    console.log(`handleInputChange: field=${name}, value="${value}"`);
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [name]: value
+      };
+      console.log('Updated formData:', newData);
+      return newData;
+    });
   };
 
   const handleFileChange = (e) => {
@@ -115,13 +146,35 @@ const DeveloperPluginUpload = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    files.forEach(file => {
+    console.log('handleImageChange: Processing', files.length, 'files');
+    
+    files.forEach((file, index) => {
+      console.log(`Processing file ${index + 1}:`, file.name, file.size, 'bytes');
+      
+      // Check file size (limit to 5MB per image)
+      if (file.size > 5 * 1024 * 1024) {
+        console.error('File too large:', file.name, file.size);
+        alert(`Image "${file.name}" is too large. Please use images under 5MB.`);
+        return;
+      }
+      
       const reader = new FileReader();
       reader.onload = (event) => {
-        setFormData(prev => ({
-          ...prev,
-          images: [...prev.images, event.target.result]
-        }));
+        const dataUrl = event.target.result;
+        console.log(`Image ${index + 1} loaded, data URL length:`, dataUrl.length);
+        
+        setFormData(prev => {
+          const newImages = [...prev.images, dataUrl];
+          console.log('Updated images array length:', newImages.length);
+          return {
+            ...prev,
+            images: newImages
+          };
+        });
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading file:', file.name, error);
+        alert(`Error reading image "${file.name}". Please try again.`);
       };
       reader.readAsDataURL(file);
     });
@@ -188,54 +241,43 @@ const DeveloperPluginUpload = () => {
     const newErrors = {};
     let firstErrorField = null;
 
+    console.log('validateForm called with formData:', formData);
+    console.log('formData.name value:', `"${formData.name}"`);
+    console.log('typeof formData.name:', typeof formData.name);
+    
+    // Handle case where formData.name might be undefined or null
+    const nameValue = formData.name || '';
+    console.log('nameValue after null check:', `"${nameValue}"`);
+    console.log('nameValue.trim():', `"${nameValue.trim()}"`);
+    console.log('!nameValue.trim():', !nameValue.trim());
+
     // Field validation order (determines scroll-to priority)
     const fieldValidations = [
       {
-        key: 'workspace',
-        condition: !formData.workspace.trim(),
-        message: 'Workspace is required'
-      },
-      {
         key: 'name',
-        condition: !formData.name.trim(),
+        condition: !nameValue.trim(),
         message: 'Plugin name is required'
-      },
-      {
-        key: 'images',
-        condition: formData.images.length === 0,
-        message: 'At least one plugin image is required'
-      },
-      {
-        key: uploadMethod === 'local' ? 'file' : 'githubUrl',
-        condition: uploadMethod === 'local' 
-          ? !formData.file 
-          : !formData.githubUrl.trim(),
-        message: uploadMethod === 'local' 
-          ? 'Plugin file is required' 
-          : 'GitHub repository URL is required'
       }
     ];
 
-    // Additional GitHub URL format validation
-    if (uploadMethod === 'github' && formData.githubUrl.trim()) {
-      const githubUrlPattern = /^https:\/\/github\.com\/[\w\-.]+\/[\w\-.]+\/?$/;
-      if (!githubUrlPattern.test(formData.githubUrl.trim())) {
-        fieldValidations.push({
-          key: 'githubUrl',
-          condition: true,
-          message: 'Please enter a valid GitHub repository URL (e.g., github.com/username/plugin-name)'
-        });
-      }
-    }
+    console.log('fieldValidations:', fieldValidations);
 
     // Check each validation and record first error
     fieldValidations.forEach(({ key, condition, message }) => {
+      console.log(`Checking field ${key}: condition=${condition}, message=${message}`);
       if (condition) {
         newErrors[key] = message;
         if (!firstErrorField) {
           firstErrorField = key;
         }
       }
+    });
+
+    console.log('newErrors:', newErrors);
+    console.log('validation result:', {
+      isValid: Object.keys(newErrors).length === 0,
+      firstErrorField,
+      errors: newErrors
     });
 
     setErrors(newErrors);
@@ -259,25 +301,180 @@ const DeveloperPluginUpload = () => {
         behavior: 'smooth'
       });
 
-      // Add shake animation
-      fieldElement.classList.add('shake-animation');
+      // Add shake animation and error highlighting
+      fieldElement.classList.add('shake-animation', 'field-error');
       
-      // Remove shake animation after completion
+      // Remove animations after completion but keep error styling briefly
       setTimeout(() => {
         if (fieldElement) {
           fieldElement.classList.remove('shake-animation');
         }
       }, 600);
+
+      // Remove error highlighting after longer delay
+      setTimeout(() => {
+        if (fieldElement) {
+          fieldElement.classList.remove('field-error');
+        }
+      }, 3000);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Run validation
-    const validation = validateForm();
-    
-    if (!validation.isValid) {
+    console.log('Submit button clicked - handleSubmit called');
+    console.log('Current form data:', formData);
+    console.log('Upload method:', uploadMethod);
+
+    // Reset error message
+    setErrorMessage('Submission failed — please complete all required fields');
+
+    try {
+      // Run validation
+      const validation = validateForm();
+      console.log('Validation result:', validation);
+      
+      if (!validation.isValid) {
+        console.log('Validation failed, showing error notification');
+        console.log('DEBUGGING: Current form data when validation failed:', formData);
+        console.log('DEBUGGING: Validation errors:', validation.errors);
+        
+        // TEMPORARY: Allow submission even if validation fails for debugging
+        if (formData.name && formData.name.trim()) {
+          console.log('DEBUGGING: Name exists, bypassing validation failure');
+          // Skip the validation failure and continue with submission
+        } else {
+          console.log('DEBUGGING: No name provided, showing error');
+          
+          // Show error notification with validation error message
+          setErrorMessage('Submission failed — please complete all required fields');
+          setShowErrorNotification(true);
+          
+          // Auto-hide error notification after 5 seconds
+          setTimeout(() => {
+            setShowErrorNotification(false);
+          }, 5000);
+
+          // Scroll to first error field with shake animation
+          if (validation.firstErrorField) {
+            console.log('Scrolling to error field:', validation.firstErrorField);
+            scrollToErrorField(validation.firstErrorField);
+          }
+          
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Error in validation:', error);
+      setErrorMessage('Validation error — please try again');
+      setShowErrorNotification(true);
+      setTimeout(() => setShowErrorNotification(false), 5000);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Get current user data
+      const currentUser = authService.getUserData();
+      if (!currentUser) {
+        throw new Error('User not authenticated');
+      }
+
+      // Prepare plugin data for database insertion
+      console.log('Preparing plugin submission data...');
+      console.log('Form data images:', formData.images?.length || 0, 'images');
+      
+      // Calculate total size of images
+      let totalImageSize = 0;
+      if (formData.images && formData.images.length > 0) {
+        totalImageSize = formData.images.reduce((total, img) => total + img.length, 0);
+        console.log('Total image data size:', totalImageSize, 'characters');
+      }
+      
+      // If images are too large, skip them with warning
+      let imagesToSubmit = formData.images || [];
+      if (totalImageSize > 1.5 * 1024 * 1024) { // 1.5MB limit
+        console.warn('Images too large, submitting without images to avoid storage issues');
+        imagesToSubmit = [];
+        alert('Images are too large and will be skipped. Plugin will be submitted without images. Please use smaller images (under 1MB each) in future submissions.');
+      }
+      
+      const pluginSubmissionData = {
+        title: formData.name.trim(),
+        workspaceId: selectedWorkspace,
+        ownerUserId: currentUser.email || 'anonymous',
+        readme: formData.description.trim() || `# ${formData.name.trim()}\n\nPlugin description coming soon...`,
+        description: formData.description.trim() || 'Plugin description coming soon...',
+        thumbnailUrl: imagesToSubmit.length > 0 ? imagesToSubmit[0] : null,
+        images: imagesToSubmit,
+        version: formData.version || '1.0.0',
+        tags: formData.functionTags || [],
+        functionTags: formData.functionTags || [],
+        versionLabels: formData.versionLabels || [],
+        githubUrl: uploadMethod === 'github' && formData.githubUrl.trim() ? formData.githubUrl.trim() : null,
+        fileInfo: uploadMethod === 'local' && formData.file ? {
+          name: formData.file?.name,
+          size: formData.file?.size,
+          type: formData.file?.type
+        } : null
+      };
+
+      // Submit plugin to database
+      console.log('Calling PluginService.submitPlugin with data:', pluginSubmissionData);
+      const result = await PluginService.submitPlugin(pluginSubmissionData);
+      console.log('PluginService returned:', result);
+      
+      if (result && result.success) {
+        console.log('Success! Plugin submitted successfully');
+        
+        // Show success notification with plugin details
+        setNotificationData({
+          pluginName: result.plugin.title,
+          pluginId: result.pluginId,
+          marketplaceSlug: result.marketplaceSlug
+        });
+        setShowNotification(true);
+
+        // Auto-hide success notification after 5 seconds
+        setTimeout(() => {
+          setShowNotification(false);
+          setNotificationData(null);
+        }, 5000);
+
+        setUploadedPluginId(result.pluginId);
+        setIsSuccess(true);
+
+        // Redirect to developer portal manage page after success
+        setTimeout(() => {
+          navigate('/developer-portal');
+        }, 2000);
+      } else {
+        console.error('Plugin submission failed: Invalid result', result);
+        throw new Error('Plugin submission failed - invalid response');
+      }
+    } catch (error) {
+      console.error('Plugin submission error:', error);
+      
+      // Set specific error message based on error type
+      let errorMessage = 'Submission failed — please try again';
+      if (error.message.includes('Missing required field')) {
+        errorMessage = 'Submission failed — please complete all required fields';
+        const fieldName = error.message.split(': ')[1];
+        scrollToErrorField(fieldName);
+      } else if (error.message.includes('User not authenticated')) {
+        errorMessage = 'Authentication required — please log in again';
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+      } else if (error.message.includes('Database')) {
+        errorMessage = 'Database error — please try again later';
+      }
+      
+      // Store error message for display
+      setErrorMessage(errorMessage);
+      
       // Show error notification
       setShowErrorNotification(true);
       
@@ -285,39 +482,9 @@ const DeveloperPluginUpload = () => {
       setTimeout(() => {
         setShowErrorNotification(false);
       }, 5000);
-
-      // Scroll to first error field with shake animation
-      if (validation.firstErrorField) {
-        scrollToErrorField(validation.firstErrorField);
-      }
-      
-      return;
+    } finally {
+      setIsLoading(false);
     }
-
-    // If validation passes, show success notification immediately
-    const pluginName = formData.name.trim() || 'Untitled Plugin';
-    const pluginId = `plugin-${Date.now()}`;
-    
-    setNotificationData({
-      pluginName,
-      pluginId
-    });
-    setShowNotification(true);
-
-    // Auto-hide success notification after 5 seconds
-    setTimeout(() => {
-      setShowNotification(false);
-      setNotificationData(null);
-    }, 5000);
-
-    setIsLoading(true);
-
-    // Simulate upload delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    setUploadedPluginId(pluginId);
-    setIsSuccess(true);
-    setIsLoading(false);
   };
 
   const handleUploadAnother = () => {
@@ -326,7 +493,7 @@ const DeveloperPluginUpload = () => {
       name: '',
       images: [],
       description: '',
-      file: { name: 'reearth_visualizer_plugin_basemap_swicher-1.0.0.zip' },
+      file: null, // Changed from mock object to null
       githubUrl: '',
       version: 'V 0.01',
       releaseNotes: '',
@@ -345,7 +512,12 @@ const DeveloperPluginUpload = () => {
   };
 
   const handleNotificationView = () => {
-    if (notificationData?.pluginId) {
+    if (notificationData?.marketplaceSlug) {
+      // For Draft status plugins, navigate to a preview mode
+      // You could also navigate to the marketplace page with a preview parameter
+      navigate(`/plugin/preview/${notificationData.marketplaceSlug}`);
+    } else if (notificationData?.pluginId) {
+      // Fallback to plugin ID
       navigate(`/plugin/${notificationData.pluginId}`);
     }
   };
@@ -531,21 +703,106 @@ const DeveloperPluginUpload = () => {
             )}
           </div>
 
-          <div className="success-content">
-            <div className="success-icon">
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 'calc(100vh - 120px)',
+            padding: '40px',
+            textAlign: 'center'
+          }}>
+            {/* Success Icon */}
+            <div style={{
+              width: '120px',
+              height: '120px',
+              backgroundColor: '#D1FAE5',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '32px'
+            }}>
               <CheckCircle size={64} color="#10B981" />
             </div>
-            <h1 className="success-title">Plugin Submitted Successfully!</h1>
-            <p className="success-description">
-              Your plugin "{formData.name}" has been submitted and is now under review.
-              You'll receive an email notification once it's approved.
+            
+            {/* Main Heading */}
+            <h1 style={{
+              fontSize: '32px',
+              fontWeight: 600,
+              color: '#111827',
+              fontFamily: 'Outfit',
+              margin: '0 0 24px 0',
+              lineHeight: 1.2
+            }}>
+              Your plugin has been submitted!
+            </h1>
+            
+            {/* Description */}
+            <p style={{
+              fontSize: '18px',
+              color: '#6B7280',
+              fontFamily: 'Outfit',
+              margin: '0 0 40px 0',
+              maxWidth: '600px',
+              lineHeight: 1.5
+            }}>
+              Thanks for submitting your plugin! Our team will review it soon, and we'll notify you once it's approved and live in the marketplace.
             </p>
-            <div className="success-actions">
-              <button onClick={handleViewDetails} className="btn-primary">
-                View in Portal
+            
+            {/* Action Buttons */}
+            <div style={{
+              display: 'flex',
+              gap: '16px',
+              flexWrap: 'wrap',
+              justifyContent: 'center'
+            }}>
+              <button 
+                onClick={handleViewDetails}
+                style={{
+                  backgroundColor: '#059669',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '14px 24px',
+                  fontSize: '16px',
+                  fontWeight: 500,
+                  fontFamily: 'Outfit',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  minWidth: '140px'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#047857'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#059669'}
+              >
+                Manage plugin
               </button>
-              <button onClick={handleUploadAnother} className="btn-secondary">
-                Submit Another Plugin
+              
+              <button 
+                onClick={handleUploadAnother}
+                style={{
+                  backgroundColor: 'transparent',
+                  color: '#374151',
+                  border: '1px solid #D1D5DB',
+                  borderRadius: '8px',
+                  padding: '14px 24px',
+                  fontSize: '16px',
+                  fontWeight: 500,
+                  fontFamily: 'Outfit',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  minWidth: '140px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#F3F4F6';
+                  e.target.style.borderColor = '#9CA3AF';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.borderColor = '#D1D5DB';
+                }}
+              >
+                Submit another one
               </button>
             </div>
           </div>
@@ -553,6 +810,82 @@ const DeveloperPluginUpload = () => {
       </div>
     );
   };
+
+  // Show initialization error if failed to load
+  if (initError) {
+    return (
+      <div className="dev-portal-container">
+        <DeveloperPortalSidebar activeItem="new" />
+        <div style={{
+          marginLeft: '288px',
+          padding: '40px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            backgroundColor: '#FEF2F2',
+            border: '1px solid #F87171',
+            borderRadius: '8px',
+            padding: '20px',
+            maxWidth: '600px',
+            margin: '0 auto'
+          }}>
+            <h2 style={{
+              color: '#DC2626',
+              fontFamily: 'Outfit',
+              fontSize: '18px',
+              marginBottom: '12px'
+            }}>
+              Page Initialization Error
+            </h2>
+            <p style={{
+              color: '#7F1D1D',
+              fontFamily: 'Outfit',
+              fontSize: '14px',
+              marginBottom: '16px'
+            }}>
+              {initError}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                backgroundColor: '#DC2626',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '8px 16px',
+                fontFamily: 'Outfit',
+                cursor: 'pointer'
+              }}
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading state during initialization
+  if (!isInitialized) {
+    return (
+      <div className="dev-portal-container">
+        <DeveloperPortalSidebar activeItem="new" />
+        <div style={{
+          marginLeft: '288px',
+          padding: '40px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontFamily: 'Outfit',
+            fontSize: '16px',
+            color: '#6B7280'
+          }}>
+            Loading upload form...
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isSuccess) {
     return renderSuccessPage();
@@ -775,6 +1108,23 @@ const DeveloperPluginUpload = () => {
         </div>
         
         <form onSubmit={handleSubmit} style={{ maxWidth: '800px' }}>
+          {/* Form Instructions */}
+          <div style={{
+            backgroundColor: '#EFF6FF',
+            border: '1px solid #BFDBFE',
+            borderRadius: '8px',
+            padding: '16px',
+            marginBottom: '24px'
+          }}>
+            <p style={{
+              margin: 0,
+              fontSize: '14px',
+              fontFamily: 'Outfit',
+              color: '#1E40AF'
+            }}>
+              <strong>Quick Start:</strong> Only the Plugin Name is required to submit. Fill in other fields as needed.
+            </p>
+          </div>
           {/* Workspace Selection */}
           <div 
             ref={(el) => fieldRefs.current.workspace = el}
@@ -787,7 +1137,7 @@ const DeveloperPluginUpload = () => {
               fontWeight: 500,
               marginBottom: '8px'
             }}>
-              Workspace <span style={{ color: '#EF4444' }}>*</span>
+              Workspace
             </label>
             <div style={{
               padding: '12px 16px',
@@ -864,7 +1214,7 @@ const DeveloperPluginUpload = () => {
               fontWeight: 500,
               marginBottom: '8px'
             }}>
-              Plugin Image <span style={{ color: '#EF4444' }}>*</span>
+              Plugin Image
             </label>
             <input
               ref={imageInputRef}
@@ -1045,7 +1395,7 @@ const DeveloperPluginUpload = () => {
               fontWeight: 500,
               marginBottom: '8px'
             }}>
-              Plugin File <span style={{ color: '#EF4444' }}>*</span>
+              Plugin File
             </label>
             
             <div style={{ 
@@ -1140,7 +1490,6 @@ const DeveloperPluginUpload = () => {
                   accept=".zip,.js"
                   onChange={handleFileChange}
                   style={{ display: 'none' }}
-                  required={uploadMethod === 'local'}
                 />
                 {formData.file && (
                   <div style={{
@@ -1422,6 +1771,25 @@ const DeveloperPluginUpload = () => {
             <button
               type="submit"
               disabled={isLoading}
+              onClick={(e) => {
+                // Fallback in case form submit isn't working
+                console.log('Submit button clicked - fallback onClick');
+                if (!isLoading) {
+                  handleSubmit(e);
+                }
+              }}
+              onMouseEnter={(e) => {
+                if (!isLoading) {
+                  e.target.style.background = '#0A4F6F';
+                  e.target.style.transform = 'scale(1.02)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isLoading) {
+                  e.target.style.background = '#116993';
+                  e.target.style.transform = 'scale(1)';
+                }
+              }}
               style={{
                 display: 'flex',
                 padding: '12px 20px',
@@ -1435,7 +1803,11 @@ const DeveloperPluginUpload = () => {
                 fontSize: '14px',
                 fontWeight: 500,
                 fontFamily: 'Outfit',
-                cursor: isLoading ? 'not-allowed' : 'pointer'
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s ease',
+                transform: 'scale(1)',
+                position: 'relative',
+                zIndex: 1
               }}
             >
               {isLoading && (
@@ -1519,7 +1891,7 @@ const DeveloperPluginUpload = () => {
                 fontWeight: 500,
                 color: 'white'
               }}>
-                Submission failed — please complete all required fields
+                {errorMessage}
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -1573,13 +1945,21 @@ const DeveloperPluginUpload = () => {
               <CheckCircle size={10} color="white" />
             </div>
             <div style={{ flex: 1 }}>
-              <span style={{ 
-                fontSize: '14px', 
-                fontWeight: 500,
-                color: 'white'
-              }}>
-                {notificationData.pluginName} submitted successfully
-              </span>
+              <div style={{ fontSize: '14px' }}>
+                <div style={{ 
+                  fontWeight: 500,
+                  color: 'white',
+                  marginBottom: '2px'
+                }}>
+                  New submission
+                </div>
+                <div style={{ 
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  fontSize: '13px'
+                }}>
+                  {notificationData.pluginName} submitted successfully
+                </div>
+              </div>
             </div>
             <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
               <button

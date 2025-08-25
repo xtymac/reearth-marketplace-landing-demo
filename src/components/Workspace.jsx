@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Plus, Search, ChevronDown } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 import { pluginData } from '../data/pluginData';
+import { PluginService } from '../services/pluginService';
 
 const Workspace = () => {
   const [activeTab, setActiveTab] = useState('Plugins');
   const [searchQuery, setSearchQuery] = useState('');
+  const [workspacePlugins, setWorkspacePlugins] = useState([]);
   const navigate = useNavigate();
   const { workspaceId } = useParams();
 
@@ -64,8 +66,38 @@ const Workspace = () => {
 
   const currentWorkspace = workspaceMap[workspaceId] || workspaceMap['fukuyama-consultant'];
   
-  // Get plugins for this specific workspace based on company name
-  const workspacePlugins = pluginData.filter(plugin => plugin.company === currentWorkspace.name);
+  // Load plugins for this workspace
+  useEffect(() => {
+    const loadWorkspacePlugins = () => {
+      try {
+        // Get static plugins for this company
+        const staticPlugins = pluginData.filter(plugin => plugin.company === currentWorkspace.name);
+
+        // Get submitted plugins from localStorage for this workspace
+        const submittedPlugins = PluginService.getSubmittedPlugins().filter(plugin => {
+          const pluginCompany = PluginService.getWorkspaceCompanyName(plugin.workspaceId);
+          return pluginCompany === currentWorkspace.name;
+        });
+
+        // Combine both arrays
+        const allWorkspacePlugins = [...staticPlugins, ...submittedPlugins];
+        console.log('Workspace: Loading plugins for', currentWorkspace.name, {
+          staticCount: staticPlugins.length,
+          submittedCount: submittedPlugins.length,
+          totalCount: allWorkspacePlugins.length
+        });
+        
+        setWorkspacePlugins(allWorkspacePlugins);
+      } catch (error) {
+        console.error('Workspace: Error loading plugins:', error);
+        // Fallback to static plugins only
+        const staticPlugins = pluginData.filter(plugin => plugin.company === currentWorkspace.name);
+        setWorkspacePlugins(staticPlugins);
+      }
+    };
+
+    loadWorkspacePlugins();
+  }, [workspaceId, currentWorkspace.name]);
 
   const tabs = ['Overview', 'CMS Project', 'Visualizer Project', 'Plugins'];
 

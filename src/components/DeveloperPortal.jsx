@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Search, ExternalLink, Plus, X, FileText, GitBranch, AlertTriangle } from 'lucide-react';
 import { authService } from '../services/authService';
-// import { PluginService } from '../services/pluginService';
+import { PluginService } from '../services/pluginService';
 import { pluginData } from '../data/pluginData';
 import DeveloperPortalSidebar from './DeveloperPortalSidebar';
 import '../DeveloperPortal.css';
@@ -170,13 +170,57 @@ function DeveloperPortal() {
       }
     }
 
-    // Use pluginData directly since it's synchronous
-    const workspacePlugins = pluginData.map(plugin => ({
-      ...plugin,
-      visibility: plugin.visibility || 'public',
-      workspace: plugin.workspace || 'workspace-1'
-    }));
-    setPlugins(workspacePlugins);
+    // Load both static plugins and submitted plugins from localStorage
+    const loadAllPlugins = async () => {
+      try {
+        // Get static plugins
+        const staticPlugins = pluginData.map(plugin => ({
+          ...plugin,
+          visibility: plugin.visibility || 'public',
+          workspace: plugin.workspace || 'workspace-1'
+        }));
+
+        // Get submitted plugins from localStorage
+        const submittedPlugins = PluginService.getSubmittedPlugins().map(plugin => ({
+          ...plugin,
+          // Map workspaceId to workspace for consistency
+          workspace: plugin.workspaceId,
+          // Convert status to visibility format
+          visibility: plugin.status === 'Public' ? 'public' : 'private',
+          // Add any missing fields
+          thumbnailUrl: plugin.thumbnailUrl || plugin.images?.[0] || '/api/placeholder/300/200',
+          category: plugin.category || 'Extension',
+          tags: plugin.tags || [],
+          likes: plugin.likes || 0,
+          downloads: plugin.downloads || 0,
+          version: plugin.version || '1.0.0',
+          company: plugin.company || PluginService.getWorkspaceCompanyName(plugin.workspaceId),
+          // Use createdAt/updatedAt from submitted plugin
+          lastUpdate: plugin.updatedAt || plugin.createdAt
+        }));
+
+        // Combine both arrays
+        const allPlugins = [...staticPlugins, ...submittedPlugins];
+        console.log('DeveloperPortal: Loading all plugins:', {
+          staticCount: staticPlugins.length,
+          submittedCount: submittedPlugins.length,
+          totalCount: allPlugins.length
+        });
+        
+        setPlugins(allPlugins);
+      } catch (error) {
+        console.error('DeveloperPortal: Error loading plugins:', error);
+        // Fallback to static plugins only
+        const staticPlugins = pluginData.map(plugin => ({
+          ...plugin,
+          visibility: plugin.visibility || 'public',
+          workspace: plugin.workspace || 'workspace-1'
+        }));
+        setPlugins(staticPlugins);
+      }
+    };
+
+    loadAllPlugins();
   }, [navigate, location.state]);
 
   useEffect(() => {
