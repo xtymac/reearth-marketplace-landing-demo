@@ -43,11 +43,21 @@ const DeveloperPluginUpload = () => {
   const [showAvatarDropdown, setShowAvatarDropdown] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationData, setNotificationData] = useState(null);
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
 
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const functionTagInputRef = useRef(null);
   const avatarDropdownRef = useRef(null);
+  
+  // Field refs for validation and scroll-to functionality
+  const fieldRefs = useRef({
+    workspace: null,
+    name: null,
+    images: null,
+    file: null,
+    githubUrl: null
+  });
 
   // Authentication check
   useEffect(() => {
@@ -176,51 +186,115 @@ const DeveloperPluginUpload = () => {
 
   const validateForm = () => {
     const newErrors = {};
+    let firstErrorField = null;
 
-    if (!formData.workspace.trim()) {
-      newErrors.workspace = 'Workspace is required';
-    }
-
-    if (!formData.name.trim()) {
-      newErrors.name = 'Plugin name is required';
-    }
-
-    if (formData.images.length === 0) {
-      newErrors.images = 'At least one plugin image is required';
-    }
-
-    if (uploadMethod === 'local') {
-      if (!formData.file) {
-        newErrors.file = 'Plugin file is required';
+    // Field validation order (determines scroll-to priority)
+    const fieldValidations = [
+      {
+        key: 'workspace',
+        condition: !formData.workspace.trim(),
+        message: 'Workspace is required'
+      },
+      {
+        key: 'name',
+        condition: !formData.name.trim(),
+        message: 'Plugin name is required'
+      },
+      {
+        key: 'images',
+        condition: formData.images.length === 0,
+        message: 'At least one plugin image is required'
+      },
+      {
+        key: uploadMethod === 'local' ? 'file' : 'githubUrl',
+        condition: uploadMethod === 'local' 
+          ? !formData.file 
+          : !formData.githubUrl.trim(),
+        message: uploadMethod === 'local' 
+          ? 'Plugin file is required' 
+          : 'GitHub repository URL is required'
       }
-    } else {
-      if (!formData.githubUrl.trim()) {
-        newErrors.githubUrl = 'GitHub repository URL is required';
-      } else {
-        const githubUrlPattern = /^https:\/\/github\.com\/[\w\-.]+\/[\w\-.]+\/?$/;
-        if (!githubUrlPattern.test(formData.githubUrl.trim())) {
-          newErrors.githubUrl = 'Please enter a valid GitHub repository URL (e.g., github.com/username/plugin-name)';
+    ];
+
+    // Additional GitHub URL format validation
+    if (uploadMethod === 'github' && formData.githubUrl.trim()) {
+      const githubUrlPattern = /^https:\/\/github\.com\/[\w\-.]+\/[\w\-.]+\/?$/;
+      if (!githubUrlPattern.test(formData.githubUrl.trim())) {
+        fieldValidations.push({
+          key: 'githubUrl',
+          condition: true,
+          message: 'Please enter a valid GitHub repository URL (e.g., github.com/username/plugin-name)'
+        });
+      }
+    }
+
+    // Check each validation and record first error
+    fieldValidations.forEach(({ key, condition, message }) => {
+      if (condition) {
+        newErrors[key] = message;
+        if (!firstErrorField) {
+          firstErrorField = key;
         }
       }
-    }
+    });
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return {
+      isValid: Object.keys(newErrors).length === 0,
+      firstErrorField,
+      errors: newErrors
+    };
   };
 
-  // Form validation helper (unused but kept for potential future use)
-  // const isFormValid = () => {
-  //   const hasFileOrGithub = uploadMethod === 'local' 
-  //     ? formData.file 
-  //     : formData.githubUrl.trim();
-  //   
-  //   return formData.workspace && formData.name.trim() && hasFileOrGithub;
-  // };
+  // Scroll to first error field with shake animation
+  const scrollToErrorField = (fieldKey) => {
+    const fieldElement = fieldRefs.current[fieldKey];
+    if (fieldElement) {
+      // Scroll to field with offset for better visibility
+      const elementTop = fieldElement.offsetTop;
+      const offset = 120; // Account for header and spacing
+      
+      window.scrollTo({
+        top: elementTop - offset,
+        behavior: 'smooth'
+      });
+
+      // Add shake animation
+      fieldElement.classList.add('shake-animation');
+      
+      // Remove shake animation after completion
+      setTimeout(() => {
+        if (fieldElement) {
+          fieldElement.classList.remove('shake-animation');
+        }
+      }, 600);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Show notification immediately when Submit Plugin is clicked
+    // Run validation
+    const validation = validateForm();
+    
+    if (!validation.isValid) {
+      // Show error notification
+      setShowErrorNotification(true);
+      
+      // Auto-hide error notification after 5 seconds
+      setTimeout(() => {
+        setShowErrorNotification(false);
+      }, 5000);
+
+      // Scroll to first error field with shake animation
+      if (validation.firstErrorField) {
+        scrollToErrorField(validation.firstErrorField);
+      }
+      
+      return;
+    }
+
+    // If validation passes, show success notification immediately
     const pluginName = formData.name.trim() || 'Untitled Plugin';
     const pluginId = `plugin-${Date.now()}`;
     
@@ -230,16 +304,11 @@ const DeveloperPluginUpload = () => {
     });
     setShowNotification(true);
 
-    // Auto-hide notification after 5 seconds
+    // Auto-hide success notification after 5 seconds
     setTimeout(() => {
       setShowNotification(false);
       setNotificationData(null);
     }, 5000);
-
-    // Continue with existing validation logic
-    if (!validateForm()) {
-      return;
-    }
 
     setIsLoading(true);
 
@@ -707,7 +776,9 @@ const DeveloperPluginUpload = () => {
         
         <form onSubmit={handleSubmit} style={{ maxWidth: '800px' }}>
           {/* Workspace Selection */}
-          <div style={{ marginBottom: '32px' }}>
+          <div 
+            ref={(el) => fieldRefs.current.workspace = el}
+            style={{ marginBottom: '32px' }}>
             <label style={{
               display: 'block',
               color: '#000000',
@@ -741,7 +812,9 @@ const DeveloperPluginUpload = () => {
           </div>
 
           {/* Plugin Name */}
-          <div style={{ marginBottom: '32px' }}>
+          <div 
+            ref={(el) => fieldRefs.current.name = el}
+            style={{ marginBottom: '32px' }}>
             <label style={{
               display: 'block',
               color: '#000000',
@@ -780,7 +853,9 @@ const DeveloperPluginUpload = () => {
           </div>
 
           {/* Plugin Image */}
-          <div style={{ marginBottom: '32px' }}>
+          <div 
+            ref={(el) => fieldRefs.current.images = el}
+            style={{ marginBottom: '32px' }}>
             <label style={{
               display: 'block',
               color: '#000000',
@@ -956,7 +1031,12 @@ const DeveloperPluginUpload = () => {
           </div>
 
           {/* Plugin File */}
-          <div style={{ marginBottom: '32px' }}>
+          <div 
+            ref={(el) => {
+              fieldRefs.current.file = el;
+              fieldRefs.current.githubUrl = el;
+            }}
+            style={{ marginBottom: '32px' }}>
             <label style={{
               display: 'block',
               color: '#000000',
@@ -1397,82 +1477,160 @@ const DeveloperPluginUpload = () => {
         </form>
       </div>
 
-      {/* Notification */}
-      {showNotification && notificationData && (
+      {/* Error Tooltip Notification */}
+      {showErrorNotification && (
         <div style={{
           position: 'fixed',
-          bottom: '20px',
+          top: '20px',
           right: '20px',
-          background: '#2D3748',
+          background: 'var(--black, #000)',
           color: 'white',
-          borderRadius: '8px',
-          padding: '16px',
+          borderRadius: 'var(--spacing-pc-2, 8px)',
+          opacity: 0.9,
+          padding: '12px 16px',
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
           zIndex: 1000,
-          maxWidth: '300px',
+          maxWidth: '320px',
           fontFamily: 'Outfit'
         }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
-              width: '20px',
-              height: '20px',
-              backgroundColor: '#48BB78',
+              width: '16px',
+              height: '16px',
+              backgroundColor: '#EF4444',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              flexShrink: 0,
-              marginTop: '2px'
+              flexShrink: 0
             }}>
-              <CheckCircle size={12} color="white" />
+              <span style={{ 
+                color: 'white', 
+                fontSize: '10px', 
+                fontWeight: 'bold',
+                lineHeight: 1
+              }}>
+                ✕
+              </span>
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '4px' }}>
-                New submission
-              </div>
-              <div style={{ fontSize: '13px', color: '#E2E8F0', marginBottom: '8px' }}>
-                {notificationData.pluginName} submitted successfully
-              </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button
-                  onClick={handleNotificationView}
-                  style={{
-                    background: 'transparent',
-                    border: '1px solid #4A5568',
-                    color: '#E2E8F0',
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                    fontSize: '12px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  View
-                </button>
-                <button
-                  onClick={handleNotificationClose}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#A0AEC0',
-                    fontSize: '12px',
-                    cursor: 'pointer',
-                    padding: '4px'
-                  }}
-                >
-                  ✕
-                </button>
-              </div>
+              <span style={{ 
+                fontSize: '14px', 
+                fontWeight: 500,
+                color: 'white'
+              }}>
+                Submission failed — please complete all required fields
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <button
+                onClick={() => setShowErrorNotification(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'white',
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  padding: 0,
+                  lineHeight: 1,
+                  fontFamily: 'Outfit'
+                }}
+              >
+                ×
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Loading animation styles */}
+      {/* Success Tooltip Notification */}
+      {showNotification && notificationData && (
+        <div style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          background: 'var(--black, #000)',
+          color: 'white',
+          borderRadius: 'var(--spacing-pc-2, 8px)',
+          opacity: 0.9,
+          padding: '12px 16px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          zIndex: 1000,
+          maxWidth: '320px',
+          fontFamily: 'Outfit'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{
+              width: '16px',
+              height: '16px',
+              backgroundColor: '#48BB78',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <CheckCircle size={10} color="white" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <span style={{ 
+                fontSize: '14px', 
+                fontWeight: 500,
+                color: 'white'
+              }}>
+                {notificationData.pluginName} submitted successfully
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <button
+                onClick={handleNotificationView}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'white',
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  padding: 0,
+                  fontFamily: 'Outfit'
+                }}
+              >
+                View
+              </button>
+              <button
+                onClick={handleNotificationClose}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'white',
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  padding: 0,
+                  lineHeight: 1,
+                  fontFamily: 'Outfit'
+                }}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Loading animation and shake styles */}
       <style>
         {`
           @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+          }
+          @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+          }
+          .shake-animation {
+            animation: shake 0.6s ease-in-out;
           }
         `}
       </style>
