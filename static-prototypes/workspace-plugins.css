@@ -1,0 +1,439 @@
+/* Workspace Plugin Management Styles */
+
+/* Main Layout */
+.workspace-main {
+  min-height: 100vh;
+  background-color: #fefaf0;
+  padding-top: 80px;
+}
+
+/* Workspace Header */
+.workspace-header {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 2rem 0;
+}
+
+.workspace-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.workspace-logo {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+}
+
+.workspace-logo img {
+  width: 32px;
+  height: 32px;
+}
+
+.workspace-details h1 {
+  color: #000;
+  font-family: 'Noto Sans JP';
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.workspace-details p {
+  color: #6b7280;
+  font-family: 'Noto Sans JP';
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Workspace Navigation */
+.workspace-nav {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0;
+}
+
+.workspace-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.workspace-tab {
+  display: block;
+  padding: 1rem 2rem;
+  color: #6b7280;
+  text-decoration: none;
+  font-family: 'Noto Sans JP';
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.workspace-tab:hover {
+  color: #374151;
+  background: #f9fafb;
+}
+
+.workspace-tab.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+  background: #eff6ff;
+}
+
+/* Plugin Management Content */
+.workspace-content {
+  padding: 2rem 0 4rem;
+}
+
+/* Controls Section */
+.plugins-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.search-container {
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-right: 2.5rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  color: #374151;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.search-button {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: color 0.3s ease;
+}
+
+.search-button:hover {
+  color: #374151;
+}
+
+.sort-container {
+  flex-shrink: 0;
+}
+
+.sort-select {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  color: #374151;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"></polyline></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 2.5rem;
+  min-width: 200px;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Plugin Cards Grid */
+.plugins-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+  .plugins-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* Plugin Card - Vertical Layout */
+.plugin-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.plugin-card:hover {
+  box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Plugin Image */
+.plugin-image {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.plugin-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Plugin Content */
+.plugin-content {
+  flex: 1;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Plugin Header */
+.plugin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.plugin-title {
+  color: #2563eb;
+  font-family: 'Noto Sans JP';
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+/* Public Badge */
+.public-badge {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  background: #dbeafe;
+  color: #2563eb;
+  border: 1px solid #93c5fd;
+  border-radius: 12px;
+  font-family: 'Noto Sans JP';
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  flex-shrink: 0;
+}
+
+/* Draft Status Badge */
+.draft-badge {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  background: #fef3c7;
+  color: #d97706;
+  border: 1px solid #fbbf24;
+  border-radius: 12px;
+  font-family: 'Noto Sans JP';
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  flex-shrink: 0;
+}
+
+/* Plugin Description */
+.plugin-description {
+  flex: 1;
+}
+
+.plugin-description p {
+  color: #6b7280;
+  font-family: 'Noto Sans JP';
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Plugin Tags */
+.plugin-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-family: 'Noto Sans JP';
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .plugins-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .search-container {
+    max-width: none;
+  }
+  
+  .sort-select {
+    min-width: auto;
+  }
+  
+  .plugins-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .workspace-main {
+    padding-top: 0;
+  }
+  
+  .workspace-header {
+    padding: 1.5rem 0;
+  }
+  
+  .workspace-info {
+    gap: 1rem;
+  }
+  
+  .workspace-logo {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .workspace-logo img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .workspace-details h1 {
+    font-size: 24px;
+  }
+  
+  .workspace-details p {
+    font-size: 14px;
+  }
+  
+  .workspace-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .workspace-tab {
+    white-space: nowrap;
+    padding: 1rem 1.5rem;
+    font-size: 14px;
+  }
+  
+  .workspace-content {
+    padding: 1.5rem 0 3rem;
+  }
+  
+  .plugins-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .plugin-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .workspace-header {
+    padding: 1rem 0;
+  }
+  
+  .workspace-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .workspace-logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .workspace-logo img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .workspace-details h1 {
+    font-size: 20px;
+  }
+  
+  .workspace-tab {
+    padding: 0.75rem 1rem;
+    font-size: 13px;
+  }
+  
+  .plugin-content {
+    padding: 1rem;
+  }
+  
+  .plugin-image {
+    height: 150px;
+  }
+}
