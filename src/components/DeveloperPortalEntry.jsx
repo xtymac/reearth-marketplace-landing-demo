@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, FileText, GitBranch, ExternalLink } from 'lucide-react';
+import { X } from 'lucide-react';
 import { authService } from '../services/authService';
 
 const DeveloperPortalEntry = () => {
@@ -10,7 +10,7 @@ const DeveloperPortalEntry = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Workspace data - simplified to one Personal Workspace
-  const workspaces = [
+  const workspaces = React.useMemo(() => [
     // Personal workspace
     {
       id: 'personal-workspace',
@@ -76,7 +76,7 @@ const DeveloperPortalEntry = () => {
       members: 7,
       workspaceId: 'chrono-maps'
     }
-  ];
+  ], []);
 
   useEffect(() => {
     const authenticated = authService.isAuthenticated();
@@ -352,7 +352,7 @@ const DeveloperPortalEntry = () => {
         }}>
           New to Re:Earth? Learn more about building plugins in our{' '}
           <a 
-            href="#" 
+            href="/documentation" 
             style={{ 
               color: '#00A2EA', 
               textDecoration: 'none' 

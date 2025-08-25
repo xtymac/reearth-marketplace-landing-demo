@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Plus } from 'lucide-react';
 import DashboardNav from './DashboardNav';
-import { pluginData } from '../data/pluginData';
+// import { pluginData } from '../data/pluginData';
 
 const Dashboard = () => {
   const [selectedWorkspace, setSelectedWorkspace] = useState('Default personal workspace');
@@ -45,17 +45,17 @@ const Dashboard = () => {
   // }));
 
   // Helper function to convert date to relative time
-  function getRelativeTime(dateStr) {
-    const date = new Date(dateStr.replace(/\//g, '-'));
-    const now = new Date();
-    const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-    
-    if (diffInDays === 0) return 'Today';
-    if (diffInDays === 1) return '1 day ago';
-    if (diffInDays < 30) return `${diffInDays} days ago`;
-    if (diffInDays < 60) return '1 month ago';
-    return `${Math.floor(diffInDays / 30)} months ago`;
-  }
+  // function getRelativeTime(dateStr) {
+  //   const date = new Date(dateStr.replace(/\//g, '-'));
+  //   const now = new Date();
+  //   const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+  //   
+  //   if (diffInDays === 0) return 'Today';
+  //   if (diffInDays === 1) return '1 day ago';
+  //   if (diffInDays < 30) return `${diffInDays} days ago`;
+  //   if (diffInDays < 60) return '1 month ago';
+  //   return `${Math.floor(diffInDays / 30)} months ago`;
+  // }
 
 
   // const handlePluginClick = (pluginId) => {
