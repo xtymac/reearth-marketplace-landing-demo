@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard, Building2 } from 'lucide-react';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
@@ -743,7 +743,7 @@ const getChangeLogEntries = (pluginId) => {
 const PluginDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  // const location = useLocation();
+  const location = useLocation();
   const plugin = pluginData.find(p => p.id === parseInt(id));
   const [selectedImage, setSelectedImage] = useState(0);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -752,8 +752,9 @@ const PluginDetail = () => {
   const userData = authService.getUserData();
   const userDropdownRef = useRef(null);
   
-  // Always show preview mode on plugin detail pages
-  // const isPreviewMode = true;
+  // Check if preview mode is enabled via URL parameter
+  const searchParams = new URLSearchParams(location.search);
+  const isPreviewMode = searchParams.get('preview') === '1';
   
   // Like functionality state
   const [likeState, setLikeState] = useState(() => {
@@ -911,75 +912,77 @@ const PluginDetail = () => {
         `}
       </style>
       
-      {/* Preview Mode Bar */}
-      <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '60px',
-          backgroundColor: '#6B7280',
-          zIndex: 1000,
-          display: 'flex',
-          alignItems: 'center'
-        }}>
-          <div style={{
+      {/* Preview Mode Bar - Only show in preview mode */}
+      {isPreviewMode && (
+        <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
             width: '100%',
-            maxWidth: '1200px',
-            margin: '0 auto',
-            padding: '0 24px',
+            height: '60px',
+            backgroundColor: '#6B7280',
+            zIndex: 1000,
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center'
           }}>
             <div style={{
+              width: '100%',
+              maxWidth: '1200px',
+              margin: '0 auto',
+              padding: '0 24px',
               display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
+              justifyContent: 'space-between',
+              alignItems: 'center'
             }}>
-              <img 
-                src="/Image/Icon/Green.svg" 
-                alt="Preview icon"
-                style={{ width: '28px', height: '28px' }}
-              />
-              <span style={{
-                color: '#FFF',
-                fontFamily: 'Outfit',
-                fontSize: '16px',
-                fontStyle: 'normal',
-                fontWeight: 500,
-                lineHeight: '140%'
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}>
-                Preview mode
-              </span>
+                <img 
+                  src="/Image/Icon/Green.svg" 
+                  alt="Preview icon"
+                  style={{ width: '28px', height: '28px' }}
+                />
+                <span style={{
+                  color: '#FFF',
+                  fontFamily: 'Outfit',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: 500,
+                  lineHeight: '140%'
+                }}>
+                  Preview mode
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  navigateWithoutPreview(`/developer-portal/workspace/${id}`);
+                }}
+                style={{
+                  borderRadius: '6px',
+                  border: '1px solid #E5E7EB',
+                  background: '#FFF',
+                  color: '#374151',
+                  padding: '6px 12px',
+                  fontFamily: 'Outfit, sans-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#F3F4F6'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'white'}
+              >
+                Return to Edit
+              </button>
             </div>
-            <button
-              onClick={() => {
-                navigateWithoutPreview(`/developer-portal/workspace/${id}`);
-              }}
-              style={{
-                borderRadius: '6px',
-                border: '1px solid #E5E7EB',
-                background: '#FFF',
-                color: '#374151',
-                padding: '6px 12px',
-                fontFamily: 'Outfit, sans-serif',
-                fontSize: '14px',
-                fontWeight: 400,
-                cursor: 'pointer',
-                transition: 'background-color 0.2s ease'
-              }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = '#F3F4F6'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = 'white'}
-            >
-              Return to Edit
-            </button>
           </div>
-        </div>
+      )}
       
       
       {/* Header */}
-      <header className="bg-white shadow-sm" style={{ marginTop: '60px' }}>
+      <header className="bg-white shadow-sm" style={{ marginTop: isPreviewMode ? '60px' : '0' }}>
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo and Navigation */}
@@ -1296,7 +1299,7 @@ const PluginDetail = () => {
               <button 
                 className="text-white font-semibold transition-colors"
                 style={{ 
-                  display: 'flex',
+                  display: 'none',
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: '44px',
