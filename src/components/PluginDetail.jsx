@@ -748,9 +748,36 @@ const PluginDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [installModalOpen, setInstallModalOpen] = useState(false);
+  const [selectedWorkspace, setSelectedWorkspace] = useState('My Workspace');
+  const [workspaceDropdownOpen, setWorkspaceDropdownOpen] = useState(false);
   const isAuthenticated = authService.isAuthenticated();
   const userData = authService.getUserData();
   const userDropdownRef = useRef(null);
+  const workspaceDropdownRef = useRef(null);
+
+  // Workspace data from Dashboard/Workspace components
+  const workspaceGroups = {
+    personal: {
+      label: 'Personal',
+      options: [
+        { name: 'Default personal workspace', badge: 'De', type: 'circle', workspaceId: null },
+        { name: 'My playground', badge: 'My', type: 'circle', workspaceId: null }
+      ]
+    },
+    team: {
+      label: 'Team',
+      options: [
+        { name: '株式会社福山コンサルタント', badge: '株', type: 'square', workspaceId: 'fukuyama-consultant' },
+        { name: '気象データ株式会社', badge: '気', type: 'square', workspaceId: 'weather-data' },
+        { name: 'センサー技術株式会社', badge: 'セ', type: 'square', workspaceId: 'sensor-tech' },
+        { name: 'GeoVision Labs', badge: 'GV', type: 'square', workspaceId: 'geovision-labs' },
+        { name: 'モビリソリューション', badge: 'モ', type: 'square', workspaceId: 'mobili-solution' },
+        { name: '環境テクノロジー株式会社', badge: '環', type: 'square', workspaceId: 'enviro-tech' },
+        { name: 'EnviroNode', badge: 'EN', type: 'square', workspaceId: 'enviro-node' },
+        { name: 'ChronoMaps Studio', badge: 'CM', type: 'square', workspaceId: 'chrono-maps' }
+      ]
+    }
+  };
   
   // Check if preview mode is enabled via URL parameter
   const searchParams = new URLSearchParams(location.search);
@@ -824,6 +851,14 @@ const PluginDetail = () => {
     navigateWithoutPreview('/developer-portal');
   };
 
+  const handleWorkspaceSelect = (workspace) => {
+    setSelectedWorkspace(workspace.name);
+    setWorkspaceDropdownOpen(false);
+    if (workspace.workspaceId) {
+      navigateWithoutPreview(`/workspace/${workspace.workspaceId}`);
+    }
+  };
+
   // Helper function to navigate without preview parameter
   const navigateWithoutPreview = (path) => {
     navigate(path);
@@ -867,11 +902,15 @@ const PluginDetail = () => {
       if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
         setUserDropdownOpen(false);
       }
+      if (workspaceDropdownRef.current && !workspaceDropdownRef.current.contains(event.target)) {
+        setWorkspaceDropdownOpen(false);
+      }
     };
 
     const handleKeyDown = (event) => {
-      if (userDropdownOpen && (event.key === 'Escape' || event.key === 'Tab')) {
+      if ((userDropdownOpen || workspaceDropdownOpen) && (event.key === 'Escape' || event.key === 'Tab')) {
         setUserDropdownOpen(false);
+        setWorkspaceDropdownOpen(false);
       }
     };
 
@@ -881,7 +920,7 @@ const PluginDetail = () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [userDropdownOpen]);
+  }, [userDropdownOpen, workspaceDropdownOpen]);
 
   if (!plugin) {
     return (
@@ -999,39 +1038,146 @@ const PluginDetail = () => {
       
       
       {/* Header */}
-      <header className="bg-white shadow-sm" style={{ marginTop: isPreviewMode ? '60px' : '0' }}>
+      <header className="shadow-sm" style={{ marginTop: isPreviewMode ? '60px' : '0' }}>
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo and Navigation */}
-            <div className="flex items-center space-x-8">
-              <div className="flex items-center">
-                <a href="https://reearth.io/home" className="flex items-center space-x-3">
-                  <img
-                    src="/Logo.png"
-                    alt="Re:Earth Logo"
-                    className="h-8"
-                  />
-                </a>
-              </div>
+            {/* Logo and Workspace */}
+            <div className="flex items-center">
+              <a href="https://reearth.io/home" className="flex items-center">
+                <img
+                  src="/Image/Logo/Marketplace(auth).svg"
+                  alt="Re:Earth Marketplace"
+                  className="h-12"
+                />
+              </a>
               
-              <nav className="hidden md:flex space-x-8">
-                <a href="https://reearth.io/about" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>About Re:Earth</a>
-                <div className="relative group">
-                  <button className="flex items-center text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>
-                    Product <ChevronDown className="ml-1 w-4 h-4" />
-                  </button>
-                  <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="py-2">
-                      <a href="https://reearth.io/product/cms" className="block px-4 py-2 text-gray-700 hover:bg-gray-50" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>CMS</a>
-                      <a href="https://reearth.io/product/visualizer" className="block px-4 py-2 text-gray-700 hover:bg-gray-50" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Visualizer</a>
-                    </div>
+              {/* Separator and Workspace Selector - Only show when logged in */}
+              {isAuthenticated && (
+                <>
+                  <div className="h-8 w-px bg-gray-300 mx-4"></div>
+                  
+                  <div className="relative" ref={workspaceDropdownRef}>
+                    <button 
+                      onClick={() => setWorkspaceDropdownOpen(!workspaceDropdownOpen)}
+                      className="flex items-center space-x-2 px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition-colors"
+                      aria-expanded={workspaceDropdownOpen}
+                      aria-haspopup="menu"
+                    >
+                      <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-md flex items-center justify-center">
+                        <span className="text-white text-xs font-semibold">
+                          {selectedWorkspace === 'My Workspace' ? 'M' : selectedWorkspace.charAt(0)}
+                        </span>
+                      </div>
+                      <span 
+                        className="text-gray-700 font-medium"
+                        style={{
+                          fontFamily: 'Outfit',
+                          fontSize: '14px',
+                          fontWeight: 500,
+                          lineHeight: '140%'
+                        }}
+                      >
+                        {selectedWorkspace}
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-gray-500" />
+                    </button>
+                    
+                    {/* Workspace Dropdown */}
+                    {workspaceDropdownOpen && (
+                      <div 
+                        className="absolute left-0 mt-2 bg-white z-50"
+                        role="menu"
+                        style={{
+                          borderRadius: '10px',
+                          boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                          padding: '8px 6px',
+                          minWidth: '250px',
+                          width: 'fit-content'
+                        }}
+                      >
+                        {/* Personal Section */}
+                        <div className="px-3 py-2">
+                          <div 
+                            className="text-gray-500 font-medium mb-2"
+                            style={{
+                              fontFamily: 'Outfit, sans-serif',
+                              fontSize: '12px',
+                              fontWeight: 500,
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em'
+                            }}
+                          >
+                            {workspaceGroups.personal.label}
+                          </div>
+                          {workspaceGroups.personal.options.map((workspace, index) => (
+                            <button
+                              key={index}
+                              onClick={() => handleWorkspaceSelect(workspace)}
+                              role="menuitem"
+                              className="flex items-center w-full text-left transition-colors hover:bg-gray-50 mb-1"
+                              style={{
+                                fontFamily: 'Outfit, sans-serif',
+                                fontSize: '14px',
+                                lineHeight: '140%',
+                                fontWeight: 400,
+                                color: 'var(--text-default, #0A0A0A)',
+                                padding: '8px 12px',
+                                borderRadius: '8px'
+                              }}
+                            >
+                              <div className="w-6 h-6 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center mr-3">
+                                <span className="text-white text-xs font-semibold">{workspace.badge}</span>
+                              </div>
+                              {workspace.name}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Separator */}
+                        <div className="border-b border-gray-100 mx-3 my-2"></div>
+
+                        {/* Team Section */}
+                        <div className="px-3 py-2">
+                          <div 
+                            className="text-gray-500 font-medium mb-2"
+                            style={{
+                              fontFamily: 'Outfit, sans-serif',
+                              fontSize: '12px',
+                              fontWeight: 500,
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em'
+                            }}
+                          >
+                            {workspaceGroups.team.label}
+                          </div>
+                          {workspaceGroups.team.options.map((workspace, index) => (
+                            <button
+                              key={index}
+                              onClick={() => handleWorkspaceSelect(workspace)}
+                              role="menuitem"
+                              className="flex items-center w-full text-left transition-colors hover:bg-gray-50 mb-1"
+                              style={{
+                                fontFamily: workspace.name.match(/[ひらがなカタカナ漢字]/) ? '"Noto Sans JP", sans-serif' : 'Outfit, sans-serif',
+                                fontSize: '14px',
+                                lineHeight: '140%',
+                                fontWeight: 400,
+                                color: 'var(--text-default, #0A0A0A)',
+                                padding: '8px 12px',
+                                borderRadius: '8px'
+                              }}
+                            >
+                              <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-md flex items-center justify-center mr-3">
+                                <span className="text-white text-xs font-semibold">{workspace.badge}</span>
+                              </div>
+                              {workspace.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-                <a href="https://reearth.io/pricing" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Pricing</a>
-                <a href="https://reearth.io/community" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Community</a>
-                <a href="https://reearth.io/learn" className="text-gray-700 hover:text-gray-900" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Learn</a>
-                <button onClick={() => handleLinkClick('/')} className="text-blue-600 bg-transparent border-none cursor-pointer" style={{ fontFamily: 'Outfit', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: '140%' }}>Marketplace</button>
-              </nav>
+                </>
+              )}
             </div>
 
             {/* Right side */}
