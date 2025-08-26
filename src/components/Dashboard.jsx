@@ -95,7 +95,28 @@ const Dashboard = () => {
 
 
   const handlePluginClick = (pluginId) => {
-    window.open(`/plugin/${pluginId}`, '_blank');
+    // Navigate directly to edit page for dashboard plugin cards
+    const plugin = pluginData.find(p => p.id === pluginId);
+    if (plugin) {
+      const companyMap = {
+        '株式会社福山コンサルタント': 'fukuyama-consultant',
+        '気象データ株式会社': 'weather-data',
+        'センサー技術株式会社': 'sensor-tech',
+        'GeoVision Labs': 'geovision-labs',
+        'モビリソリューション': 'mobili-solution',
+        '環境テクノロジー株式会社': 'enviro-tech',
+        'EnviroNode': 'enviro-node',
+        'ChronoMaps Studio': 'chrono-maps'
+      };
+      const workspaceId = companyMap[plugin.company];
+      
+      if (workspaceId) {
+        navigate(`/workspace/${workspaceId}/${pluginId}`);
+      } else {
+        // Fallback to developer portal if no workspace mapping
+        navigate(`/developer-portal/workspace/${pluginId}`);
+      }
+    }
   };
 
 
@@ -451,7 +472,8 @@ const Dashboard = () => {
                                   <button
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      handlePluginClick(plugin.id);
+                                      // Action button opens plugin detail page in new tab
+                                      window.open(`/plugin/${plugin.id}`, '_blank');
                                     }}
                                     className="flex items-center text-gray-400 hover:text-gray-600 transition-colors"
                                     title="View plugin"

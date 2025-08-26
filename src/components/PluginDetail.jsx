@@ -957,7 +957,24 @@ const PluginDetail = () => {
               </div>
               <button
                 onClick={() => {
-                  navigateWithoutPreview(`/developer-portal/workspace/${id}`);
+                  const companyMap = {
+                    '株式会社福山コンサルタント': 'fukuyama-consultant',
+                    '気象データ株式会社': 'weather-data',
+                    'センサー技術株式会社': 'sensor-tech',
+                    'GeoVision Labs': 'geovision-labs',
+                    'モビリソリューション': 'mobili-solution',
+                    '環境テクノロジー株式会社': 'enviro-tech',
+                    'EnviroNode': 'enviro-node',
+                    'ChronoMaps Studio': 'chrono-maps'
+                  };
+                  const workspaceId = companyMap[plugin.company];
+                  
+                  if (workspaceId) {
+                    navigateWithoutPreview(`/workspace/${workspaceId}/${id}`);
+                  } else {
+                    // Fallback to developer portal if no workspace mapping
+                    navigateWithoutPreview(`/developer-portal/workspace/${id}`);
+                  }
                 }}
                 style={{
                   borderRadius: '6px',
@@ -1327,7 +1344,26 @@ const PluginDetail = () => {
                     border: 'none',
                     cursor: 'pointer'
                   }}
-                  onClick={() => navigateWithoutPreview(`/developer-portal/workspace/${id}`)}
+                  onClick={() => {
+                    const companyMap = {
+                      '株式会社福山コンサルタント': 'fukuyama-consultant',
+                      '気象データ株式会社': 'weather-data',
+                      'センサー技術株式会社': 'sensor-tech',
+                      'GeoVision Labs': 'geovision-labs',
+                      'モビリソリューション': 'mobili-solution',
+                      '環境テクノロジー株式会社': 'enviro-tech',
+                      'EnviroNode': 'enviro-node',
+                      'ChronoMaps Studio': 'chrono-maps'
+                    };
+                    const workspaceId = companyMap[plugin.company];
+                    
+                    if (workspaceId) {
+                      navigateWithoutPreview(`/workspace/${workspaceId}/${id}`);
+                    } else {
+                      // Fallback to developer portal if no workspace mapping
+                      navigateWithoutPreview(`/developer-portal/workspace/${id}`);
+                    }
+                  }}
                   aria-label="Edit plugin"
                 >
                   Edit plugin
