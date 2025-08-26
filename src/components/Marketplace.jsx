@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, ChevronDown, X, SearchX, User, LogOut, Settings, LayoutDashboard, Building2 } from 'lucide-react';
+import { Search, ChevronDown, X, SearchX, User, LogOut, Settings, LayoutDashboard, Building2, Package } from 'lucide-react';
 import PluginCard from './PluginCard';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
@@ -70,6 +70,12 @@ const Marketplace = () => {
   const handleDeveloperPortal = () => {
     setUserDropdownOpen(false);
     navigate('/developer-portal');
+  };
+
+  const handleManagePlugins = () => {
+    setUserDropdownOpen(false);
+    const defaultWorkspaceId = 'fukuyama-consultant';
+    navigate(`/workspace/${defaultWorkspaceId}/plugins`);
   };
 
   const handleWorkspaceSelect = (workspace) => {
@@ -426,6 +432,23 @@ const Marketplace = () => {
                       >
                         <Building2 className="w-4 h-4 mr-3" />
                         Developer Portal
+                      </button>
+                      <button
+                        onClick={handleManagePlugins}
+                        role="menuitem"
+                        className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
+                        style={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '14px',
+                          lineHeight: '140%',
+                          fontWeight: 400,
+                          color: 'var(--text-default, #0A0A0A)',
+                          padding: '8px 12px',
+                          borderRadius: '8px'
+                        }}
+                      >
+                        <Package className="w-4 h-4 mr-3" />
+                        Manage Plugins
                       </button>
                       <button
                         onClick={handleSettings}

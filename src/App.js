@@ -7,6 +7,7 @@ import PluginSubmissionSuccess from './components/PluginSubmissionSuccess';
 import Dashboard from './components/Dashboard';
 import Workspace from './components/Workspace';
 import WorkspacePluginEdit from './components/WorkspacePluginEdit';
+import ManagePlugins from './components/ManagePlugins';
 import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
 
@@ -47,6 +48,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <WorkspacePluginEdit />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/workspace/:workspaceId/plugins" 
+            element={
+              <ProtectedRoute>
+                <ManagePlugins />
               </ProtectedRoute>
             } 
           />

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard, Building2 } from 'lucide-react';
+import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard, Building2, Package } from 'lucide-react';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
 import { PluginService } from '../services/pluginService';
@@ -859,6 +859,12 @@ const PluginDetail = () => {
     }
   };
 
+  const handleManagePlugins = () => {
+    setUserDropdownOpen(false);
+    const defaultWorkspaceId = 'fukuyama-consultant';
+    navigateWithoutPreview(`/workspace/${defaultWorkspaceId}/plugins`);
+  };
+
   // Helper function to navigate without preview parameter
   const navigateWithoutPreview = (path) => {
     navigate(path);
@@ -1283,6 +1289,23 @@ const PluginDetail = () => {
                       >
                         <Building2 className="w-4 h-4 mr-3" />
                         Developer Portal
+                      </button>
+                      <button
+                        onClick={handleManagePlugins}
+                        role="menuitem"
+                        className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
+                        style={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '14px',
+                          lineHeight: '140%',
+                          fontWeight: 400,
+                          color: 'var(--text-default, #0A0A0A)',
+                          padding: '8px 12px',
+                          borderRadius: '8px'
+                        }}
+                      >
+                        <Package className="w-4 h-4 mr-3" />
+                        Manage Plugins
                       </button>
                       <button
                         onClick={handleSettings}
