@@ -7,6 +7,7 @@ import PluginSubmissionSuccess from './components/PluginSubmissionSuccess';
 import DeveloperPortalEntry from './components/DeveloperPortalEntry';
 import DeveloperPortal from './components/DeveloperPortal';
 import DeveloperPluginUpload from './components/DeveloperPluginUpload';
+import DashboardNotAvailable from './components/DashboardNotAvailable';
 import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Marketplace />} />
           <Route path="/plugin/:id" element={<PluginDetail />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<DashboardNotAvailable />} />
           <Route 
             path="/developer-portal/new" 
             element={
