@@ -102,7 +102,7 @@ const Workspace = () => {
   const tabs = ['Overview', 'CMS Project', 'Visualizer Project', 'Plugins'];
 
   const handlePluginClick = (pluginId) => {
-    navigate(`/plugin/${pluginId}`);
+    navigate(`/workspace/${workspaceId}/${pluginId}`);
   };
 
   return (
