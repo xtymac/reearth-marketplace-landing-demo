@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
+  <defs>
+    <style>
+      .cls-1 { fill: #FFB800; }
+      .cls-2 { fill: #00D4AA; }
+      .cls-3 { fill: #FF6B9D; }
+      .cls-4 { fill: #4FC3F7; }
+      .cls-5 { fill: #FF5722; }
+      .text-primary { font-family: 'Arial', sans-serif; font-weight: 600; }
+      .text-secondary { font-family: 'Arial', sans-serif; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <!-- Colorful flower/star logo -->
+  <g transform="translate(20, 30)">
+    <!-- Top petal (Yellow) -->
+    <path class="cls-1" d="M20,5 C25,0 30,0 35,5 C30,10 25,15 20,20 C15,15 10,10 5,5 C10,0 15,0 20,5 Z"/>
+    <!-- Right petal (Teal) -->
+    <path class="cls-2" d="M35,20 C40,15 45,15 50,20 C45,25 40,30 35,35 C30,30 25,25 20,20 C25,15 30,15 35,20 Z"/>
+    <!-- Bottom petal (Pink) -->
+    <path class="cls-3" d="M20,35 C25,40 30,40 35,35 C30,30 25,25 20,20 C15,25 10,30 5,35 C10,40 15,40 20,35 Z"/>
+    <!-- Left petal (Blue) -->
+    <path class="cls-4" d="M5,20 C10,15 15,15 20,20 C15,25 10,30 5,35 C0,30 -5,25 -10,20 C-5,15 0,15 5,20 Z"/>
+    <!-- Center (Orange) -->
+    <circle class="cls-5" cx="20" cy="20" r="8"/>
+  </g>
+  
+  <!-- Marketplace text -->
+  <text class="text-primary" x="75" y="35" font-size="28" fill="#1a1a1a">Marketplace</text>
+  <text class="text-secondary" x="75" y="55" font-size="14" fill="#666">by Re:Earth</text>
+</svg>

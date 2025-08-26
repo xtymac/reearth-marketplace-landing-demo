@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, Plus } from 'lucide-react';
+import { ChevronRight, Plus, Search, ExternalLink } from 'lucide-react';
 import DashboardNav from './DashboardNav';
-// import { pluginData } from '../data/pluginData';
+import { pluginData } from '../data/pluginData';
+import '../DeveloperPortal.css';
 
 const Dashboard = () => {
   const [selectedWorkspace, setSelectedWorkspace] = useState('Default personal workspace');
   const [activeTab, setActiveTab] = useState('CMS Project');
+  const [pluginSearch, setPluginSearch] = useState('');
+  const [pluginSort, setPluginSort] = useState('Last updated');
   const navigate = useNavigate();
 
   const workspaceGroups = {
@@ -32,35 +35,76 @@ const Dashboard = () => {
     }
   };
 
-  const tabs = ['CMS Project', 'Visualizer Project'];
+  const tabs = ['CMS Project', 'Visualizer Project', 'Plugins'];
+
+  // Helper function to convert date to relative time (matching Developer Portal)
+  function getTimeAgo(dateStr) {
+    const date = new Date(dateStr.replace(/\//g, '-'));
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    const diffInMonths = Math.floor(diffInDays / 30);
+
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    if (diffInDays < 30) return `${diffInDays}d ago`;
+    if (diffInMonths < 12) return `${diffInMonths}mo ago`;
+    return `${Math.floor(diffInMonths / 12)}y ago`;
+  }
+
+  // Company to workspace mapping (for navigation)
+  const companyToWorkspace = {
+    '株式会社福山コンサルタント': 'fukuyama-consultant',
+    '気象データ株式会社': 'weather-data',
+    'センサー技術株式会社': 'sensor-tech',
+    'GeoVision Labs': 'geovision-labs',
+    'モビリソリューション': 'mobili-solution',
+    '環境テクノロジー株式会社': 'enviro-tech',
+    'EnviroNode': 'enviro-node',
+    'ChronoMaps Studio': 'chrono-maps'
+  };
 
   // Transform plugin data for dashboard display
-  // const pluginsList = pluginData.map(plugin => ({
-  //   id: plugin.id,
-  //   workspace: plugin.company,
-  //   title: plugin.title,
-  //   lastEdit: getRelativeTime(plugin.updatedDate),
-  //   status: 'Public',
-  //   platform: 'Visualizer'
-  // }));
-
-  // Helper function to convert date to relative time
-  // function getRelativeTime(dateStr) {
-  //   const date = new Date(dateStr.replace(/\//g, '-'));
-  //   const now = new Date();
-  //   const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-  //   
-  //   if (diffInDays === 0) return 'Today';
-  //   if (diffInDays === 1) return '1 day ago';
-  //   if (diffInDays < 30) return `${diffInDays} days ago`;
-  //   if (diffInDays < 60) return '1 month ago';
-  //   return `${Math.floor(diffInDays / 30)} months ago`;
-  // }
+  const pluginsList = pluginData.map(plugin => ({
+    id: plugin.id,
+    workspace: plugin.company,
+    title: plugin.title,
+    lastEdit: getTimeAgo(plugin.updatedDate),
+    status: 'Public',
+    platform: 'Visualizer'
+  }));
 
 
-  // const handlePluginClick = (pluginId) => {
-  //   window.open(`/plugin/${pluginId}`, '_blank');
-  // };
+  // Filter and sort plugins
+  const filteredAndSortedPlugins = pluginsList
+    .filter(plugin => 
+      plugin.title.toLowerCase().includes(pluginSearch.toLowerCase()) ||
+      plugin.workspace.toLowerCase().includes(pluginSearch.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (pluginSort === 'Name') {
+        return a.title.localeCompare(b.title);
+      } else {
+        // Sort by lastEdit (newest first)
+        return b.lastEdit.localeCompare(a.lastEdit);
+      }
+    });
+
+
+  const handlePluginClick = (pluginId) => {
+    window.open(`/plugin/${pluginId}`, '_blank');
+  };
+
+
+  const handleWorkspaceClick = (companyName) => {
+    const workspaceId = companyToWorkspace[companyName];
+    if (workspaceId) {
+      navigate(`/workspace/${workspaceId}`);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#FCFAF4' }}>
@@ -272,6 +316,149 @@ const Dashboard = () => {
                   {activeTab === 'Visualizer Project' && (
                     <div className="text-center py-12 text-gray-500">
                       <p style={{ fontFamily: 'Outfit' }}>No Visualizer projects found</p>
+                    </div>
+                  )}
+
+                  {activeTab === 'Plugins' && (
+                    <div>
+                      {/* Search and Sort Controls */}
+                      <div className="flex justify-between items-center mb-6">
+                        <div className="flex items-center space-x-4">
+                          <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <input
+                              type="text"
+                              placeholder="Search plugins..."
+                              value={pluginSearch}
+                              onChange={(e) => setPluginSearch(e.target.value)}
+                              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-80"
+                              style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                            />
+                          </div>
+                          <select
+                            value={pluginSort}
+                            onChange={(e) => setPluginSort(e.target.value)}
+                            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                          >
+                            <option value="Last updated">Sort by Last updated</option>
+                            <option value="Name">Sort by Name</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Table Headers - No background */}
+                      <div className="hidden md:grid md:grid-cols-[2fr_120px_60px] gap-6 px-4 py-2 mb-3">
+                        <div></div> {/* Empty for title column */}
+                        <span 
+                          className="text-gray-500 text-sm"
+                          style={{ fontFamily: 'Outfit' }}
+                        >
+                          Last edit
+                        </span>
+                        <span 
+                          className="text-gray-500 text-sm text-right"
+                          style={{ fontFamily: 'Outfit' }}
+                        >
+                          Action
+                        </span>
+                      </div>
+
+                      {filteredAndSortedPlugins.length === 0 ? (
+                        <div className="text-center py-12 text-gray-500">
+                          <p style={{ fontFamily: 'Outfit' }}>
+                            {pluginSearch ? 'No plugins found matching your search.' : 'No plugins available.'}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {filteredAndSortedPlugins.map((plugin) => {
+                            const isJapanese = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(plugin.workspace);
+
+                            return (
+                              <div
+                                key={plugin.id}
+                                className="flex flex-col md:grid md:grid-cols-[2fr_120px_60px] gap-3 md:gap-6 p-4 bg-white hover:bg-gray-50 rounded-lg cursor-pointer transition-colors group shadow-sm"
+                                aria-label={`Workspace ${plugin.workspace}, Plugin ${plugin.title}, Platform ${plugin.platform}`}
+                                onClick={() => handlePluginClick(plugin.id)}
+                              >
+                                {/* Column 1: Title with Pills */}
+                                <div className="flex flex-wrap items-center gap-2 md:gap-3 min-w-0">
+                                  <h3 
+                                    className="text-blue-600 font-medium group-hover:text-blue-700 flex-shrink-0"
+                                    style={{
+                                      fontFamily: 'Outfit',
+                                      fontSize: '16px',
+                                      lineHeight: '140%'
+                                    }}
+                                    title={`${plugin.workspace} / ${plugin.title}`}
+                                  >
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleWorkspaceClick(plugin.workspace);
+                                      }}
+                                      className="hover:text-blue-800 transition-colors"
+                                      style={{ fontFamily: isJapanese ? '"Noto Sans JP"' : 'Outfit' }}
+                                    >
+                                      {plugin.workspace}
+                                    </button>
+                                    <span className="mx-2">/</span>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handlePluginClick(plugin.id);
+                                      }}
+                                      className="hover:text-blue-800 transition-colors"
+                                    >
+                                      {plugin.title}
+                                    </button>
+                                  </h3>
+                                  <span 
+                                    className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 flex-shrink-0"
+                                    style={{ fontFamily: 'Outfit' }}
+                                  >
+                                    {plugin.platform}
+                                  </span>
+                                  <span 
+                                    className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 flex-shrink-0"
+                                    style={{ fontFamily: 'Outfit' }}
+                                  >
+                                    {plugin.status}
+                                  </span>
+                                </div>
+
+                                {/* Column 2: Last Edit Value */}
+                                <div className="flex items-center md:justify-start">
+                                  <span className="text-gray-500 text-sm mr-2 md:hidden" style={{ fontFamily: 'Outfit' }}>
+                                    Last edit:
+                                  </span>
+                                  <span 
+                                    className="text-gray-900 text-sm font-medium"
+                                    style={{ fontFamily: 'Outfit' }}
+                                  >
+                                    {plugin.lastEdit}
+                                  </span>
+                                </div>
+
+                                {/* Column 3: Action Button */}
+                                <div className="flex items-center md:justify-end">
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handlePluginClick(plugin.id);
+                                    }}
+                                    className="flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                                    title="View plugin"
+                                  >
+                                    <ExternalLink className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
