@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Marketplace from './components/Marketplace';
 import PluginDetail from './components/PluginDetail';
 import Login from './components/Login';
