@@ -105,6 +105,11 @@ const Workspace = () => {
     navigate(`/workspace/${workspaceId}/${pluginId}`);
   };
 
+  const handleTitleClick = (e, pluginId) => {
+    e.stopPropagation();
+    navigate(`/plugin/${pluginId}`);
+  };
+
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#FCFAF4' }}>
       {/* Header */}
@@ -294,7 +299,8 @@ const Workspace = () => {
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 
-                          className="text-blue-600 hover:text-blue-700 mb-2"
+                          className="text-blue-600 hover:text-blue-700 mb-2 cursor-pointer"
+                          onClick={(e) => handleTitleClick(e, plugin.id)}
                           style={{
                             fontFamily: 'Outfit',
                             fontSize: '20px',
@@ -325,11 +331,15 @@ const Workspace = () => {
                       {plugin.description.substring(0, 150)}...
                     </p>
 
-                    <div className="flex items-center space-x-2 text-sm text-gray-500 flex-wrap">
+                    <div 
+                      className="flex items-center space-x-2 text-sm text-gray-500 overflow-x-auto"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
                       {plugin.tags.slice(0, 3).map((tag, index) => (
                         <span 
                           key={index}
-                          className="inline-flex items-center px-2 py-1 rounded bg-gray-100 mb-1"
+                          className="inline-flex items-center px-2 py-1 rounded bg-gray-100 flex-shrink-0"
                           style={{ fontFamily: /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(tag) ? '"Noto Sans JP"' : 'Outfit' }}
                         >
                           {tag}
