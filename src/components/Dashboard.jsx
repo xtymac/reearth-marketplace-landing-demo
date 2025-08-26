@@ -349,7 +349,12 @@ const Dashboard = () => {
 
                       {/* Table Headers - No background */}
                       <div className="hidden md:grid md:grid-cols-[2fr_120px_60px] gap-6 px-4 py-2 mb-3">
-                        <div></div> {/* Empty for title column */}
+                        <span 
+                          className="text-gray-500 text-sm"
+                          style={{ fontFamily: 'Outfit' }}
+                        >
+                          Plugin name
+                        </span>
                         <span 
                           className="text-gray-500 text-sm"
                           style={{ fontFamily: 'Outfit' }}
