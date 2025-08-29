@@ -1383,7 +1383,7 @@ function DeveloperConsole() {
 
         {/* Main Content */}
         <div className="dev-portal-main">
-        {!isEditMode ? (
+          {!isEditMode ? (
           <>
             {/* Top bar with avatar */}
             <div 
@@ -1696,8 +1696,73 @@ function DeveloperConsole() {
                 </div>
               </div>
               
-              {/* Avatar with Dropdown */}
-              <div className="avatar-dropdown-container" style={{ position: 'relative' }}>
+              {/* Plugin Status Dropdown */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px'
+              }}>
+                <div style={{
+                  position: 'relative',
+                  display: 'inline-block'
+                }}>
+                  <select
+                    value={pluginFormData.status}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                    style={{
+                      height: '36px',
+                      padding: '6px 36px 6px 12px',
+                      border: 'none',
+                      borderRadius: '6px',
+                      backgroundColor: pluginFormData.status === 'Public' ? '#75D6FF' : '#FEF3C7',
+                      color: pluginFormData.status === 'Public' ? '#0A0A0A' : '#92400E',
+                      fontFamily: 'Outfit',
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      cursor: 'pointer',
+                      appearance: 'none',
+                      outline: 'none',
+                      transition: 'all 0.2s ease',
+                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.15)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+                    }}
+                  >
+                    <option value="Public">Published</option>
+                    <option value="Draft">Draft</option>
+                  </select>
+                  
+                  {/* Custom dropdown arrow */}
+                  <svg
+                    style={{
+                      position: 'absolute',
+                      right: '12px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      pointerEvents: 'none',
+                      width: '12px',
+                      height: '12px'
+                    }}
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3 4.5L6 7.5L9 4.5"
+                      stroke={pluginFormData.status === 'Public' ? '#0A0A0A' : '#92400E'}
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                
+                {/* Avatar with Dropdown */}
+                <div className="avatar-dropdown-container" style={{ position: 'relative' }}>
                 <img 
                   src="/Image/Avatar/Avatar.png" 
                   alt="User Avatar" 
@@ -1833,6 +1898,7 @@ function DeveloperConsole() {
                     </button>
                   </div>
                 )}
+              </div>
               </div>
             </div>
 
@@ -3309,7 +3375,7 @@ function DeveloperConsole() {
               </div>
             </div>
           </div>
-        )}
+          )}
         </div>
       </div>
 
