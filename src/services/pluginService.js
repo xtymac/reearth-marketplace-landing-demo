@@ -334,6 +334,138 @@ export class PluginService {
       }, 100);
     });
   }
+
+  // Liked plugins management
+  static getLikedPlugins() {
+    // First try the new format
+    const newFormatStored = localStorage.getItem('liked-plugins');
+    if (newFormatStored) {
+      return JSON.parse(newFormatStored);
+    }
+
+    // If no new format, try to migrate from old format
+    const oldFormatStored = localStorage.getItem('plugin-likes');
+    if (oldFormatStored) {
+      const oldLikes = JSON.parse(oldFormatStored);
+      const newLikes = {};
+      
+      // Convert old format (pluginId: boolean) to new format (pluginId: {pluginId, likedAt})
+      Object.keys(oldLikes).forEach(pluginId => {
+        if (oldLikes[pluginId]) {
+          newLikes[pluginId] = {
+            pluginId,
+            likedAt: new Date().toISOString() // Use current time for migration
+          };
+        }
+      });
+      
+      // Save in new format and clean up old format
+      this.saveLikedPlugins(newLikes);
+      localStorage.removeItem('plugin-likes');
+      return newLikes;
+    }
+
+    return {};
+  }
+
+  static saveLikedPlugins(likedPlugins) {
+    localStorage.setItem('liked-plugins', JSON.stringify(likedPlugins));
+    
+    // Also maintain backward compatibility with old format for existing components
+    const oldFormatLikes = {};
+    Object.keys(likedPlugins).forEach(pluginId => {
+      oldFormatLikes[pluginId] = true;
+    });
+    localStorage.setItem('plugin-likes', JSON.stringify(oldFormatLikes));
+  }
+
+  // Like/Unlike a plugin
+  static async likePlugin(pluginId) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          const likedPlugins = this.getLikedPlugins();
+          // Convert pluginId to string for consistent key storage
+          const pluginIdKey = String(pluginId);
+          likedPlugins[pluginIdKey] = {
+            pluginId: pluginIdKey,
+            likedAt: new Date().toISOString()
+          };
+          this.saveLikedPlugins(likedPlugins);
+          resolve(true);
+        } catch (error) {
+          reject(error);
+        }
+      }, 100);
+    });
+  }
+
+  static async unlikePlugin(pluginId) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          const likedPlugins = this.getLikedPlugins();
+          // Convert pluginId to string for consistent key storage
+          const pluginIdKey = String(pluginId);
+          delete likedPlugins[pluginIdKey];
+          this.saveLikedPlugins(likedPlugins);
+          resolve(true);
+        } catch (error) {
+          reject(error);
+        }
+      }, 100);
+    });
+  }
+
+  // Check if plugin is liked
+  static isPluginLiked(pluginId) {
+    const likedPlugins = this.getLikedPlugins();
+    const pluginIdKey = String(pluginId);
+    return pluginIdKey in likedPlugins;
+  }
+
+  // Get all liked plugins with full plugin data
+  static async getUserLikedPlugins() {
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        const likedPlugins = this.getLikedPlugins();
+        const likedPluginIds = Object.keys(likedPlugins);
+        
+        if (likedPluginIds.length === 0) {
+          resolve([]);
+          return;
+        }
+
+        // Get all plugins and filter liked ones
+        const allPlugins = await this.getAllPlugins();
+        const submittedPlugins = this.getSubmittedPlugins();
+        const allPluginsData = [...allPlugins, ...submittedPlugins];
+
+        const likedPluginsData = likedPluginIds
+          .map(pluginId => {
+            // Convert pluginId to both string and number for matching
+            const idAsNumber = parseInt(pluginId);
+            const idAsString = String(pluginId);
+            const plugin = allPluginsData.find(p => 
+              p.id === idAsNumber || 
+              p.id === idAsString || 
+              String(p.id) === idAsString
+            );
+            if (plugin) {
+              return {
+                ...plugin,
+                likedAt: likedPlugins[pluginId].likedAt
+              };
+            }
+            return null;
+          })
+          .filter(Boolean)
+          .sort((a, b) => new Date(b.likedAt) - new Date(a.likedAt)); // Most recent first
+
+        resolve(likedPluginsData);
+      }, 100);
+    });
+  }
 }
 
 // Convenience exports for common functions
@@ -341,6 +473,10 @@ export const getAllPlugins = () => PluginService.getAllPlugins();
 export const getPluginById = (id) => PluginService.getPluginById(id);
 export const searchPlugins = (query) => PluginService.searchPlugins(query);
 export const sortPlugins = (sortBy) => PluginService.sortPlugins(sortBy);
+export const getUserLikedPlugins = () => PluginService.getUserLikedPlugins();
+export const likePlugin = (pluginId) => PluginService.likePlugin(pluginId);
+export const unlikePlugin = (pluginId) => PluginService.unlikePlugin(pluginId);
+export const isPluginLiked = (pluginId) => PluginService.isPluginLiked(pluginId);
 
 // For easier transition to API, these functions can be easily replaced:
 // 
