@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard';
 import Workspace from './components/Workspace';
 import WorkspacePluginEdit from './components/WorkspacePluginEdit';
 import ManagePlugins from './components/ManagePlugins';
+import LikedPlugins from './components/LikedPlugins';
 import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
 
@@ -56,6 +57,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ManagePlugins />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/liked-plugins" 
+            element={
+              <ProtectedRoute>
+                <LikedPlugins />
               </ProtectedRoute>
             } 
           />

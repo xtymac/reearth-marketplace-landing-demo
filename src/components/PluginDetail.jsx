@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard, Building2, Package } from 'lucide-react';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
-import { PluginService } from '../services/pluginService';
+import { PluginService, likePlugin, unlikePlugin, isPluginLiked } from '../services/pluginService';
 import PluginInstallModal from './PluginInstallModal';
 
 // Plugin documentation content generator
@@ -785,19 +785,18 @@ const PluginDetail = () => {
   
   // Like functionality state
   const [likeState, setLikeState] = useState(() => {
-    // Initialize from localStorage
-    const savedLikes = localStorage.getItem('plugin-likes');
-    const likes = savedLikes ? JSON.parse(savedLikes) : {};
+    // Initialize using the new service which handles migration
+    const isLiked = isPluginLiked(id);
     return {
-      isLiked: likes[id] || false,
-      count: plugin ? plugin.likes + (likes[id] ? 1 : 0) : 0
+      isLiked: isLiked,
+      count: plugin ? plugin.likes + (isLiked ? 1 : 0) : 0
     };
   });
   
   const [isClickDebounced, setIsClickDebounced] = useState(false);
 
   // Like toggle handler with debouncing and persistence
-  const handleLikeToggle = () => {
+  const handleLikeToggle = async () => {
     if (isClickDebounced) return;
     
     setIsClickDebounced(true);
@@ -814,11 +813,21 @@ const PluginDetail = () => {
       count: newCount
     });
     
-    // Persist to localStorage
-    const savedLikes = localStorage.getItem('plugin-likes');
-    const likes = savedLikes ? JSON.parse(savedLikes) : {};
-    likes[id] = newIsLiked;
-    localStorage.setItem('plugin-likes', JSON.stringify(likes));
+    // Use the new service to persist
+    try {
+      if (newIsLiked) {
+        await likePlugin(id);
+      } else {
+        await unlikePlugin(id);
+      }
+    } catch (error) {
+      console.error('Error updating like status:', error);
+      // Revert state on error
+      setLikeState({
+        isLiked: !newIsLiked,
+        count: newIsLiked ? newCount - 1 : newCount + 1
+      });
+    }
   };
 
   // Handle keyboard interactions
@@ -849,6 +858,11 @@ const PluginDetail = () => {
   const handleDeveloperPortal = () => {
     setUserDropdownOpen(false);
     navigateWithoutPreview('/developer-portal');
+  };
+
+  const handleLikedPlugins = () => {
+    setUserDropdownOpen(false);
+    navigateWithoutPreview('/liked-plugins');
   };
 
   const handleWorkspaceSelect = (workspace) => {
@@ -1306,6 +1320,23 @@ const PluginDetail = () => {
                       >
                         <Package className="w-4 h-4 mr-3" />
                         Manage Plugins
+                      </button>
+                      <button
+                        onClick={handleLikedPlugins}
+                        role="menuitem"
+                        className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
+                        style={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '14px',
+                          lineHeight: '140%',
+                          fontWeight: 400,
+                          color: 'var(--text-default, #0A0A0A)',
+                          padding: '8px 12px',
+                          borderRadius: '8px'
+                        }}
+                      >
+                        <Heart className="w-4 h-4 mr-3" />
+                        Liked Plugins
                       </button>
                       <button
                         onClick={handleSettings}

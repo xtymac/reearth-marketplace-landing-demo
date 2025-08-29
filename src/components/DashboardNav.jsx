@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, LogOut, Settings, LayoutDashboard, Building2, Package } from 'lucide-react';
+import { User, LogOut, Settings, LayoutDashboard, Building2, Package, Heart } from 'lucide-react';
 import { authService } from '../services/authService';
 
 const DashboardNav = () => {
@@ -59,6 +59,11 @@ const DashboardNav = () => {
     // In a real app, this would use the current user's default workspace
     const defaultWorkspaceId = 'fukuyama-consultant'; // This should come from user context
     navigate(`/workspace/${defaultWorkspaceId}/plugins`);
+  };
+
+  const handleLikedPlugins = () => {
+    setUserDropdownOpen(false);
+    navigate('/liked-plugins');
   };
 
   return (
@@ -210,6 +215,23 @@ const DashboardNav = () => {
                     >
                       <Package className="w-4 h-4 mr-3" />
                       Manage Plugins
+                    </button>
+                    <button
+                      onClick={handleLikedPlugins}
+                      role="menuitem"
+                      className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
+                      style={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontSize: '14px',
+                        lineHeight: '140%',
+                        fontWeight: 400,
+                        color: 'var(--text-default, #0A0A0A)',
+                        padding: '8px 12px',
+                        borderRadius: '8px'
+                      }}
+                    >
+                      <Heart className="w-4 h-4 mr-3" />
+                      Liked Plugins
                     </button>
                     <button
                       onClick={handleSettings}

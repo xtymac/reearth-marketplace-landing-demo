@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, ChevronDown, X, SearchX, User, LogOut, Settings, LayoutDashboard, Building2, Package } from 'lucide-react';
+import { Search, ChevronDown, X, SearchX, User, LogOut, Settings, LayoutDashboard, Building2, Package, Heart } from 'lucide-react';
 import PluginCard from './PluginCard';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
@@ -76,6 +76,11 @@ const Marketplace = () => {
     setUserDropdownOpen(false);
     const defaultWorkspaceId = 'fukuyama-consultant';
     navigate(`/workspace/${defaultWorkspaceId}/plugins`);
+  };
+
+  const handleLikedPlugins = () => {
+    setUserDropdownOpen(false);
+    navigate('/liked-plugins');
   };
 
   const handleWorkspaceSelect = (workspace) => {
@@ -449,6 +454,23 @@ const Marketplace = () => {
                       >
                         <Package className="w-4 h-4 mr-3" />
                         Manage Plugins
+                      </button>
+                      <button
+                        onClick={handleLikedPlugins}
+                        role="menuitem"
+                        className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
+                        style={{
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '14px',
+                          lineHeight: '140%',
+                          fontWeight: 400,
+                          color: 'var(--text-default, #0A0A0A)',
+                          padding: '8px 12px',
+                          borderRadius: '8px'
+                        }}
+                      >
+                        <Heart className="w-4 h-4 mr-3" />
+                        Liked Plugins
                       </button>
                       <button
                         onClick={handleSettings}
