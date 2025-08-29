@@ -48,9 +48,9 @@ const DashboardNav = () => {
     navigate('/settings');
   };
 
-  const handleDeveloperPortal = () => {
+  const handleDeveloperConsole = () => {
     setUserDropdownOpen(false);
-    navigate('/developer-portal');
+    navigate('/developer-console');
   };
 
   const handleManagePlugins = () => {
@@ -166,24 +166,7 @@ const DashboardNav = () => {
 
                     {/* Menu Items */}
                     <button
-                      onClick={handleDashboard}
-                      role="menuitem"
-                      className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
-                      style={{
-                        fontFamily: 'Outfit, sans-serif',
-                        fontSize: '14px',
-                        lineHeight: '140%',
-                        fontWeight: 400,
-                        color: 'var(--text-default, #0A0A0A)',
-                        padding: '8px 12px',
-                        borderRadius: '8px'
-                      }}
-                    >
-                      <LayoutDashboard className="w-4 h-4 mr-3" />
-                      Dashboard
-                    </button>
-                    <button
-                      onClick={handleDeveloperPortal}
+                      onClick={handleDeveloperConsole}
                       role="menuitem"
                       className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
                       style={{
@@ -197,7 +180,7 @@ const DashboardNav = () => {
                       }}
                     >
                       <Building2 className="w-4 h-4 mr-3" />
-                      Developer Portal
+                      Developer Console
                     </button>
                     <button
                       onClick={handleManagePlugins}

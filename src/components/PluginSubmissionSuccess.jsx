@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircle, ArrowLeft } from 'lucide-react';
 import { authService } from '../services/authService';
-import '../DeveloperPortal.css';
+import '../DeveloperConsole.css';
 
 function PluginSubmissionSuccess() {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ function PluginSubmissionSuccess() {
               <circle cx="12" cy="12" r="10" fill="white"/>
               <path d="M8 12L12 8L16 12L12 16L8 12Z" fill="#2C3E50"/>
             </svg>
-            <span className="logo-text">Developer Portal</span>
+            <span className="logo-text">Developer Console</span>
           </div>
           {/* User avatar - positioned at top right */}
           <div className="user-avatar">
@@ -72,7 +72,7 @@ function PluginSubmissionSuccess() {
           <div className="nav-section">
             <div className="nav-title">Get Started</div>
             <a href="/documentation" className="nav-item">Documentation</a>
-            <Link to="/developer-portal/new" className="nav-item">Submit plugin</Link>
+            <Link to="/developer-console/new" className="nav-item">Submit plugin</Link>
             <Link to="/edit" className="nav-item">Manage plugin</Link>
           </div>
         </div>
@@ -406,11 +406,11 @@ function PluginSubmissionSuccess() {
                 transition: 'background-color 0.2s'
               }}
             >
-              Back to Developer Portal
+              Back to Developer Console
             </Link>
 
             <Link
-              to="/developer-portal/new"
+              to="/developer-console/new"
               style={{
                 display: 'flex',
                 alignItems: 'center',

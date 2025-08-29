@@ -26,7 +26,7 @@ const PluginEdit = () => {
 
   const [pluginFormData, setPluginFormData] = useState({
     name: currentPlugin.title,
-    status: 'Public',
+    status: 'Published',
     description: currentPlugin.description,
     functionTags: currentPlugin.tags.slice(0, 3),
     images: [
@@ -87,12 +87,7 @@ const PluginEdit = () => {
   ];
 
 
-  const handleStatusToggle = () => {
-    setPluginFormData(prev => ({
-      ...prev,
-      status: prev.status === 'Public' ? 'Draft' : 'Public'
-    }));
-  };
+  // Status is now handled by dropdown change event directly
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -598,84 +593,106 @@ const PluginEdit = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FEFAF0' }}>
+    <div className="h-screen flex flex-col" style={{ backgroundColor: '#FCFAF4' }}>
       {/* Header */}
       <DashboardNav />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <nav className="mb-8">
-          <div className="text-sm" style={{ fontFamily: 'Outfit' }}>
-            <button
-              onClick={() => navigate(`/workspace/${companyToWorkspace[currentPlugin.company]}`)}
-              className="hover:underline"
-              style={{ 
-                color: 'var(--function-link, #0089D4)',
-                fontFamily: /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(currentPlugin.company) ? '"Noto Sans JP"' : 'Outfit',
-                fontSize: '14px',
-                fontStyle: 'normal',
-                fontWeight: 400,
-                lineHeight: '140%',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer'
-              }}
-            >
-              {currentPlugin.company}
-            </button>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-600">{currentPlugin.title}</span>
-          </div>
-        </nav>
+      <div className="flex-1 flex" style={{ height: 'calc(100vh - 64px)' }}>
 
-        <div className="flex gap-8">
-          {/* Left Sidebar */}
-          <div className="w-64 flex-shrink-0">
-            <div className="bg-white rounded-lg shadow-sm">
-              {sidebarItems.map((item) => {
-                const IconComponent = item.icon;
-                const isActive = item.id === activeSection;
-                
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    aria-current={isActive ? 'page' : undefined}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 text-left transition-colors ${
-                      isActive 
-                        ? 'text-white' 
-                        : 'text-gray-700 hover:bg-gray-50'
-                    } ${item.id === 'General' ? 'rounded-t-lg' : ''} ${item.id === 'Danger Zone' ? 'rounded-b-lg' : ''}`}
-                    style={{ 
-                      fontFamily: 'Outfit', 
-                      fontSize: '14px', 
-                      fontWeight: 500,
-                      backgroundColor: isActive ? '#2CC3FF' : 'transparent'
-                    }}
-                  >
-                    <IconComponent className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </button>
-                );
-              })}
+        <div className="flex gap-0">
+          {/* Left Sidebar - Updated to match new design */}
+          <div className="w-72 flex-shrink-0 bg-white border border-gray-300 shadow-sm" style={{ backgroundColor: '#FCFAF4' }}>
+            <div className="p-6">
+              {/* Workspace Header */}
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
+                  RE
+                </div>
+                <div className="flex flex-col">
+                  <h2 className="font-normal text-black" style={{ fontFamily: 'Outfit', fontSize: '20px', lineHeight: '1.4' }}>
+                    Developer Console
+                  </h2>
+                  <div className="text-xs text-gray-500" style={{ fontFamily: 'Outfit' }}>
+                    Re:Earth
+                  </div>
+                </div>
+              </div>
+              
+              {/* Workspace Selection */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-medium text-black" style={{ fontFamily: 'Outfit', fontSize: '14px' }}>
+                    Workspace
+                  </span>
+                  <span className="text-blue-600 cursor-pointer" style={{ fontFamily: 'Outfit', fontSize: '12px', color: '#00A2EA' }}>
+                    Switch
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 px-2 py-1.5 rounded-sm">
+                  <div className="w-7 h-7 rounded-md bg-emerald-500 flex-shrink-0"></div>
+                  <span className="font-normal text-black overflow-hidden text-ellipsis" style={{ 
+                    fontFamily: /[぀-ゟ゠-ヿ一-龯]/.test(currentPlugin?.company || '') ? '"Noto Sans JP", sans-serif' : 'Outfit, sans-serif',
+                    fontSize: '14px'
+                  }}>
+                    {currentPlugin?.company || '株式会社福山コンサルタント'}
+                  </span>
+                </div>
+              </div>
+              
+              {/* Plugin Title */}
+              <div className="mb-3">
+                <h3 className="font-medium text-gray-700" style={{ fontFamily: 'Outfit', fontSize: '16px', color: '#737373' }}>
+                  {currentPlugin?.title || '3D Building Visualization'}
+                </h3>
+              </div>
+              
+              {/* Editor Navigation Items - Integrated with Developer Console */}
+              <div className="space-y-0">
+                {sidebarItems.map((item) => {
+                  const IconComponent = item.icon;
+                  const isActive = item.id === activeSection;
+                  
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => scrollToSection(item.id)}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`w-full flex items-center gap-2 px-2 py-2 text-left transition-colors rounded-md ${
+                        isActive 
+                          ? 'text-white'
+                          : 'text-black hover:bg-gray-50'
+                      }`}
+                      style={{ 
+                        fontFamily: 'Outfit', 
+                        fontSize: '14px',
+                        backgroundColor: isActive ? '#00A2EA' : 'transparent'
+                      }}
+                    >
+                      <IconComponent className="w-4 h-4" />
+                      <span className="flex-1">{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1" ref={contentContainerRef} style={{ overflowY: 'auto', height: 'calc(100vh - 120px)', scrollBehavior: 'smooth' }}>
-            <div className="bg-white rounded-lg shadow-sm p-8">
-              {/* Header */}
-              <div className="mb-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h1 
-                    className="text-2xl font-semibold text-gray-900"
-                    style={{ fontFamily: 'Outfit' }}
-                    tabIndex="-1"
-                    role="heading"
-                    aria-level="1"
-                  >
+          <div className="flex-1 bg-white" ref={contentContainerRef} style={{ overflowY: 'auto', height: 'calc(100vh - 120px)', scrollBehavior: 'smooth' }}>
+            <div className="border-b border-gray-200 p-6">
+              {/* Breadcrumb */}
+              <div className="mb-8">
+                <p className="font-normal text-black" style={{ fontFamily: 'Outfit', fontSize: '24px', lineHeight: '1.4' }}>
+                  <span>Plugins / </span>
+                  <span>{currentPlugin?.title || '3D Building Visualization'}</span>
+                </p>
+              </div>
+              
+              {/* Section Header */}
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start gap-2">
+                  <h1 className="font-normal text-black" style={{ fontFamily: 'Outfit', fontSize: '24px', lineHeight: '1.4' }}>
                     {activeSection}
                   </h1>
                   {activeSection === 'Version' && (
@@ -700,82 +717,90 @@ const PluginEdit = () => {
                     </button>
                   )}
                 </div>
-                <p 
-                  style={{ 
-                    color: 'var(--text-default, #0A0A0A)',
-                    fontFamily: 'Outfit',
-                    fontSize: '14px',
-                    fontStyle: 'normal',
-                    fontWeight: 400,
-                    lineHeight: '140%'
-                  }}
-                >
-                  {activeSection === 'General' && 'General and Basic Settings of the Project'}
-                  {activeSection === 'README' && 'This will be shown as the plugin\'s Overview—describe what it does and how to use it.'}
-                  {activeSection === 'Version' && 'Edit the changelog for each version. Version numbers are automatically loaded from the plugin\'s YML file.'}
-                  {activeSection === 'Danger Zone' && ''}
-                </p>
-                <div className="mt-4 border-b border-gray-200"></div>
+                <div className="flex gap-2">
+                  <p className="font-normal text-black" style={{ fontFamily: 'Outfit', fontSize: '14px', color: '#0A0A0A' }}>
+                    {activeSection === 'General' && 'General and Basic Settings of the Project'}
+                    {activeSection === 'README' && 'This will be shown as the plugin\'s Overview—describe what it does and how to use it.'}
+                    {activeSection === 'Version' && 'Edit the changelog for each version. Version numbers are automatically loaded from the plugin\'s YML file.'}
+                    {activeSection === 'Danger Zone' && ''}
+                  </p>
+                </div>
               </div>
+            </div>
+            
+            <div className="p-6">
+              {/* Content sections - header moved to top */}
 
               {/* Content based on active section */}
               {activeSection === 'General' && (
-                <div className="space-y-8" ref={el => sectionRefs.current['General'] = el} data-section="General">
-                {/* Plugin Status */}
-                <div>
+                <div className="space-y-6" ref={el => sectionRefs.current['General'] = el} data-section="General">
+                {/* Plugin Status - Updated to match new design */}
+                <div className="max-w-[720px]">
                   <label 
-                    className="block text-sm font-medium text-gray-900 mb-3"
-                    style={{ fontFamily: 'Outfit' }}
-                  >
-                    Plugin Status <span className="text-red-500">*</span>
-                  </label>
-                  <button
-                    onClick={handleStatusToggle}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
-                    style={{
-                      backgroundColor: pluginFormData.status === 'Public' ? '#2CC3FF' : '#E5E7EB'
+                    className="block font-medium mb-2"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '16px',
+                      color: '#0A0A0A'
                     }}
                   >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        pluginFormData.status === 'Public' ? 'translate-x-6' : 'translate-x-1'
-                      }`}
-                    />
-                  </button>
-                  <span 
-                    className="ml-3 text-sm font-medium text-gray-900"
-                    style={{ fontFamily: 'Outfit' }}
-                  >
-                    {pluginFormData.status}
-                  </span>
+                    Plugin Status
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={pluginFormData.status}
+                      onChange={(e) => setPluginFormData(prev => ({ ...prev, status: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                      style={{ 
+                        fontFamily: 'Outfit',
+                        fontSize: '14px',
+                        color: '#0A0A0A'
+                      }}
+                    >
+                      <option value="Draft">Draft</option>
+                      <option value="Published">Published</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Plugin Name */}
-                <div>
+                <div className="max-w-[720px]">
                   <label 
                     htmlFor="pluginName"
-                    className="block text-sm font-medium text-gray-900 mb-3"
-                    style={{ fontFamily: 'Outfit' }}
+                    className="block font-medium mb-2"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '16px',
+                      color: '#0A0A0A'
+                    }}
                   >
-                    Plugin Name <span className="text-red-500">*</span>
+                    Plugin Name
                   </label>
                   <input
                     type="text"
                     id="pluginName"
                     value={pluginFormData.name}
                     onChange={(e) => setPluginFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '14px',
+                      color: '#0A0A0A'
+                    }}
                   />
                 </div>
 
                 {/* Plugin Image */}
-                <div>
+                <div className="max-w-[720px]">
                   <label 
-                    className="block text-sm font-medium text-gray-900 mb-3"
-                    style={{ fontFamily: 'Outfit' }}
+                    className="block font-medium mb-2"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '16px',
+                      color: '#0A0A0A'
+                    }}
                   >
-                    Plugin Image <span className="text-red-500">*</span>
+                    Plugin Image <span style={{ color: '#DC2626' }}>*</span>
                   </label>
                   
                   <div className="mb-4">
@@ -787,24 +812,39 @@ const PluginEdit = () => {
                       onChange={handleImageUpload}
                       className="hidden"
                     />
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 focus:outline-none"
-                      style={{ fontFamily: 'Outfit' }}
-                    >
-                      Choose File
-                    </button>
-                    <span 
-                      className="ml-3 text-sm text-gray-500"
-                      style={{ fontFamily: 'Outfit' }}
-                    >
-                      No file chosen
-                    </span>
+                    <div className="flex items-center gap-2 w-full px-3 py-2 border border-gray-200 rounded-md bg-white">
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="font-medium"
+                        style={{ 
+                          fontFamily: 'Outfit',
+                          fontSize: '14px',
+                          color: '#0A0A0A'
+                        }}
+                      >
+                        Choose File
+                      </button>
+                      <span 
+                        className="font-normal"
+                        style={{ 
+                          fontFamily: 'Outfit',
+                          fontSize: '14px',
+                          color: '#0A0A0A'
+                        }}
+                      >
+                        No file chosen
+                      </span>
+                    </div>
                   </div>
 
                   <p 
-                    className="text-sm text-gray-500 mb-4"
-                    style={{ fontFamily: 'Outfit' }}
+                    className="font-normal mb-4"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '12px',
+                      color: '#737373',
+                      lineHeight: '1.4'
+                    }}
                   >
                     Upload at least one plugin screenshot or cover image (Recommended: 1280×800 pixels)
                   </p>
@@ -813,28 +853,27 @@ const PluginEdit = () => {
                   <div className="flex gap-3">
                     {pluginFormData.images.map((image, index) => (
                       <div key={index} className="relative group">
-                        <img
-                          src={image}
-                          alt={`Plugin ${index + 1}`}
-                          className="w-16 h-16 object-cover rounded-md border"
+                        <div 
+                          className="w-[55px] h-[55px] bg-cover bg-center bg-no-repeat rounded-md"
+                          style={{ backgroundImage: `url(${image})` }}
                         />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 rounded-md transition-all flex items-center justify-center">
-                          <div className="opacity-0 group-hover:opacity-100 flex gap-1 transition-all">
-                            <button
-                              onClick={() => openImageEditor(image, index)}
-                              className="w-5 h-5 bg-blue-500 text-white rounded-full text-xs hover:bg-blue-600 focus:outline-none flex items-center justify-center"
-                              title="Edit"
-                            >
-                              ✎
-                            </button>
-                            <button
-                              onClick={() => removeImage(index)}
-                              className="w-5 h-5 bg-gray-800 text-white rounded-full hover:bg-gray-900 flex items-center justify-center"
-                              title="Delete"
-                            >
-                              <X className="w-3 h-3" />
-                            </button>
-                          </div>
+                        <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => removeImage(index)}
+                            className="w-3 h-3 bg-gray-800 rounded-full hover:bg-gray-900 flex items-center justify-center"
+                            title="Delete"
+                          >
+                            <X className="w-2 h-2 text-white" />
+                          </button>
+                        </div>
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <button
+                            onClick={() => openImageEditor(image, index)}
+                            className="w-6 h-6 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-70 flex items-center justify-center"
+                            title="Edit"
+                          >
+                            ✎
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -842,11 +881,15 @@ const PluginEdit = () => {
                 </div>
 
                 {/* Description */}
-                <div>
+                <div className="max-w-[720px]">
                   <label 
                     htmlFor="description"
-                    className="block text-sm font-medium text-gray-900 mb-3"
-                    style={{ fontFamily: 'Outfit' }}
+                    className="block font-medium mb-2"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '16px',
+                      color: '#0A0A0A'
+                    }}
                   >
                     Description
                   </label>
@@ -855,68 +898,92 @@ const PluginEdit = () => {
                     value={pluginFormData.description}
                     onChange={(e) => setPluginFormData(prev => ({ ...prev, description: e.target.value }))}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '14px',
+                      color: '#0A0A0A',
+                      resize: 'none'
+                    }}
                   />
                   <p 
-                    className="mt-2 text-sm text-gray-500"
-                    style={{ fontFamily: 'Outfit' }}
+                    className="mt-1 font-normal"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '12px',
+                      color: '#737373',
+                      lineHeight: '1.4'
+                    }}
                   >
                     Provide a detailed description of what your plugin does and its key features.
                   </p>
                 </div>
 
                 {/* Function Tag */}
-                <div>
+                <div className="max-w-[720px]">
                   <label 
-                    className="block text-sm font-medium text-gray-900 mb-3"
-                    style={{ fontFamily: 'Outfit' }}
+                    className="block font-medium mb-2"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '16px',
+                      color: '#0A0A0A'
+                    }}
                   >
                     Function Tag
                   </label>
                   
-                  {/* Existing Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  {/* Tag Input Container */}
+                  <div className="w-full px-3 py-2 border border-gray-200 rounded-md bg-white flex items-center gap-2 flex-wrap min-h-[40px]">
+                    {/* Existing Tags */}
                     {pluginFormData.functionTags.map((tag, index) => (
                       <span
                         key={index}
-                        className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded"
-                        style={{ fontFamily: 'Outfit' }}
+                        className="inline-flex items-center px-2 py-1 bg-gray-100 rounded-full border border-gray-200"
+                        style={{ height: '28px' }}
                       >
-                        {tag}
+                        <span 
+                          style={{ 
+                            fontFamily: 'Outfit',
+                            fontSize: '14px',
+                            color: '#A1A1A1',
+                            fontWeight: 500
+                          }}
+                        >
+                          {tag}
+                        </span>
                         <button
                           onClick={() => removeTag(tag)}
-                          className="ml-2 text-gray-500 hover:text-gray-700"
+                          className="ml-1 text-gray-500 hover:text-gray-700"
                         >
                           <X className="w-3 h-3" />
                         </button>
                       </span>
                     ))}
-                  </div>
-
-                  {/* Add New Tag */}
-                  <div className="flex gap-2">
+                    
+                    {/* Add New Tag Input */}
                     <input
                       type="text"
                       value={newTag}
                       onChange={(e) => setNewTag(e.target.value)}
                       onKeyPress={handleTagKeyPress}
-                      placeholder="Add a tag"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      style={{ fontFamily: 'Outfit', fontSize: '14px' }}
+                      placeholder={pluginFormData.functionTags.length === 0 ? "Add a tag" : ""}
+                      className="flex-1 min-w-[100px] bg-transparent border-none outline-none"
+                      style={{ 
+                        fontFamily: 'Outfit',
+                        fontSize: '14px',
+                        color: '#0A0A0A'
+                      }}
                     />
-                    <button
-                      onClick={addTag}
-                      className="px-4 py-2 text-white rounded-md hover:opacity-90 focus:outline-none"
-                      style={{ fontFamily: 'Outfit', fontSize: '14px', backgroundColor: '#00A2EA' }}
-                    >
-                      Add
-                    </button>
                   </div>
                   
                   <p 
-                    className="mt-2 text-sm text-gray-500"
-                    style={{ fontFamily: 'Outfit' }}
+                    className="mt-1 font-normal"
+                    style={{ 
+                      fontFamily: 'Outfit',
+                      fontSize: '12px',
+                      color: '#737373',
+                      lineHeight: '1.4'
+                    }}
                   >
                     Add function tags to help users discover your plugin. Separate multiple tags with commas.
                   </p>
@@ -1504,25 +1571,39 @@ const PluginEdit = () => {
 
               {/* Action Buttons - only show for General section */}
               {activeSection === 'General' && (
-              <div className="flex gap-4 mt-8 pt-6 border-t border-gray-200">
+              <div className="flex gap-3 items-center justify-end mt-6">
                 <button
                   onClick={handleSave}
-                  className="text-white px-6 py-2 rounded-md font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  style={{ fontFamily: 'Outfit', backgroundColor: '#00A2EA' }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:opacity-90 focus:outline-none border border-blue-600"
+                  style={{ 
+                    fontFamily: 'Outfit',
+                    fontSize: '14px',
+                    backgroundColor: '#00A2EA',
+                    borderColor: '#00A2EA'
+                  }}
                 >
-                  Save
+                  Update
                 </button>
                 <button
                   onClick={handlePreview}
-                  className="bg-gray-100 text-gray-700 px-6 py-2 rounded-md font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                  style={{ fontFamily: 'Outfit' }}
+                  className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-gray-50 focus:outline-none border border-blue-600"
+                  style={{ 
+                    fontFamily: 'Outfit',
+                    fontSize: '14px',
+                    color: '#00A2EA',
+                    borderColor: '#00A2EA'
+                  }}
                 >
                   Preview
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="bg-gray-100 text-gray-700 px-6 py-2 rounded-md font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                  style={{ fontFamily: 'Outfit' }}
+                  className="bg-white text-gray-700 px-4 py-2 rounded-md font-medium hover:bg-gray-50 focus:outline-none border border-gray-200"
+                  style={{ 
+                    fontFamily: 'Outfit',
+                    fontSize: '14px',
+                    color: '#212121'
+                  }}
                 >
                   Cancel
                 </button>
@@ -1717,20 +1798,6 @@ const PluginEdit = () => {
           </div>
         </div>
       )}
-
-      {/* Footer */}
-      <footer className="border-t border-gray-200" style={{ marginTop: '24px' }}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
-            <span>© 2024 Re:Earth contributors</span>
-            <a href="https://reearth.io/terms" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Terms</a>
-            <a href="https://reearth.io/privacy" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Privacy</a>
-            <a href="https://reearth.io/cookies" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Cookies</a>
-            <a href="https://reearth.io/cookie-settings" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Cookie Settings</a>
-            <a href="https://reearth.io/contact" className="hover:text-gray-700 transition-colors" target="_blank" rel="noopener noreferrer">Contact</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

@@ -8,8 +8,7 @@ A comprehensive marketplace implementation for the Re:Earth geospatial platform,
 - **Plugin Discovery**: Browse and search through a comprehensive plugin catalog
 - **User Authentication**: Secure login system with protected routes and session management
 - **Plugin Management**: Upload, edit, and manage plugins with status controls (Draft/Public)
-- **Dashboard Interface**: Professional user dashboard with workspace management and project organization
-- **Developer Portal**: Dedicated developer workspace with embedded plugin editing, multi-workspace support, and comprehensive plugin management
+- **Developer Console**: Dedicated developer workspace with embedded plugin editing, multi-workspace support, and comprehensive plugin management
 - **Responsive Design**: Seamless experience across desktop, tablet, and mobile devices
 
 ### Advanced Functionality
@@ -17,7 +16,7 @@ A comprehensive marketplace implementation for the Re:Earth geospatial platform,
 - **Plugin Status Toggle**: Switch between Draft and Public states for plugin visibility
 - **Real-time Search**: Dynamic filtering and search functionality across the plugin catalog
 - **Workspace Management**: Organize plugins across personal and team workspaces with individual workspace views
-- **Developer Portal Access**: Universal access to developer tools through avatar dropdown navigation
+- **Developer Console Access**: Universal access to developer tools through avatar dropdown navigation
 - **Multi-Workspace Support**: Switch between personal and team workspaces with member count display
 - **Plugin Visibility Controls**: Comprehensive filtering by visibility status (All, Public, Private, Draft)
 - **Company Branding**: Individual workspace interfaces with company-specific avatars and branding
@@ -50,7 +49,7 @@ Re:Earth Marketplace/
 ├── src/
 │   ├── components/
 │   │   ├── Dashboard.jsx            # User dashboard with workspace management
-│   │   ├── DashboardNav.jsx         # Specialized navigation for dashboard pages
+│   │   ├── DashboardNav.jsx         # Specialized navigation for authenticated pages
 │   │   ├── Login.jsx                # Authentication component
 │   │   ├── Marketplace.jsx          # Main marketplace interface
 │   │   ├── PluginCard.jsx           # Individual plugin card component
@@ -58,8 +57,8 @@ Re:Earth Marketplace/
 │   │   ├── PluginEdit.jsx           # Plugin editing with status toggle
 │   │   ├── PluginUpload.jsx         # Plugin upload with GitHub integration
 │   │   ├── Workspace.jsx            # Individual workspace interface with company branding
-│   │   ├── DeveloperPortal.jsx      # Developer Portal main interface with embedded plugin editing
-│   │   ├── DeveloperPortalEntry.jsx # Workspace selection modal for Developer Portal entry
+│   │   ├── DeveloperConsole.jsx      # Developer Console main interface with embedded plugin editing
+│   │   ├── DeveloperConsoleEntry.jsx # Workspace selection modal for Developer Console entry
 │   │   ├── DeveloperPluginEdit.jsx  # Developer-specific plugin editing interface
 │   │   ├── DeveloperPluginUpload.jsx# Developer-specific plugin upload interface
 │   │   ├── PluginInstallModal.jsx   # Plugin installation modal interface
@@ -72,12 +71,11 @@ Re:Earth Marketplace/
 │   │   └── pluginService.js         # Plugin data services
 │   ├── utils/
 │   │   └── randomGenerator.js       # Utility functions
-│   ├── Dashboard.css                # Dashboard-specific styling
-│   ├── DeveloperPortal.css          # Developer Portal styling
+│   ├── DeveloperConsole.css          # Developer Console styling
 │   ├── PluginEdit.css              # Plugin editing interface styling
 │   ├── PluginUpload.css            # Plugin upload interface styling
 │   └── App.js                       # Main application component
-├── developer-portal-login.html      # Standalone Developer Portal login page
+├── developer-console-login.html      # Standalone Developer Console login page
 ├── markdown-editor.html             # Standalone markdown editor interface
 ├── markdown-editor.css              # Markdown editor styling
 ├── markdown-editor.js               # Markdown editor functionality
@@ -140,8 +138,8 @@ The project is optimized for Netlify deployment with:
 
 ### Color Palette
 - **Primary Blue**: #0089D4 for accents and interactive elements
-- **Teal Accent**: #4A9B9B for Developer Portal login elements
-- **Background**: #FEFAF0 for main page background, #8B8B92 for Developer Portal login
+- **Teal Accent**: #4A9B9B for Developer Console login elements
+- **Background**: #FEFAF0 for main page background, #8B8B92 for Developer Console login
 - **Cards**: White backgrounds with subtle shadows and 16px rounded corners
 - **Form Elements**: Grey input fields (#F5F5F5) with focus states (#EBEBEB)
 - **Text**: Various gray shades for hierarchy and readability
@@ -158,14 +156,7 @@ The project is optimized for Netlify deployment with:
 - Protected routes for authenticated features
 - Avatar dropdown with user information and navigation
 
-### Dashboard Interface
-- Full-width responsive layout with sidebar navigation
-- Workspace management (Personal/Team groups)
-- Project tabs with plugin organization
-- Activity tracking and shortcuts
-- Individual workspace views with company branding
-
-### Developer Portal System
+### Developer Console System
 - **Workspace Selection**: Modal interface with 5 workspace options (personal and team types)
 - **Plugin Management Dashboard**: Comprehensive plugin overview with visibility controls
 - **Multi-Workspace Support**: Switch between 8 different company workspaces
@@ -174,7 +165,7 @@ The project is optimized for Netlify deployment with:
 - **Plugin Statistics**: Display download counts, like counts, and update timestamps
 - **Navigation Integration**: Direct access from avatar dropdown menus across all components
 - **Embedded Plugin Editing**: In-place editing triggered by plugin card clicks with full management capabilities
-- **Single-Column Edit Interface**: Streamlined editing experience within Developer Portal context
+- **Single-Column Edit Interface**: Streamlined editing experience within Developer Console context
 - **State-Driven Navigation**: Seamless transitions between list and edit views without route changes
 
 ### Plugin Management
@@ -187,8 +178,7 @@ The project is optimized for Netlify deployment with:
 
 ### Navigation System
 - **Main Navigation**: Full marketplace header with user authentication
-- **Dashboard Navigation**: Specialized nav for dashboard pages with logo
-- **Developer Portal Access**: Universal access through avatar dropdown menus
+- **Developer Console Access**: Universal access through avatar dropdown menus
 - **Consistent UX**: Unified experience across all application sections
 
 ## 🔗 Integration Features
@@ -228,21 +218,21 @@ Supports all modern browsers:
   - Includes View button (navigates to plugin detail page) and Close button for dismissal
   - Auto-dismisses after 5 seconds with proper cleanup using setTimeout
   - Shows notification regardless of form validation status for immediate user feedback
-- **Developer Portal Routing Optimization**: Streamlined navigation structure
-  - Removed redundant welcome page at `/developer-portal/manage` for cleaner user flow
-  - Consolidated to single welcome page at `/developer-portal` (DeveloperPortalEntry)
-  - Updated routing: `/developer-portal/workspace` → DeveloperPortal main interface
-  - Enhanced routing: `/developer-portal/workspace/:pluginId` → DeveloperPortal plugin editing
+- **Developer Console Routing Optimization**: Streamlined navigation structure
+  - Removed redundant welcome page at `/developer-console/manage` for cleaner user flow
+  - Consolidated to single welcome page at `/developer-console` (DeveloperConsoleEntry)
+  - Updated routing: `/developer-console/workspace` → DeveloperConsole main interface
+  - Enhanced routing: `/developer-console/workspace/:pluginId` → DeveloperConsole plugin editing
   - Updated all navigation links across components to use new streamlined routing structure
-- **Sidebar Navigation Consistency**: Unified layout across Developer Portal pages
-  - Updated PluginUpload.jsx to match Developer Portal sidebar layout standards
+- **Sidebar Navigation Consistency**: Unified layout across Developer Console pages
+  - Updated PluginUpload.jsx to match Developer Console sidebar layout standards
   - Integrated consistent workspace selector with dropdown functionality
   - Added proper navigation links with active state highlighting (#116993)
   - Implemented avatar dropdown in top-right corner for consistent user experience
 - **Enhanced User Experience Improvements**:
   - Submit Plugin button is always clickable regardless of form validation for better UX
   - Removed default selection for Version Labels (no pre-selected "bug-fix" label)
-  - Updated both Developer Portal and regular upload contexts with consistent behavior
+  - Updated both Developer Console and regular upload contexts with consistent behavior
   - Professional notification system provides immediate feedback for all submission attempts
 
 ### Previous Updates (August 21, 2025)
@@ -259,18 +249,18 @@ Supports all modern browsers:
   - Clickable version labels (Bug Fix, New Feature, Doc Update, UI Update) with visual feedback
   - Complete form validation with save, cancel, and delete operations
 - **Navigation System Improvements**: Fixed breadcrumb links and routing reliability
-  - Updated "Developer Portal" breadcrumbs to navigate properly to `/developer-portal/manage`
+  - Updated "Developer Console" breadcrumbs to navigate properly to `/developer-console/manage`
   - Reliable save and delete actions returning to correct plugin list pages
   - Enhanced cross-component routing consistency
 - **Layout Optimizations**: Refined spacing and visual hierarchy
   - Reduced header-to-content spacing from 32px to 24px for better visual balance
-  - Optimized Developer Portal container padding from 24px to 16px for improved content density
-  - Consistent spacing patterns across all Developer Portal interfaces
+  - Optimized Developer Console container padding from 24px to 16px for improved content density
+  - Consistent spacing patterns across all Developer Console interfaces
 
 ### Previous Updates (August 20, 2025)
 
-### Developer Portal Interface Enhancements
-- **Avatar Dropdown Menu**: Added clickable avatar in Developer Portal with dropdown menu containing Marketplace, Dashboard, Setting, and Logout options
+### Developer Console Interface Enhancements
+- **Avatar Dropdown Menu**: Added clickable avatar in Developer Console with dropdown menu containing Marketplace, Setting, and Logout options
   - Consistent styling with 36px height and proper highlight states
   - Smooth hover animations with background color transitions
   - Proper click-outside handling for improved user experience
@@ -279,7 +269,7 @@ Supports all modern browsers:
   - ChevronDown icon with smooth rotation animation on open/close
   - Enhanced visual hierarchy and accessibility
 - **Sidebar Navigation Improvements**:
-  - Made logo and title clickable to navigate to /developer-portal/manage
+  - Made logo and title clickable to navigate to /developer-console/manage
   - Removed border/separator line below logo for cleaner design
   - Extended sidebar to full viewport height with fixed positioning
   - Enhanced Documentation menu item with NewTab icon linking to external visualizer.developer.reearth.io
@@ -292,8 +282,8 @@ Supports all modern browsers:
   - Standardized all dropdown menu items to 36px height
   - Achieved perfect vertical and horizontal alignment of icons and text elements
 
-### Developer Portal Standalone Login Page
-- **New Authentication Interface**: Created `developer-portal-login.html` as a dedicated Developer Portal login page
+### Developer Console Standalone Login Page
+- **New Authentication Interface**: Created `developer-console-login.html` as a dedicated Developer Console login page
 - **Modern Card Design**: Professional card-based layout with rounded corners (16px), shadow effects, and clean visual hierarchy
 - **Tabbed Authentication**: Seamless switching between Login and Sign Up modes with active state indicators
 - **Responsive Form Design**: Grey input fields (#F5F5F5) with enhanced focus states (#EBEBEB) and proper spacing (16px padding)
@@ -302,14 +292,14 @@ Supports all modern browsers:
 - **JavaScript Functionality**: Dynamic tab switching, form submission handling, and loading state management
 - **Mobile Optimization**: Responsive design that adapts to mobile devices (max-width: 480px)
 - **Typography Consistency**: Consistent Outfit font family usage matching the project design system
-- **Integration Ready**: Form submission handling configured for Developer Portal workflow integration
+- **Integration Ready**: Form submission handling configured for Developer Console workflow integration
 
 ### Previous Updates
 
-### Developer Portal Enhanced Plugin Editing
-- **Embedded Plugin Editing**: Implemented in-place plugin editing directly within the Developer Portal interface
-- **Single-Click Edit Access**: Plugin cards in Developer Portal now open comprehensive editing interface with single click
-- **Seamless Navigation**: Smooth transitions between plugin list and edit views without leaving Developer Portal context
+### Developer Console Enhanced Plugin Editing
+- **Embedded Plugin Editing**: Implemented in-place plugin editing directly within the Developer Console interface
+- **Single-Click Edit Access**: Plugin cards in Developer Console now open comprehensive editing interface with single click
+- **Seamless Navigation**: Smooth transitions between plugin list and edit views without leaving Developer Console context
 - **Integrated Editing Capabilities**: Full plugin management including:
   - General plugin information editing
   - README markdown editor with Edit/Preview modes
@@ -317,19 +307,19 @@ Supports all modern browsers:
   - Plugin Status toggle (Draft/Public)
   - Danger Zone for plugin deletion
 - **State Management**: Sophisticated view state handling for smooth user experience
-- **Consistent UI**: Maintains existing Developer Portal design patterns and interaction flows
+- **Consistent UI**: Maintains existing Developer Console design patterns and interaction flows
 
-### Developer Portal Implementation (August 18, 2025)
-- **Comprehensive Developer Workspace**: Full-featured Developer Portal with multi-workspace support and advanced plugin management
+### Developer Console Implementation (August 18, 2025)
+- **Comprehensive Developer Workspace**: Full-featured Developer Console with multi-workspace support and advanced plugin management
 - **Workspace Selection Interface**: Modal workspace selector with 5 workspace options including personal and team types with member counts
-- **Universal Portal Access**: Developer Portal links added to avatar dropdown menus across all components (DashboardNav, Marketplace, PluginDetail)
+- **Universal Console Access**: Developer Console links added to avatar dropdown menus across all components (Marketplace, PluginDetail)
 - **Advanced Plugin Management**: Real-time search, visibility filtering (All, Public, Private, Draft), and multiple sorting options
 - **Multi-Workspace Support**: Switch between 8 different company workspaces with dynamic plugin lists
 - **Enhanced User Experience**: Professional interface with Japanese typography support and seamless navigation integration
 
 ### Enhanced Navigation & UX
-- **Avatar Dropdown Enhancement**: Consistent Developer Portal access across all application components
-- **Protected Route Integration**: Secure authentication for Developer Portal with proper route protection
+- **Avatar Dropdown Enhancement**: Consistent Developer Console access across all application components
+- **Protected Route Integration**: Secure authentication for Developer Console with proper route protection
 - **Workspace Context Passing**: Seamless transition from workspace selection to portal interface
 - **Professional UI Components**: Modal interfaces with close functionality and proper state management
 
@@ -341,7 +331,7 @@ Supports all modern browsers:
 - **Real Plugin Integration**: Workspace displays actual plugins filtered by company affiliation
 - **Dynamic Navigation**: Seamless navigation between dashboard, workspace, and plugin detail views
 
-### Dashboard & Data Integration
+### Data Integration
 - **Live Plugin Data**: Dashboard now integrates real plugin data with relative time calculations
 - **Enhanced Workspace Navigation**: Dynamic routing to 8 different company workspaces
 - **Improved User Experience**: Plugin cards open in new tabs for better workflow management

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, ChevronDown, X, SearchX, User, LogOut, Settings, LayoutDashboard, Building2, Package, Heart } from 'lucide-react';
+import { Search, ChevronDown, X, SearchX, User, LogOut, Settings, Building2, Package, Heart } from 'lucide-react';
 import PluginCard from './PluginCard';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
@@ -57,19 +57,15 @@ const Marketplace = () => {
     navigate('/');
   };
 
-  const handleDashboard = () => {
-    setUserDropdownOpen(false);
-    navigate('/dashboard');
-  };
 
   const handleSettings = () => {
     setUserDropdownOpen(false);
     navigate('/settings');
   };
 
-  const handleDeveloperPortal = () => {
+  const handleDeveloperConsole = () => {
     setUserDropdownOpen(false);
-    navigate('/developer-portal');
+    navigate('/developer-console');
   };
 
   const handleManagePlugins = () => {
@@ -405,24 +401,7 @@ const Marketplace = () => {
 
                       {/* Menu Items */}
                       <button
-                        onClick={handleDashboard}
-                        role="menuitem"
-                        className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
-                        style={{
-                          fontFamily: 'Outfit, sans-serif',
-                          fontSize: '14px',
-                          lineHeight: '140%',
-                          fontWeight: 400,
-                          color: 'var(--text-default, #0A0A0A)',
-                          padding: '8px 12px',
-                          borderRadius: '8px'
-                        }}
-                      >
-                        <LayoutDashboard className="w-4 h-4 mr-3" />
-                        Dashboard
-                      </button>
-                      <button
-                        onClick={handleDeveloperPortal}
+                        onClick={handleDeveloperConsole}
                         role="menuitem"
                         className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
                         style={{
@@ -436,7 +415,7 @@ const Marketplace = () => {
                         }}
                       >
                         <Building2 className="w-4 h-4 mr-3" />
-                        Developer Portal
+                        Developer Console
                       </button>
                       <button
                         onClick={handleManagePlugins}
@@ -718,7 +697,7 @@ const Marketplace = () => {
                 }}
                 onMouseEnter={(e) => e.target.style.backgroundColor = '#007BB8'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = '#0089D4'}
-                aria-label="Go to Developer Portal"
+                aria-label="Go to Developer Console"
               >
                 <svg 
                   width="16" 

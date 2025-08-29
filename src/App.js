@@ -4,9 +4,9 @@ import Marketplace from './components/Marketplace';
 import PluginDetail from './components/PluginDetail';
 import Login from './components/Login';
 import PluginSubmissionSuccess from './components/PluginSubmissionSuccess';
-import DeveloperPortalEntry from './components/DeveloperPortalEntry';
-import DeveloperPortal from './components/DeveloperPortal';
-import DeveloperPluginUpload from './components/DeveloperPluginUpload';
+import DeveloperConsoleEntry from './components/DeveloperConsoleEntry';
+import DeveloperConsole from './components/DeveloperConsole';
+import DeveloperConsoleUpload from './components/DeveloperConsoleUpload';
 import DashboardNotAvailable from './components/DashboardNotAvailable';
 import Dashboard from './components/Dashboard';
 import Workspace from './components/Workspace';
@@ -35,32 +35,32 @@ function App() {
             } 
           />
           
-          {/* Developer Portal Routes - from Version_1 */}
+          {/* Developer Console Routes - from Version_1 */}
           <Route 
-            path="/developer-portal" 
-            element={<DeveloperPortalEntry />}
+            path="/developer-console" 
+            element={<DeveloperConsoleEntry />}
           />
           <Route 
-            path="/developer-portal/workspace" 
-            element={<DeveloperPortal />}
+            path="/developer-console/workspace" 
+            element={<DeveloperConsole />}
           />
           <Route 
-            path="/developer-portal/workspace/:pluginId" 
-            element={<DeveloperPortal />}
+            path="/developer-console/workspace/:pluginId" 
+            element={<DeveloperConsole />}
           />
           <Route 
-            path="/developer-portal/new" 
+            path="/developer-console/new" 
             element={
               <ProtectedRoute>
-                <DeveloperPluginUpload />
+                <DeveloperConsoleUpload />
               </ProtectedRoute>
             } 
           />
           <Route 
-            path="/developer-portal/submit" 
+            path="/developer-console/submit" 
             element={
               <ProtectedRoute>
-                <DeveloperPluginUpload />
+                <DeveloperConsoleUpload />
               </ProtectedRoute>
             } 
           />
@@ -114,19 +114,19 @@ function App() {
             path="/edit" 
             element={
               <ProtectedRoute>
-                <DeveloperPortal />
+                <DeveloperConsole />
               </ProtectedRoute>
             }
           />
           
-          {/* Redirect legacy routes to new developer portal route */}
+          {/* Redirect legacy routes to new developer console route */}
           <Route 
             path="/plugins/new" 
-            element={<Navigate to="/developer-portal/new" replace />}
+            element={<Navigate to="/developer-console/new" replace />}
           />
           <Route 
             path="/plugin/new" 
-            element={<Navigate to="/developer-portal/new" replace />}
+            element={<Navigate to="/developer-console/new" replace />}
           />
         </Routes>
       </Router>

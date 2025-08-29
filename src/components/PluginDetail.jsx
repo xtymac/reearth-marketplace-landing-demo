@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { ChevronDown, Heart, User, LogOut, Settings, LayoutDashboard, Building2, Package } from 'lucide-react';
+import { ChevronDown, Heart, User, LogOut, Settings, Building2, Package } from 'lucide-react';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';
 import { PluginService, likePlugin, unlikePlugin, isPluginLiked } from '../services/pluginService';
@@ -845,19 +845,15 @@ const PluginDetail = () => {
     navigateWithoutPreview('/');
   };
 
-  const handleDashboard = () => {
-    setUserDropdownOpen(false);
-    navigateWithoutPreview('/dashboard');
-  };
 
   const handleSettings = () => {
     setUserDropdownOpen(false);
     navigateWithoutPreview('/settings');
   };
 
-  const handleDeveloperPortal = () => {
+  const handleDeveloperConsole = () => {
     setUserDropdownOpen(false);
-    navigateWithoutPreview('/developer-portal');
+    navigateWithoutPreview('/developer-console');
   };
 
   const handleLikedPlugins = () => {
@@ -1271,24 +1267,7 @@ const PluginDetail = () => {
 
                       {/* Menu Items */}
                       <button
-                        onClick={handleDashboard}
-                        role="menuitem"
-                        className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
-                        style={{
-                          fontFamily: 'Outfit, sans-serif',
-                          fontSize: '14px',
-                          lineHeight: '140%',
-                          fontWeight: 400,
-                          color: 'var(--text-default, #0A0A0A)',
-                          padding: '8px 12px',
-                          borderRadius: '8px'
-                        }}
-                      >
-                        <LayoutDashboard className="w-4 h-4 mr-3" />
-                        Dashboard
-                      </button>
-                      <button
-                        onClick={handleDeveloperPortal}
+                        onClick={handleDeveloperConsole}
                         role="menuitem"
                         className="flex items-center w-full text-left transition-colors hover:bg-gray-50"
                         style={{
@@ -1302,7 +1281,7 @@ const PluginDetail = () => {
                         }}
                       >
                         <Building2 className="w-4 h-4 mr-3" />
-                        Developer Portal
+                        Developer Console
                       </button>
                       <button
                         onClick={handleManagePlugins}
@@ -1733,7 +1712,7 @@ const PluginDetail = () => {
                 }}
                 onMouseEnter={(e) => e.target.style.backgroundColor = '#007BB8'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = '#0089D4'}
-                aria-label="Go to Developer Portal"
+                aria-label="Go to Developer Console"
               >
                 <svg 
                   width="16" 

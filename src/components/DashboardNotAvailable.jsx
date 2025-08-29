@@ -89,7 +89,7 @@ const DashboardNotAvailable = () => {
             color: '#9CA3AF',
             lineHeight: '1.4'
           }}>
-            Current version includes: <strong>Marketplace + Developer Portal</strong><br/>
+            Current version includes: <strong>Marketplace + Developer Console</strong><br/>
             For Dashboard features, use: <strong>Marketplace + Dashboard version</strong>
           </p>
         </div>

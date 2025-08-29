@@ -14,7 +14,7 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - `plugin-detail.html` - Individual plugin detail page template with comprehensive documentation and change log sections
 - `plugin-detail.css` - Dedicated CSS file for plugin detail page styling with advanced change log functionality
 - `plugin-edit.html` - Plugin editing interface with advanced features
-- `developer-portal-login.html` - Standalone Developer Portal login page with tabbed interface (Login/Sign Up)
+- `developer-console-login.html` - Standalone Developer Console login page with tabbed interface (Login/Sign Up)
 - `markdown-editor.html` - Standalone markdown editor with tabbed interface
 - `markdown-editor.css` - Dedicated CSS for markdown editor styling
 - `markdown-editor.js` - JavaScript functionality for markdown editing and preview
@@ -33,8 +33,8 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - `src/components/Login.jsx` - User authentication and login component
 - `src/components/PluginUpload.jsx` - Plugin upload and management interface with DashboardNav integration and GitHub repository upload option
 - `src/components/PluginEdit.jsx` - Plugin editing interface using DashboardNav with form controls, Plugin Status toggle (Draft/Public), and settings
-- `src/components/DeveloperPortal.jsx` - Developer Portal main interface with workspace management and plugin overview
-- `src/components/DeveloperPortalEntry.jsx` - Workspace selection modal for Developer Portal entry
+- `src/components/DeveloperConsole.jsx` - Developer Console main interface with workspace management and plugin overview
+- `src/components/DeveloperConsoleEntry.jsx` - Workspace selection modal for Developer Console entry
 - `src/components/DeveloperPluginEdit.jsx` - Developer-specific plugin editing interface
 - `src/components/DeveloperPluginUpload.jsx` - Developer-specific plugin upload interface
 - `src/components/ProtectedRoute.jsx` - Route protection wrapper for authenticated pages
@@ -48,11 +48,9 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 ## Architecture
 
 ### Core Components
-- **Navigation System**: Responsive header with proper Re:Earth branding, dropdown menus, consistent typography, and user avatar dropdown with Developer Portal access
-- **Dashboard Navigation**: Specialized DashboardNav component for dashboard-specific pages with dashboard logo and simplified layout
-- **Dashboard System**: Full-width layout with sidebar workspace management, project tabs, and user-friendly interface
+- **Navigation System**: Responsive header with proper Re:Earth branding, dropdown menus, consistent typography, and user avatar dropdown with Developer Console access
 - **Workspace Management**: Individual workspace views with company-specific branding, tabbed interfaces, and plugin organization
-- **Developer Portal System**: Comprehensive developer interface with embedded plugin editing, workspace selection, plugin management, and developer-specific tools
+- **Developer Console System**: Comprehensive developer interface with embedded plugin editing, workspace selection, plugin management, and developer-specific tools
   - In-place plugin editing with single-column layout
   - Direct card-click navigation to editing interface
   - Full plugin management capabilities within portal context
@@ -71,12 +69,11 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **Professional Content**: Comprehensive plugin descriptions with detailed functionality explanations
 - **React Routing**: Single-page application with routing between marketplace, plugin detail, dashboard, workspace, developer portal, login, and upload views
 - **State Management**: React hooks for search, filtering, authentication, workspace management, developer portal state, and plugin data management
-- **User Authentication**: Secure login system with protected routes, user data storage, and avatar dropdown functionality with Developer Portal access
-- **Dashboard Interface**: Comprehensive user dashboard with workspace selection, project tabs, and activity tracking
-- **Developer Portal Interface**: Dedicated developer workspace with plugin management, visibility controls, and multi-workspace support
+- **User Authentication**: Secure login system with protected routes, user data storage, and avatar dropdown functionality with Developer Console access
+- **Developer Console Interface**: Dedicated developer workspace with plugin management, visibility controls, and multi-workspace support
 - **Plugin Upload**: Complete plugin submission workflow with form validation, file handling, and integrated UI
 - **Plugin Management**: Advanced plugin editing with multiple management modes
-  - In-portal editing across Developer Portal and workspace interfaces
+  - In-portal editing across Developer Console and workspace interfaces
   - Plugin Status toggle (Draft/Public states)
   - Single-column embedded editing workflow
   - GitHub repository upload support
@@ -94,8 +91,8 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
   - Professional modal design with comprehensive transformation controls
 
 ### Latest Updates (August 22, 2025)
-- **Comprehensive Image Editing Feature**: Advanced image management and editing capabilities for Developer Portal
-  - **Plugin Gallery Section**: Added to General form section in Developer Portal workspace interface
+- **Comprehensive Image Editing Feature**: Advanced image management and editing capabilities for Developer Console
+  - **Plugin Gallery Section**: Added to General form section in Developer Console workspace interface
     - Multiple file selection with drag-and-drop support for intuitive image upload
     - Grid layout displaying images with 16:10 aspect ratio maintaining visual consistency
     - Remove functionality with confirmation for each image with clear visual feedback
@@ -128,7 +125,7 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
     - Consistent Outfit font family usage throughout the tab interface
   - **Upload Method Toggle**: Seamless switching between local file upload and GitHub repository options
     - Clean tab interface provides intuitive method selection for users
-    - Visual consistency maintained across both Developer Portal and regular upload contexts
+    - Visual consistency maintained across both Developer Console and regular upload contexts
     - Improved user experience with clear visual distinction between selected and unselected states
 - **Comprehensive Notification System**: Real-time user feedback implementation for plugin submissions
   - **Bottom-Right Notification Display**: Professional notification system positioned at bottom-right corner
@@ -145,30 +142,30 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
     - Proper cleanup prevents memory leaks and ensures smooth performance
     - Manual dismissal overrides auto-dismissal for user control
   - **Dual Context Support**: Consistent behavior across different application contexts
-    - Works seamlessly in both Developer Portal and regular upload interfaces
+    - Works seamlessly in both Developer Console and regular upload interfaces
     - State management handles both success and validation scenarios appropriately
-    - Navigation handlers adapt to current context (Developer Portal vs regular upload)
-- **Developer Portal Routing Optimization**: Streamlined navigation architecture for improved user flow
+    - Navigation handlers adapt to current context (Developer Console vs regular upload)
+- **Developer Console Routing Optimization**: Streamlined navigation architecture for improved user flow
   - **Route Structure Simplification**: Removed redundant routing layers for cleaner architecture
-    - Eliminated `/developer-portal/manage` welcome page to reduce navigation complexity
-    - Consolidated to single welcome page at `/developer-portal` using DeveloperPortalEntry component
-    - Maintained workspace-specific routing at `/developer-portal/workspace` for main portal interface
-    - Enhanced plugin editing routing at `/developer-portal/workspace/:pluginId` for embedded editing
+    - Eliminated `/developer-console/manage` welcome page to reduce navigation complexity
+    - Consolidated to single welcome page at `/developer-console` using DeveloperConsoleEntry component
+    - Maintained workspace-specific routing at `/developer-console/workspace` for main portal interface
+    - Enhanced plugin editing routing at `/developer-console/workspace/:pluginId` for embedded editing
   - **Cross-Component Navigation Updates**: Updated all navigation references throughout the application
-    - Fixed breadcrumb links in Developer Portal components to use correct routing structure
+    - Fixed breadcrumb links in Developer Console components to use correct routing structure
     - Updated navigation links across DashboardNav, Marketplace, and PluginDetail components
     - Ensured consistent user experience with predictable navigation patterns
   - **State Management Improvements**: Enhanced routing state handling for smooth transitions
     - Proper workspace context passing between components maintains user session state
     - Navigation state persistence ensures users don't lose context during routing operations
     - Error handling for invalid routes with appropriate fallback mechanisms
-- **Sidebar Navigation Standardization**: Unified Developer Portal layout consistency
-  - **PluginUpload Component Integration**: Updated to match Developer Portal sidebar standards
+- **Sidebar Navigation Standardization**: Unified Developer Console layout consistency
+  - **PluginUpload Component Integration**: Updated to match Developer Console sidebar standards
     - Consistent workspace selector dropdown with proper styling and functionality
     - Navigation links with active state highlighting using #116993 color scheme
     - Integrated avatar dropdown in top-right corner for unified user experience
   - **Layout Consistency**: Standardized spacing, typography, and interaction patterns
-    - Uniform sidebar layout across all Developer Portal pages for visual consistency
+    - Uniform sidebar layout across all Developer Console pages for visual consistency
     - Consistent hover effects and transition animations throughout the interface
     - Proper responsive behavior maintained across different screen sizes
 - **User Experience Enhancements**: Multiple improvements for better user interaction
@@ -208,8 +205,8 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
     - Real-time tag selection with immediate visual feedback
     - Proper form reset on cancel and successful submission
 - **Navigation System Improvements**: Enhanced breadcrumb and routing reliability
-  - **Developer Portal Navigation**: Fixed breadcrumb links for consistent navigation
-    - Updated "Developer Portal" breadcrumb links to properly navigate to `/developer-portal/manage`
+  - **Developer Console Navigation**: Fixed breadcrumb links for consistent navigation
+    - Updated "Developer Console" breadcrumb links to properly navigate to `/developer-console/manage`
     - Consistent navigation experience from any plugin editor subpage
     - Reliable routing back to plugin list after save/delete operations
   - **Cross-Component Routing**: Improved navigation flow throughout application
@@ -221,11 +218,11 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
     - Improved visual balance between navigation and content areas
     - More compact layout while maintaining proper visual hierarchy
     - Consistent with other interface sections throughout the application
-  - **Developer Portal Container**: Optimized dev-portal-main container top padding from 24px to 16px
+  - **Developer Console Container**: Optimized dev-portal-main container top padding from 24px to 16px
     - Better space utilization for plugin management interface
     - Enhanced content density without sacrificing readability
     - Maintained responsive design principles for mobile breakpoints
-  - **Visual Consistency**: Standardized spacing patterns across all Developer Portal pages
+  - **Visual Consistency**: Standardized spacing patterns across all Developer Console pages
     - Consistent spacing implementation reduces visual noise
     - Improved user focus on content rather than excessive whitespace
     - Enhanced professional appearance with refined layout proportions
@@ -245,7 +242,7 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
 - **Accessibility**: Proper keyboard navigation and screen reader support
 
 #### Routing Architecture Updates
-- **Route Consolidation**: Simplified `/developer-portal` routing structure for better maintainability
+- **Route Consolidation**: Simplified `/developer-console` routing structure for better maintainability
 - **Context Preservation**: Workspace context passing between route transitions
 - **Error Handling**: Fallback routing for invalid or missing route parameters
 - **State Persistence**: Maintained user session state across navigation operations
@@ -273,9 +270,9 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
   - Blob generation and URL creation for seamless image replacement in plugin form data
 
 ### Previous Updates (August 20, 2025)
-- **Developer Portal UI/UX Enhancements**: Comprehensive interface improvements for better user experience
+- **Developer Console UI/UX Enhancements**: Comprehensive interface improvements for better user experience
   - **Avatar Dropdown System**: Implemented clickable avatar with comprehensive dropdown menu
-    - Menu options: Marketplace, Dashboard, Setting, and Logout with proper navigation
+    - Menu options: Marketplace, Setting, and Logout with proper navigation
     - Consistent 36px height for all dropdown items with smooth hover transitions
     - Click-outside detection for improved user interaction patterns
     - Perfect vertical and horizontal alignment with consistent spacing (6px 8px 6px 32px)
@@ -285,7 +282,7 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
     - Enhanced accessibility and visual hierarchy for workspace selection
     - Hover states with background color transitions for better user feedback
   - **Sidebar Navigation Optimization**:
-    - Logo and title now clickable with navigation to /developer-portal/manage
+    - Logo and title now clickable with navigation to /developer-console/manage
     - Removed unnecessary border/separator below logo for cleaner visual design
     - Extended sidebar to full viewport height with fixed positioning for better space utilization
     - Enhanced Documentation menu item with NewTab icon linking to visualizer.developer.reearth.io
@@ -300,23 +297,23 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
     - Standardized all dropdown menu items to consistent 36px height
     - Achieved precise icon and text alignment throughout table interface
     - Improved hover states and interaction feedback for table elements
-- **Developer Portal Login Page**: Standalone authentication interface for developer access
-  - Created `developer-portal-login.html` with modern card-based design
+- **Developer Console Login Page**: Standalone authentication interface for developer access
+  - Created `developer-console-login.html` with modern card-based design
   - Tabbed interface supporting both Login and Sign Up modes
   - Professional styling with grey input fields (#F5F5F5) and focus states (#EBEBEB)
   - Teal login button (#4A9B9B) with hover and active states for enhanced user feedback
   - Responsive design that adapts to mobile devices (max-width: 480px)
   - Form validation and password confirmation for sign-up workflow
   - JavaScript functionality for seamless tab switching between Login and Sign Up forms
-  - Integration with Developer Portal workflow through form submission handling
+  - Integration with Developer Console workflow through form submission handling
   - Consistent typography using Outfit font family matching the project design system
   - Card layout with rounded corners (16px), shadow effects, and proper visual hierarchy
   - Interactive elements including "Don't remember your password?" and "Already have an account?" links
   - Loading state management for both login and signup processes with user feedback
 
 ### Previous Updates (August 18, 2025)
-- **Developer Portal Plugin Editing**: Enhanced In-Place Plugin Management
-  - Implemented embedded plugin editing directly within the Developer Portal interface
+- **Developer Console Plugin Editing**: Enhanced In-Place Plugin Management
+  - Implemented embedded plugin editing directly within the Developer Console interface
   - Clickable plugin cards open single-column edit interface
   - Seamless navigation between plugin list and edit views
   - Integrated comprehensive editing capabilities including:
@@ -326,21 +323,21 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
     - Plugin Status toggle (Draft/Public)
     - Danger Zone for plugin deletion
   - State management for smooth view transitions
-  - Maintained existing Developer Portal design and interaction patterns
+  - Maintained existing Developer Console design and interaction patterns
   - Reused components from PluginEdit.jsx for consistent editing experience
-- **Developer Portal Implementation**: Comprehensive developer workspace with multi-workspace support
-  - Added Developer Portal link to avatar dropdown menus across all components (DashboardNav, Marketplace, PluginDetail)
-  - Created DeveloperPortalEntry component for workspace selection with modal interface
+- **Developer Console Implementation**: Comprehensive developer workspace with multi-workspace support
+  - Added Developer Console link to avatar dropdown menus across all components (Marketplace, PluginDetail)
+  - Created DeveloperConsoleEntry component for workspace selection with modal interface
   - Implemented 5 workspace options including personal and team types with member counts
-  - Added routing for /developer-portal path with protected route authentication
+  - Added routing for /developer-console path with protected route authentication
   - Professional workspace selection interface with Japanese typography support for company names
   - Integrated workspace selection modal with close functionality and "Enter portal" button
-  - Enhanced user experience with workspace context passing to Developer Portal
+  - Enhanced user experience with workspace context passing to Developer Console
   - Improved workspace selection modal design
     - Increased gap between header text and workspace cards with 24px margin-top
     - Fixed workspace card selection visual inconsistency by changing unselected card background to #FFFFFF
     - Updated page background to use var(--tailwind-neutra-900, #171717) for better visual hierarchy
-- **Developer Portal Main Interface**: Full-featured plugin management dashboard
+- **Developer Console Main Interface**: Full-featured plugin management dashboard
   - Comprehensive plugin management with visibility filtering (All, Public, Private, Draft)
   - Real-time search functionality across plugin titles and descriptions
   - Multiple sorting options (Recently Updated, Name, Downloads) with dynamic plugin lists
@@ -351,8 +348,8 @@ This is a comprehensive Re:Earth Marketplace implementation featuring both stati
   - Contextual edit mode with full plugin management capabilities
   - Enhanced user workflow with minimal navigation overhead
   - Empty state handling with "Create your first plugin" call-to-action
-- **Enhanced Avatar Dropdown Navigation**: Universal Developer Portal access
-  - Added Developer Portal menu item to avatar dropdowns in DashboardNav, Marketplace, and PluginDetail
+- **Enhanced Avatar Dropdown Navigation**: Universal Developer Console access
+  - Added Developer Console menu item to avatar dropdowns in DashboardNav, Marketplace, and PluginDetail
   - Consistent navigation experience across all application components
   - Proper integration with existing user authentication and session management
   - Seamless transition from marketplace/dashboard to developer-focused workflow
@@ -487,8 +484,8 @@ serve -s build
   - Blue accent: #0089D4 (general links and accents)
   - Light blue: #2CC3FF (active states, toggles)
   - Dark blue: #00A2EA (primary actions, Save buttons)
-  - Teal accent: #4A9B9B (Developer Portal login button)
-  - Background: #FEFAF0 (main), #8B8B92 (Developer Portal login)
+  - Teal accent: #4A9B9B (Developer Console login button)
+  - Background: #FEFAF0 (main), #8B8B92 (Developer Console login)
 - **Typography**: 
   - English text: Outfit font family (16px, 400 weight, 140% line-height for navigation)
   - Japanese text: "Noto Sans JP" font family

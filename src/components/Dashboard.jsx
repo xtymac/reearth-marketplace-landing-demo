@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Plus, Search, ExternalLink } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 import { pluginData } from '../data/pluginData';
-import '../DeveloperPortal.css';
+import '../DeveloperConsole.css';
 
 const Dashboard = () => {
   const [selectedWorkspace, setSelectedWorkspace] = useState('Default personal workspace');
@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   const tabs = ['CMS Project', 'Visualizer Project', 'Plugins'];
 
-  // Helper function to convert date to relative time (matching Developer Portal)
+  // Helper function to convert date to relative time (matching Developer Console)
   function getTimeAgo(dateStr) {
     const date = new Date(dateStr.replace(/\//g, '-'));
     const now = new Date();
@@ -114,7 +114,7 @@ const Dashboard = () => {
         navigate(`/workspace/${workspaceId}/${pluginId}`);
       } else {
         // Fallback to developer portal if no workspace mapping
-        navigate(`/developer-portal/workspace/${pluginId}`);
+        navigate(`/developer-console/workspace/${pluginId}`);
       }
     }
   };
@@ -554,7 +554,7 @@ const Dashboard = () => {
 
                 <button 
                   className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all group"
-                  onClick={() => navigate('/developer-portal')}
+                  onClick={() => navigate('/developer-console')}
                 >
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -564,7 +564,7 @@ const Dashboard = () => {
                       className="font-medium text-gray-900"
                       style={{ fontFamily: 'Outfit', fontSize: '16px' }}
                     >
-                      Developer Portal
+                      Developer Console
                     </span>
                   </div>
                   <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
