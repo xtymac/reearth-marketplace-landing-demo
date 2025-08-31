@@ -1384,46 +1384,43 @@ function DeveloperConsole() {
         {/* Main Content */}
         <div className="dev-portal-main">
           {!isEditMode ? (
-          <>
-            {/* Top bar with avatar */}
-            <div 
-              className="avatar-dropdown-container"
-              style={{ 
-                position: 'absolute',
-                top: '40px',
-                right: '40px',
-                zIndex: 10
-              }}
-            >
-              <img 
-                src="/Image/Avatar/Avatar.png" 
-                alt="User Avatar" 
-                onClick={handleAvatarClick}
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
+            <>
+              <div 
+                className="avatar-dropdown-container"
+                style={{ 
+                  position: 'absolute',
+                  top: '40px',
+                  right: '40px',
+                  zIndex: 10
                 }}
-              />
-              
-              {/* Avatar Dropdown */}
-              {showAvatarDropdown && (
-                <div
+              >
+                <img 
+                  src="/Image/Avatar/Avatar.png" 
+                  alt="User Avatar" 
+                  onClick={handleAvatarClick}
                   style={{
-                    position: 'absolute',
-                    top: '56px',
-                    right: '0',
-                    borderRadius: '6px',
-                    border: '1px solid var(--slate-300, #CBD5E1)',
-                    background: '#FFF',
-                    boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.09)',
-                    minWidth: '200px',
-                    overflow: 'hidden',
-                    zIndex: 20
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease'
                   }}
+                />
+                {showAvatarDropdown && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '56px',
+                      right: '0',
+                      borderRadius: '6px',
+                      border: '1px solid var(--slate-300, #CBD5E1)',
+                      background: '#FFF',
+                      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.09)',
+                      minWidth: '200px',
+                      overflow: 'hidden',
+                      zIndex: 20
+                    }}
                 >
                   <button
                     onClick={() => handleDropdownItemClick('marketplace')}
@@ -1531,78 +1528,77 @@ function DeveloperConsole() {
                 </div>
               )}
             </div>
-
             <div className="main-header-new">
-              <h1 className="page-title-new">My Plugins</h1>
-              
-              {/* Centered search bar with adjacent sort dropdown */}
-              <div className="search-bar-container-new">
-                <div className="search-controls-new">
-                  <div className="search-container-new">
-                    <Search className="search-icon-new" size={20} />
-                    <input
-                      type="text"
-                      placeholder="Search by title, function and description"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="search-input-new"
-                    />
+                <h1 className="page-title-new">My Plugins</h1>
+                
+                {/* Centered search bar with adjacent sort dropdown */}
+                <div className="search-bar-container-new">
+                  <div className="search-controls-new">
+                    <div className="search-container-new">
+                      <Search className="search-icon-new" size={20} />
+                      <input
+                        type="text"
+                        placeholder="Search by title, function and description"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="search-input-new"
+                      />
+                    </div>
+                    
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="sort-select-new"
+                    >
+                      <option value="updated">Sort by date uploaded</option>
+                      <option value="name">Sort by name</option>
+                      <option value="downloads">Sort by downloads</option>
+                    </select>
                   </div>
                   
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="sort-select-new"
-                  >
-                    <option value="updated">Sort by date uploaded</option>
-                    <option value="name">Sort by name</option>
-                    <option value="downloads">Sort by downloads</option>
-                  </select>
+                  <Link to="/developer-console/new" className="new-plugin-button-new">
+                    <Plus size={20} />
+                    New Plugin
+                  </Link>
                 </div>
-                
-                <Link to="/developer-console/new" className="new-plugin-button-new">
-                  <Plus size={20} />
-                  New Plugin
-                </Link>
               </div>
-            </div>
-            
-            {/* Plugin Table */}
-            <div className="plugin-cards-container">
-              {filteredPlugins.length === 0 ? (
-                <div className="empty-state">
-                  <p>No plugins found.</p>
-                </div>
-              ) : (
-                <table className="plugin-table-new">
-                  <thead className="plugin-table-header-new">
-                    <tr>
-                      <th>Plugin name</th>
-                      <th>Date created</th>
-                      <th>Version</th>
-                      <th>Last edit</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredPlugins.map(plugin => (
-                      <tr 
-                        key={plugin.id} 
-                        className="plugin-table-row-new"
-                        onClick={() => handlePluginClick(plugin)}
-                      >
-                        <td>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <div className="plugin-name-new">{plugin.title}</div>
-                            <span className={`plugin-badge-new ${plugin.visibility === 'draft' ? 'draft' : 'published'}`}>
-                              {plugin.visibility === 'draft' ? 'Draft' : 'Published'}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="plugin-date-new">Dec 22, 2024</td>
-                        <td className="plugin-version-new">v1.0</td>
-                        <td className="plugin-time-new">3 month ago</td>
-                        <td>
+              
+              {/* Plugin Table */}
+              <div className="plugin-cards-container">
+                {filteredPlugins.length === 0 ? (
+                  <div className="empty-state">
+                    <p>No plugins found.</p>
+                  </div>
+                ) : (
+                  <table className="plugin-table-new">
+                    <thead className="plugin-table-header-new">
+                      <tr>
+                        <th>Plugin name</th>
+                        <th>Date created</th>
+                        <th>Version</th>
+                        <th>Last edit</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredPlugins.map(plugin => (
+                        <tr 
+                          key={plugin.id} 
+                          className="plugin-table-row-new"
+                          onClick={() => handlePluginClick(plugin)}
+                        >
+                          <td>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <div className="plugin-name-new">{plugin.title}</div>
+                              <span className={`plugin-badge-new ${plugin.visibility === 'draft' ? 'draft' : 'published'}`}>
+                                {plugin.visibility === 'draft' ? 'Draft' : 'Published'}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="plugin-date-new">Dec 22, 2024</td>
+                          <td className="plugin-version-new">v1.0</td>
+                          <td className="plugin-time-new">3 month ago</td>
+                          <td>
                           <div className="plugin-action-dropdown" ref={activeDropdown === plugin.id ? dropdownRef : null}>
                             <button
                               onClick={(e) => handleActionDropdownClick(plugin.id, e)}
@@ -1644,13 +1640,12 @@ function DeveloperConsole() {
                         </td>
                       </tr>
                     ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
+                    </tbody>
+                  </table>
+                )}
+              </div>
           </>
         ) : (
-          /* Plugin Edit View */
           <div className="plugin-edit-container" style={{ 
             padding: '0',
             height: '100vh',
@@ -1869,14 +1864,21 @@ function DeveloperConsole() {
                     backgroundColor: 'white',
                     padding: '24px',
                     display: 'flex',
-                    flexDirection: 'column',
-                    gap: '64px',
+                    flexDirection: 'row',
+                    gap: '44px',
                     overflow: 'auto',
-                    flex: 1
+                    flex: 1,
+                    alignItems: 'flex-start'
                   }}>
                   
-                  {/* Section Content */}
-                  <div>
+                  {/* Main Editor Content - Left Column */}
+                  <div style={{ 
+                    width: '720px',
+                    flexShrink: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '64px'
+                  }}>
                     {/* General Section */}
                     <div 
                       ref={generalRef} 
@@ -3279,8 +3281,99 @@ function DeveloperConsole() {
             </div>
           </div>
           )}
-        </div>
+
+          {/* Vertical Divider */}
+          <div style={{
+            width: '2px',
+            height: '406px',
+            backgroundColor: '#E5E7EB',
+            flexShrink: 0
+          }}></div>
+
+          {/* Status Section - Right Column */}
+          <div style={{
+            width: '275px',
+            flexShrink: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            height: '586px',
+            alignItems: 'center'
+          }}>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '9px',
+              alignItems: 'flex-start',
+              width: '227px'
+            }}>
+              {/* Status Dropdown */}
+              <div style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #CBD5E1',
+                borderRadius: '6px',
+                display: 'flex',
+                gap: '10px',
+                height: '40px',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '8px 12px',
+                width: '141px',
+                boxSizing: 'border-box'
+              }}>
+                <div style={{
+                  fontFamily: 'Inter',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  lineHeight: '24px',
+                  color: '#0F172A',
+                  flex: 1
+                }}>
+                  {pluginFormData.status === 'Public' ? 'Published' : 'Draft'}
+                </div>
+                <div style={{ width: '10.667px', height: '10.667px' }}>
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                    <path d="m2.75 4.125 2.75 2.75 2.75-2.75" stroke="#64748B" strokeWidth="1.375" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Status Message - Show when Published */}
+              {pluginFormData.status === 'Public' && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: '16px'
+                }}>
+                  <div style={{
+                    width: '24px',
+                    height: '24px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M13.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.793l6.646-6.647a.5.5 0 0 1 .708 0z" fill="#16A34A"/>
+                    </svg>
+                  </div>
+                  <div style={{
+                    fontFamily: 'Outfit',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    lineHeight: '1.4',
+                    color: '#16A34A',
+                    whiteSpace: 'nowrap'
+                  }}>
+                    Your Plugin is now published
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+    </div>
 
       {/* Image Editor Modal */}
       {showImageEditor && (
