@@ -94,13 +94,33 @@ const DeveloperConsoleSidebar = ({
       
       <div className="workspace-section-new">
         <div style={{
-          color: '#6B7280',
-          fontFamily: 'Outfit',
-          fontSize: '14px',
-          fontWeight: '500',
-          lineHeight: '140%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           marginBottom: '12px'
-        }}>Workspace</div>
+        }}>
+          <div style={{
+            color: '#6B7280',
+            fontFamily: 'Outfit',
+            fontSize: '14px',
+            fontWeight: '500',
+            lineHeight: '140%'
+          }}>Workspace</div>
+          <Link 
+            to="/developer-console" 
+            style={{
+              color: '#6B7280',
+              fontFamily: 'Outfit',
+              fontSize: '14px',
+              textDecoration: 'none',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.target.style.color = '#111827'}
+            onMouseLeave={(e) => e.target.style.color = '#6B7280'}
+          >
+            Switch
+          </Link>
+        </div>
         <div 
           className="workspace-dropdown-container"
           style={{ position: 'relative' }}
@@ -257,25 +277,6 @@ const DeveloperConsoleSidebar = ({
           </div>
         </>
       )}
-      
-      <div className="sidebar-nav-new">
-        <Link 
-          to="/developer-console" 
-          style={{
-            display: 'block',
-            padding: '8px 0',
-            color: '#6B7280',
-            fontFamily: 'Outfit',
-            fontSize: '14px',
-            textDecoration: 'none',
-            transition: 'color 0.2s ease'
-          }}
-          onMouseEnter={(e) => e.target.style.color = '#111827'}
-          onMouseLeave={(e) => e.target.style.color = '#6B7280'}
-        >
-          Switch
-        </Link>
-      </div>
     </div>
   );
 };

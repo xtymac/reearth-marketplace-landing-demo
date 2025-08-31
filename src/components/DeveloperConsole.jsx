@@ -1658,249 +1658,6 @@ function DeveloperConsole() {
             flexDirection: 'column',
             overflow: 'hidden'
           }}>
-            {/* Edit Header */}
-            <div className="edit-header" style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              padding: '24px 0 16px 0',
-              borderBottom: '1px solid #E5E7EB',
-              zIndex: 100,
-              flexShrink: 0,
-              position: 'relative'
-            }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <span
-                  onClick={handleBackToList}
-                  style={{
-                    color: 'var(--black, #000)',
-                    fontFamily: 'Outfit',
-                    fontSize: '24px',
-                    fontStyle: 'normal',
-                    fontWeight: 400,
-                    lineHeight: '140%',
-                    cursor: 'pointer'
-                  }}
-                >
-                  ↼ Manage plugin
-                </span>
-                <div style={{
-                  color: 'var(--text-default, #0A0A0A)',
-                  fontFamily: 'Outfit',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 400,
-                  lineHeight: '140%'
-                }}>
-                  {selectedPlugin?.title}
-                </div>
-              </div>
-              
-              {/* Plugin Status Dropdown */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px'
-              }}>
-                <div style={{
-                  position: 'relative',
-                  display: 'inline-block'
-                }}>
-                  <select
-                    value={pluginFormData.status}
-                    onChange={(e) => handleStatusChange(e.target.value)}
-                    style={{
-                      height: '36px',
-                      padding: '6px 36px 6px 12px',
-                      border: 'none',
-                      borderRadius: '6px',
-                      backgroundColor: pluginFormData.status === 'Public' ? '#75D6FF' : '#FEF3C7',
-                      color: pluginFormData.status === 'Public' ? '#0A0A0A' : '#92400E',
-                      fontFamily: 'Outfit',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      appearance: 'none',
-                      outline: 'none',
-                      transition: 'all 0.2s ease',
-                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
-                    }}
-                  >
-                    <option value="Public">Published</option>
-                    <option value="Draft">Draft</option>
-                  </select>
-                  
-                  {/* Custom dropdown arrow */}
-                  <svg
-                    style={{
-                      position: 'absolute',
-                      right: '12px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      pointerEvents: 'none',
-                      width: '12px',
-                      height: '12px'
-                    }}
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3 4.5L6 7.5L9 4.5"
-                      stroke={pluginFormData.status === 'Public' ? '#0A0A0A' : '#92400E'}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                
-                {/* Avatar with Dropdown */}
-                <div className="avatar-dropdown-container" style={{ position: 'relative' }}>
-                <img 
-                  src="/Image/Avatar/Avatar.png" 
-                  alt="User Avatar" 
-                  onClick={handleAvatarClick}
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
-                  }}
-                />
-                
-                {/* Avatar Dropdown */}
-                {showAvatarDropdown && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '56px',
-                      right: '0',
-                      borderRadius: '6px',
-                      border: '1px solid var(--slate-300, #CBD5E1)',
-                      background: '#FFF',
-                      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.09)',
-                      minWidth: '200px',
-                      overflow: 'hidden',
-                      zIndex: 20
-                    }}
-                  >
-                    <button
-                      onClick={() => handleDropdownItemClick('marketplace')}
-                      style={{
-                        width: '100%',
-                        height: '36px',
-                        display: 'flex',
-                        padding: '6px 8px 6px 32px',
-                        alignItems: 'center',
-                        gap: '8px',
-                        alignSelf: 'stretch',
-                        borderRadius: '6px',
-                        border: 'none',
-                        background: 'none',
-                        fontSize: '16px',
-                        fontFamily: 'Outfit',
-                        color: '#111827',
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s ease',
-                        boxSizing: 'border-box'
-                      }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                    >
-                      Marketplace
-                    </button>
-                    
-                    <button
-                      onClick={() => handleDropdownItemClick('dashboard')}
-                      style={{
-                        width: '100%',
-                        height: '36px',
-                        display: 'flex',
-                        padding: '6px 8px 6px 32px',
-                        alignItems: 'center',
-                        gap: '8px',
-                        alignSelf: 'stretch',
-                        borderRadius: '6px',
-                        border: 'none',
-                        background: 'none',
-                        fontSize: '16px',
-                        fontFamily: 'Outfit',
-                        color: '#111827',
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s ease',
-                        boxSizing: 'border-box'
-                      }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                    >
-                      Dashboard
-                    </button>
-                    
-                    <button
-                      onClick={() => handleDropdownItemClick('setting')}
-                      style={{
-                        width: '100%',
-                        height: '36px',
-                        display: 'flex',
-                        padding: '6px 8px 6px 32px',
-                        alignItems: 'center',
-                        gap: '8px',
-                        alignSelf: 'stretch',
-                        borderRadius: '6px',
-                        border: 'none',
-                        background: 'none',
-                        fontSize: '16px',
-                        fontFamily: 'Outfit',
-                        color: '#111827',
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s ease',
-                        boxSizing: 'border-box'
-                      }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                    >
-                      Setting
-                    </button>
-                    
-                    <button
-                      onClick={() => handleDropdownItemClick('logout')}
-                      style={{
-                        width: '100%',
-                        height: '36px',
-                        display: 'flex',
-                        padding: '6px 8px 6px 32px',
-                        alignItems: 'center',
-                        gap: '8px',
-                        alignSelf: 'stretch',
-                        borderRadius: '6px',
-                        border: 'none',
-                        background: 'none',
-                        fontSize: '16px',
-                        fontFamily: 'Outfit',
-                        color: '#111827',
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s ease',
-                        boxSizing: 'border-box'
-                      }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-              </div>
-            </div>
 
             {/* Edit Content - Full Width Layout */}
             <div style={{ 
@@ -1914,8 +1671,154 @@ function DeveloperConsole() {
                 <div style={{
                   backgroundColor: 'white',
                   borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-                  padding: '24px'
+                  padding: '24px',
+                  paddingTop: '40px',
+                  position: 'relative'
                 }}>
+                  {/* Avatar with Dropdown - Top Right */}
+                  <div className="avatar-dropdown-container" style={{ 
+                    position: 'absolute',
+                    top: '40px',
+                    right: '24px',
+                    zIndex: 20
+                  }}>
+                    <img 
+                      src="/Image/Avatar/Avatar.png" 
+                      alt="User Avatar" 
+                      onClick={handleAvatarClick}
+                      style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                    />
+                    
+                    {/* Avatar Dropdown */}
+                    {showAvatarDropdown && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '56px',
+                          right: '0',
+                          borderRadius: '6px',
+                          border: '1px solid var(--slate-300, #CBD5E1)',
+                          background: '#FFF',
+                          boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.09)',
+                          minWidth: '200px',
+                          overflow: 'hidden',
+                          zIndex: 30
+                        }}
+                      >
+                        <button
+                          onClick={() => handleDropdownItemClick('marketplace')}
+                          style={{
+                            width: '100%',
+                            height: '36px',
+                            display: 'flex',
+                            padding: '6px 8px 6px 32px',
+                            alignItems: 'center',
+                            gap: '8px',
+                            alignSelf: 'stretch',
+                            borderRadius: '6px',
+                            border: 'none',
+                            background: 'none',
+                            fontSize: '16px',
+                            fontFamily: 'Outfit',
+                            color: '#111827',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.2s ease',
+                            boxSizing: 'border-box'
+                          }}
+                          onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)'}
+                          onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                        >
+                          Marketplace
+                        </button>
+                        
+                        <button
+                          onClick={() => handleDropdownItemClick('dashboard')}
+                          style={{
+                            width: '100%',
+                            height: '36px',
+                            display: 'flex',
+                            padding: '6px 8px 6px 32px',
+                            alignItems: 'center',
+                            gap: '8px',
+                            alignSelf: 'stretch',
+                            borderRadius: '6px',
+                            border: 'none',
+                            background: 'none',
+                            fontSize: '16px',
+                            fontFamily: 'Outfit',
+                            color: '#111827',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.2s ease',
+                            boxSizing: 'border-box'
+                          }}
+                          onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)'}
+                          onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                        >
+                          Dashboard
+                        </button>
+                        
+                        <button
+                          onClick={() => handleDropdownItemClick('setting')}
+                          style={{
+                            width: '100%',
+                            height: '36px',
+                            display: 'flex',
+                            padding: '6px 8px 6px 32px',
+                            alignItems: 'center',
+                            gap: '8px',
+                            alignSelf: 'stretch',
+                            borderRadius: '6px',
+                            border: 'none',
+                            background: 'none',
+                            fontSize: '16px',
+                            fontFamily: 'Outfit',
+                            color: '#111827',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.2s ease',
+                            boxSizing: 'border-box'
+                          }}
+                          onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)'}
+                          onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                        >
+                          Setting
+                        </button>
+                        
+                        <button
+                          onClick={() => handleDropdownItemClick('logout')}
+                          style={{
+                            width: '100%',
+                            height: '36px',
+                            display: 'flex',
+                            padding: '6px 8px 6px 32px',
+                            alignItems: 'center',
+                            gap: '8px',
+                            alignSelf: 'stretch',
+                            borderRadius: '6px',
+                            border: 'none',
+                            background: 'none',
+                            fontSize: '16px',
+                            fontFamily: 'Outfit',
+                            color: '#111827',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.2s ease',
+                            boxSizing: 'border-box'
+                          }}
+                          onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--slate-100, #F1F5F9)'}
+                          onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Breadcrumb */}
                   <div style={{ marginBottom: '32px' }}>
                     <p style={{ 
@@ -1931,31 +1834,31 @@ function DeveloperConsole() {
                   </div>
                   
                   {/* Section Header */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <div style={{ display: 'flex', alignItems: 'start', gap: '8px' }}>
-                      <h1 style={{ 
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'start' }}>
+                      <div style={{ 
                         fontFamily: 'Outfit',
                         fontSize: '24px',
-                        lineHeight: '1.4',
-                        color: '#000',
                         fontWeight: 400,
-                        margin: 0
+                        lineHeight: '1.4',
+                        color: '#000000'
                       }}>
                         {activeSection}
-                      </h1>
+                      </div>
                     </div>
                     <div style={{ display: 'flex', gap: '8px' }}>
-                      <p style={{ 
+                      <div style={{ 
                         fontFamily: 'Outfit',
                         fontSize: '14px',
-                        color: '#0A0A0A',
-                        margin: 0
+                        fontWeight: 400,
+                        lineHeight: '1.4',
+                        color: '#0A0A0A'
                       }}>
                         {activeSection === 'General' && 'General and Basic Settings of the Project'}
                         {activeSection === 'README' && 'This will be shown as the plugin\'s Overview—describe what it does and how to use it.'}
                         {activeSection === 'Version' && 'Edit the changelog for each version. Version numbers are automatically loaded from the plugin\'s YML file.'}
                         {activeSection === 'Danger Zone' && ''}
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>

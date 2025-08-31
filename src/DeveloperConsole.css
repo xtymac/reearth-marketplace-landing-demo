@@ -54,7 +54,7 @@
 .dev-portal-sidebar-new {
   width: 288px;
   height: 100vh;
-  background-color: #FAFAFA;
+  background-color: #FCFAF;
   border-right: 1px solid #E5E7EB;
   display: flex;
   flex-direction: column;
@@ -241,9 +241,9 @@
 .main-header-new {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 48px;
-  text-align: center;
+  text-align: left;
 }
 
 .page-title-new {
@@ -269,7 +269,7 @@
   align-items: center;
   gap: 16px;
   flex: 1;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .search-container-new {
