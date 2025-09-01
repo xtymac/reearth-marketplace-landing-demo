@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { authService } from '../services/authService';
 
 const DeveloperConsoleEntry = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedWorkspace, setSelectedWorkspace] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -82,8 +83,12 @@ const DeveloperConsoleEntry = () => {
     const authenticated = authService.isAuthenticated();
     setIsAuthenticated(authenticated);
 
-    // Check for saved workspace and auto-redirect if found
-    if (authenticated) {
+    // Check if user explicitly clicked "Switch" - if so, bypass auto-redirect
+    const searchParams = new URLSearchParams(location.search);
+    const isExplicitSwitch = searchParams.get('switch') === 'true';
+
+    // Check for saved workspace and auto-redirect if found (but only if not explicitly switching)
+    if (authenticated && !isExplicitSwitch) {
       const savedWorkspace = localStorage.getItem('developerPortal_selectedWorkspace');
       if (savedWorkspace) {
         try {
@@ -109,7 +114,7 @@ const DeveloperConsoleEntry = () => {
     
     // Set loading to false after checking for auto-redirect
     setIsLoading(false);
-  }, [navigate, workspaces]);
+  }, [navigate, workspaces, location.search]);
 
   const handleClose = () => {
     navigate(-1); // Go back to previous page

@@ -54,7 +54,7 @@
 .dev-portal-sidebar-new {
   width: 288px;
   height: 100vh;
-  background-color: #FCFAF;
+  background-color: #FCFAF4;
   border-right: 1px solid #E5E7EB;
   display: flex;
   flex-direction: column;
@@ -230,7 +230,7 @@
 /* Main Content Styles */
 .dev-portal-main {
   background: #FFFFFF;
-  padding: 16px 40px 40px 40px;
+  padding: 8px 40px 40px 40px;
   overflow-y: auto;
   position: relative;
   margin-left: 288px;

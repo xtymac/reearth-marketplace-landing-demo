@@ -1660,7 +1660,7 @@ function DeveloperConsole() {
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              paddingTop: '24px'
+              paddingTop: '8px'
             }}>
                 {/* Edit Header */}
                 <div style={{

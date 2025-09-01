@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, FileText, GitBranch, AlertTriangle } from 'lucide-react';
+import { FileText, GitBranch, AlertTriangle, Building2 } from 'lucide-react';
 
 const DeveloperConsoleSidebar = ({ 
   selectedWorkspace,
   workspaces = [],
-  onWorkspaceChange,
   onLogoClick,
   // Editor-specific props
   isEditMode = false,
@@ -13,33 +12,7 @@ const DeveloperConsoleSidebar = ({
   activeSection = 'General',
   onSectionChange
 }) => {
-  const [showWorkspaceDropdown, setShowWorkspaceDropdown] = useState(false);
-  const workspaceDropdownRef = useRef(null);
 
-  // Handle click outside to close dropdown
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showWorkspaceDropdown && workspaceDropdownRef.current && !workspaceDropdownRef.current.contains(event.target)) {
-        setShowWorkspaceDropdown(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showWorkspaceDropdown]);
-
-  const handleWorkspaceClick = () => {
-    setShowWorkspaceDropdown(!showWorkspaceDropdown);
-  };
-
-  const handleWorkspaceSelect = (workspaceId) => {
-    if (onWorkspaceChange) {
-      onWorkspaceChange(workspaceId);
-    }
-    setShowWorkspaceDropdown(false);
-  };
 
   const handleLogoClickInternal = () => {
     if (onLogoClick) {
@@ -107,107 +80,59 @@ const DeveloperConsoleSidebar = ({
             lineHeight: '140%'
           }}>Workspace</div>
           <Link 
-            to="/developer-console" 
+            to="/developer-console?switch=true" 
             style={{
-              color: '#6B7280',
+              color: '#00A2EA',
               fontFamily: 'Outfit',
               fontSize: '14px',
               textDecoration: 'none',
-              transition: 'color 0.2s ease'
+              transition: 'color 0.2s ease',
+              fontWeight: '500'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#111827'}
-            onMouseLeave={(e) => e.target.style.color = '#6B7280'}
+            onMouseEnter={(e) => e.target.style.color = '#0080C7'}
+            onMouseLeave={(e) => e.target.style.color = '#00A2EA'}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.target.click();
+              }
+            }}
+            tabIndex={0}
           >
             Switch
           </Link>
         </div>
         <div 
-          className="workspace-dropdown-container"
-          style={{ position: 'relative' }}
-          ref={workspaceDropdownRef}
+          className="workspace-display-container"
+          style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            border: '1px solid #E5E7EB',
+            background: '#FFF',
+            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+          }}
         >
-          <button
-            onClick={handleWorkspaceClick}
-            style={{
-              display: 'flex',
-              width: '100%',
-              height: '40px',
-              padding: '8px 12px',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              borderRadius: '8px',
-              border: '1px solid #E5E7EB',
-              background: '#FFF',
-              color: '#111827',
-              fontFamily: 'Outfit',
-              fontSize: '14px',
-              cursor: 'pointer',
-              boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
-            }}
-          >
-            <span>{workspaces.find(w => w.id === selectedWorkspace)?.name || 'Select Workspace'}</span>
-            <ChevronDown 
-              size={16} 
-              style={{ 
-                transform: showWorkspaceDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 0.2s ease',
-                color: '#6B7280'
-              }} 
-            />
-          </button>
-          
-          {/* Workspace Dropdown */}
-          {showWorkspaceDropdown && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '100%',
-                left: '0',
-                right: '0',
-                marginTop: '4px',
-                borderRadius: '8px',
-                border: '1px solid #E5E7EB',
-                background: '#FFF',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                overflow: 'hidden',
-                zIndex: 1000
-              }}
-            >
-              {workspaces.map(workspace => (
-                <button
-                  key={workspace.id}
-                  onClick={() => handleWorkspaceSelect(workspace.id)}
-                  style={{
-                    width: '100%',
-                    height: '40px',
-                    display: 'flex',
-                    padding: '8px 12px',
-                    alignItems: 'center',
-                    border: 'none',
-                    background: selectedWorkspace === workspace.id ? '#F3F4F6' : 'transparent',
-                    fontSize: '14px',
-                    fontFamily: 'Outfit',
-                    color: '#111827',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.2s ease',
-                    textAlign: 'left'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (selectedWorkspace !== workspace.id) {
-                      e.target.style.backgroundColor = '#F9FAFB';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (selectedWorkspace !== workspace.id) {
-                      e.target.style.backgroundColor = 'transparent';
-                    }
-                  }}
-                >
-                  {workspace.name}
-                </button>
-              ))}
-            </div>
-          )}
+          <Building2 
+            size={20} 
+            color="#6B7280"
+            style={{ flexShrink: 0 }}
+          />
+          <span style={{
+            color: '#111827',
+            fontFamily: 'Outfit',
+            fontSize: '14px',
+            fontWeight: '500',
+            lineHeight: '140%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            flex: 1
+          }}>
+            {workspaces.find(w => w.id === selectedWorkspace)?.name || 'No workspace selected'}
+          </span>
         </div>
       </div>
       
