@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Heart, Download, Search, ChevronDown, Image as ImageIcon, Loader } from 'lucide-react';
 import DashboardNav from './DashboardNav';
@@ -148,27 +148,7 @@ const LikedPlugins = () => {
     'Z-A'
   ];
 
-  useEffect(() => {
-    loadLikedPlugins();
-  }, []);
-
-  useEffect(() => {
-    filterAndSortPlugins();
-  }, [likedPlugins, searchTerm, sortBy, filterAndSortPlugins]);
-
-  const loadLikedPlugins = async () => {
-    try {
-      setLoading(true);
-      const plugins = await getUserLikedPlugins();
-      setLikedPlugins(plugins);
-    } catch (error) {
-      console.error('Error loading liked plugins:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterAndSortPlugins = () => {
+  const filterAndSortPlugins = useCallback(() => {
     let filtered = [...likedPlugins];
 
     // Filter by search term
@@ -194,6 +174,26 @@ const LikedPlugins = () => {
     }
 
     setFilteredPlugins(filtered);
+  }, [likedPlugins, searchTerm, sortBy]);
+
+  useEffect(() => {
+    loadLikedPlugins();
+  }, []);
+
+  useEffect(() => {
+    filterAndSortPlugins();
+  }, [filterAndSortPlugins]);
+
+  const loadLikedPlugins = async () => {
+    try {
+      setLoading(true);
+      const plugins = await getUserLikedPlugins();
+      setLikedPlugins(plugins);
+    } catch (error) {
+      console.error('Error loading liked plugins:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUnlike = (pluginId) => {
