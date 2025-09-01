@@ -691,30 +691,64 @@ const PluginEdit = () => {
               
               {/* Section Header */}
               <div className="flex flex-col gap-4">
-                <div className="flex items-start gap-2">
-                  <h1 className="font-normal text-black" style={{ fontFamily: 'Outfit', fontSize: '24px', lineHeight: '1.4' }}>
-                    {activeSection}
-                  </h1>
-                  {activeSection === 'Version' && (
-                    <button
-                      onClick={handleNewVersion}
-                      className="text-white rounded-md hover:opacity-90 focus:outline-none"
-                      style={{
-                        display: 'flex',
-                        padding: '8px 16px',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '8px',
-                        borderRadius: '6px',
-                        backgroundColor: '#00A2EA',
-                        fontFamily: 'Outfit',
-                        fontSize: '14px',
-                        fontWeight: 500
-                      }}
-                    >
-                      <Plus className="w-4 h-4" />
-                      New version
-                    </button>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-2">
+                    <h1 className="font-normal text-black" style={{ fontFamily: 'Outfit', fontSize: '24px', lineHeight: '1.4' }}>
+                      {activeSection}
+                    </h1>
+                    {activeSection === 'Version' && (
+                      <button
+                        onClick={handleNewVersion}
+                        className="text-white rounded-md hover:opacity-90 focus:outline-none"
+                        style={{
+                          display: 'flex',
+                          padding: '8px 16px',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          gap: '8px',
+                          borderRadius: '6px',
+                          backgroundColor: '#00A2EA',
+                          fontFamily: 'Outfit',
+                          fontSize: '14px',
+                          fontWeight: 500
+                        }}
+                      >
+                        <Plus className="w-4 h-4" />
+                        New version
+                      </button>
+                    )}
+                  </div>
+                  
+                  {/* Plugin Status Dropdown - Only show for General section */}
+                  {activeSection === 'General' && (
+                    <div className="flex flex-col gap-2 items-end">
+                      <label 
+                        className="text-sm font-medium"
+                        style={{ 
+                          fontFamily: 'Outfit',
+                          fontSize: '14px',
+                          color: '#0A0A0A'
+                        }}
+                      >
+                        Plugin Status
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={pluginFormData.status}
+                          onChange={(e) => setPluginFormData(prev => ({ ...prev, status: e.target.value }))}
+                          className="px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                          style={{ 
+                            fontFamily: 'Outfit',
+                            fontSize: '14px',
+                            color: '#0A0A0A',
+                            width: '141px'
+                          }}
+                        >
+                          <option value="Draft">Draft</option>
+                          <option value="Published">Published</option>
+                        </select>
+                      </div>
+                    </div>
                   )}
                 </div>
                 <div className="flex gap-2">
@@ -734,35 +768,6 @@ const PluginEdit = () => {
               {/* Content based on active section */}
               {activeSection === 'General' && (
                 <div className="space-y-6" ref={el => sectionRefs.current['General'] = el} data-section="General">
-                {/* Plugin Status - Updated to match new design */}
-                <div className="max-w-[720px]">
-                  <label 
-                    className="block font-medium mb-2"
-                    style={{ 
-                      fontFamily: 'Outfit',
-                      fontSize: '16px',
-                      color: '#0A0A0A'
-                    }}
-                  >
-                    Plugin Status
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={pluginFormData.status}
-                      onChange={(e) => setPluginFormData(prev => ({ ...prev, status: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                      style={{ 
-                        fontFamily: 'Outfit',
-                        fontSize: '14px',
-                        color: '#0A0A0A'
-                      }}
-                    >
-                      <option value="Draft">Draft</option>
-                      <option value="Published">Published</option>
-                    </select>
-                  </div>
-                </div>
-
                 {/* Plugin Name */}
                 <div className="max-w-[720px]">
                   <label 
