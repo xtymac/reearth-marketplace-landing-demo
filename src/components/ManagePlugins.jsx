@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Search, Filter, ChevronDown, Package, Play, Pause, Eye, Download, Trash2 } from 'lucide-react';
+import { Search, ChevronDown, Package, Play, Pause, Eye, Download, Trash2 } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 import { pluginData } from '../data/pluginData';
 import { authService } from '../services/authService';

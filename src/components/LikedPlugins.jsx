@@ -154,7 +154,7 @@ const LikedPlugins = () => {
 
   useEffect(() => {
     filterAndSortPlugins();
-  }, [likedPlugins, searchTerm, sortBy]);
+  }, [likedPlugins, searchTerm, sortBy, filterAndSortPlugins]);
 
   const loadLikedPlugins = async () => {
     try {

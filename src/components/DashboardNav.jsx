@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, LogOut, Settings, LayoutDashboard, Building2, Package, Heart } from 'lucide-react';
+import { User, LogOut, Settings, Building2, Package, Heart } from 'lucide-react';
 import { authService } from '../services/authService';
 
 const DashboardNav = () => {
@@ -38,10 +38,6 @@ const DashboardNav = () => {
     navigate('/');
   };
 
-  const handleDashboard = () => {
-    setUserDropdownOpen(false);
-    navigate('/dashboard');
-  };
 
   const handleSettings = () => {
     setUserDropdownOpen(false);

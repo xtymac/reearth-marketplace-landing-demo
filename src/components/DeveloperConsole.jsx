@@ -264,10 +264,6 @@ function DeveloperConsole() {
     setFilteredPlugins(filtered);
   }, [plugins, selectedWorkspace, sortBy, searchTerm]);
 
-  const getTimeAgo = (dateString) => {
-    // For demo purposes, always return "3 month ago" to match the reference design
-    return '3 month ago';
-  };
 
   // Plugin edit state and handlers
   const [newTag, setNewTag] = useState('');

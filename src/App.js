@@ -7,7 +7,6 @@ import PluginSubmissionSuccess from './components/PluginSubmissionSuccess';
 import DeveloperConsoleEntry from './components/DeveloperConsoleEntry';
 import DeveloperConsole from './components/DeveloperConsole';
 import DeveloperConsoleUpload from './components/DeveloperConsoleUpload';
-import DashboardNotAvailable from './components/DashboardNotAvailable';
 import Dashboard from './components/Dashboard';
 import Workspace from './components/Workspace';
 import WorkspacePluginEdit from './components/WorkspacePluginEdit';
